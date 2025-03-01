@@ -1,18 +1,15 @@
 import styles from './app.module.css';
+import ingredientsData from '../../utils/data';
 import AppHeader from '../app-header/app-header';
-
-// import ingredientsData from '../../utils/data';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 
 const App = () => {
 	return (
 		<div className={styles.app}>
 			<AppHeader />
-			{/* <main className={styles.main}>
-			<BurgerIngredients 
-				ingredients={ingredientsWithCounts}
-				onChangeIngredientCount={this.changeIngredientCount}
-			/>
-			<BurgerConstructor 
+			<main className={styles.main}>
+				<BurgerIngredients ingredients={ingredientsData} />
+				{/* <BurgerConstructor 
 				bun={bun}
 				items={items}
 				onRemoveIngredient={(positionInCart) => {
@@ -24,8 +21,8 @@ const App = () => {
 					}, -1);
 				}
 				}}
-			/>
-			</main> */}
+			/> */}
+			</main>
 		</div>
 	);
 };
