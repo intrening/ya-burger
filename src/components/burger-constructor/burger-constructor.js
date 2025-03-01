@@ -11,7 +11,10 @@ const BurgerConstructor = ({ bun, items }) => {
 	return (
 		<section className={styles.burgerConstructor}>
 			<div className={`${styles.selectedIngredients} pt-25 pl-4 pr-4`}>
-				<div className={`${styles.bunElement} mb-4 ml-8`}>
+				<div className={`${styles.bunElement} mb-4`}>
+					<div className={styles.fakeDrag}>
+						<DragIcon type='primary' />
+					</div>
 					<ConstructorElement
 						type='top'
 						isLocked={true}
@@ -25,7 +28,10 @@ const BurgerConstructor = ({ bun, items }) => {
 						<BurgerConstructorItem key={item.positionInCart} item={item} />
 					))}
 				</div>
-				<div className={`${styles.bunElement} mt-4 ml-8`}>
+				<div className={`${styles.bunElement} mt-4`}>
+					<div className={styles.fakeDrag}>
+						<DragIcon type='primary' />
+					</div>
 					<ConstructorElement
 						type='bottom'
 						isLocked={true}
@@ -44,7 +50,7 @@ export default BurgerConstructor;
 
 const BurgerConstructorItem = ({ item }) => {
 	return (
-		<div className={`${styles.mainElement} mb-4`}>
+		<div className={`${styles.mainElement}`}>
 			<DragIcon type='primary' />
 			<ConstructorElement
 				text={item.name}
@@ -76,7 +82,7 @@ const OrderSummary = ({ bun, items }) => {
 				<span className='text text_type_digits-medium'>{totalPrice}</span>
 				<CurrencyIcon type='primary' />
 			</div>
-			<Button type='primary' size='large' disabled={true}>
+			<Button type='primary' size='large'>
 				Оформить заказ
 			</Button>
 		</div>
