@@ -1,0 +1,42 @@
+.burgerConstructor {
+	display: flex;
+	flex-direction: column;
+	width: 600px;
+	padding: 16px;
+	background-color: rgb(19 19 22 / 60%);
+	border-radius: 40px;
+}
+
+.selectedIngredients {
+	display: flex;
+	flex-direction: column;
+	height: calc(100vh - 324px);
+	margin-bottom: 40px;
+}
+
+.bunElement {
+	width: 100%;
+}
+
+.mainElements {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	max-height: calc(100vh - 536px);
+	padding-right: 8px;
+	overflow-y: auto;
+}
+
+.mainElement {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.totalSection {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 40px;
+	margin-top: 40px;
+}
