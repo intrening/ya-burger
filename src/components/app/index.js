@@ -1,18 +1,33 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styles from './app.module.scss';
+import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
 
-const App = ({ ingredients }) => {
+// import ingredientsData from '../../utils/data';
+
+const App = () => {
 	return (
 		<div className={styles.app}>
-			<AppHeader ingredients={ingredients} />
+			<AppHeader />
+			{/* <main className={styles.main}>
+			<BurgerIngredients 
+				ingredients={ingredientsWithCounts}
+				onChangeIngredientCount={this.changeIngredientCount}
+			/>
+			<BurgerConstructor 
+				bun={bun}
+				items={items}
+				onRemoveIngredient={(positionInCart) => {
+				const index = itemIndexes[positionInCart];
+				if (index !== undefined) {
+					this.changeIngredientCount({
+					...this.state.ingredients[index],
+					index
+					}, -1);
+				}
+				}}
+			/>
+			</main> */}
 		</div>
 	);
-};
-
-App.propTypes = {
-	ingredients: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default App;

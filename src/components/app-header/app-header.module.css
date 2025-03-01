@@ -1,0 +1,40 @@
+.container {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 16px;
+}
+
+.navigation {
+	display: flex;
+	flex: 1;
+}
+
+.menu {
+	display: flex;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.menuItem {
+	display: flex;
+	align-items: center;
+}
+
+.link {
+	display: flex;
+	align-items: center;
+	color: inherit;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.logo {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
