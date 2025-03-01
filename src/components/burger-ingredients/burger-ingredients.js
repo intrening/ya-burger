@@ -1,43 +1,28 @@
 import styles from './burger-ingredients.module.css';
-// import {
-// 	CurrencyIcon,
-// 	Counter,
-// } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
 import Tabs from './tabs/tabs';
+import IngredientCategory from './ingredient-categories/ingredient-categories';
 
-const BurgerIngredients = () => {
-	// const buns = ingredients.filter((item) => item.type === 'bun');
-	// const sauces = ingredients.filter((item) => item.type === 'sauce');
-	// const mains = ingredients.filter((item) => item.type === 'main');
+const BurgerIngredients = ({ ingredients }) => {
+	const buns = ingredients.filter((item) => item.type === 'bun');
+	const sauces = ingredients.filter((item) => item.type === 'sauce');
+	const mains = ingredients.filter((item) => item.type === 'main');
 
 	return (
 		<section className={styles.burgerIngredients}>
 			<p className='text text_type_main-large'>Соберите бургер</p>
 			<Tabs />
-			{/* <div className={`${styles.ingredients} custom-scroll pl-4 pr-4`}>
-				<IngredientCategory
-					id='bun'
-					title='Булки'
-					items={buns}
-					onChangeIngredientCount={onChangeIngredientCount}
-				/>
-
-				<IngredientCategory
-					id='sauce'
-					title='Соусы'
-					items={sauces}
-					onChangeIngredientCount={onChangeIngredientCount}
-				/>
-
-				<IngredientCategory
-					id='main'
-					title='Начинки'
-					items={mains}
-					onChangeIngredientCount={onChangeIngredientCount}
-				/>
-			</div> */}
+			<div className={`${styles.ingredients} custom-scroll pl-4 pr-4`}>
+				<IngredientCategory id='bun' title='Булки' items={buns} />
+				<IngredientCategory id='sauce' title='Соусы' items={sauces} />
+				<IngredientCategory id='main' title='Начинки' items={mains} />
+			</div>
 		</section>
 	);
+};
+
+BurgerIngredients.propTypes = {
+	ingredients: PropTypes.array.isRequired,
 };
 
 export default BurgerIngredients;
@@ -70,41 +55,5 @@ export default BurgerIngredients;
 // 		count: PropTypes.number.isRequired,
 // 		index: PropTypes.number.isRequired,
 // 	}).isRequired,
-// 	onChangeIngredientCount: PropTypes.func.isRequired,
-// };
-
-// class IngredientCategory extends React.Component {
-// 	render() {
-// 		return (
-// 			<div className={styles.category} id={this.props.id}>
-// 				<p className='text text_type_main-medium'>{this.props.title}</p>
-// 				<div className={styles.items}>
-// 					{this.props.items.map((item) => (
-// 						<IngredientCard
-// 							key={item.index}
-// 							item={item}
-// 							onChangeIngredientCount={this.props.onChangeIngredientCount}
-// 						/>
-// 					))}
-// 				</div>
-// 			</div>
-// 		);
-// 	}
-// }
-
-// IngredientCategory.propTypes = {
-// 	id: PropTypes.string.isRequired,
-// 	title: PropTypes.string.isRequired,
-// 	items: PropTypes.arrayOf(
-// 		PropTypes.shape({
-// 			_id: PropTypes.string.isRequired,
-// 			name: PropTypes.string.isRequired,
-// 			price: PropTypes.number.isRequired,
-// 			image: PropTypes.string.isRequired,
-// 			type: PropTypes.string.isRequired,
-// 			count: PropTypes.number.isRequired,
-// 			index: PropTypes.number.isRequired,
-// 		})
-// 	).isRequired,
 // 	onChangeIngredientCount: PropTypes.func.isRequired,
 // };
