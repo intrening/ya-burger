@@ -6,8 +6,21 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import Modal from '../modal/modal';
+import OrderDetails from '../order-details/order-details';
 
-const BurgerConstructor = ({ bun, items }) => {
+const BurgerConstructor = ({ ingredients, bun = [] }) => {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const openModal = () => {
+		setIsModalOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsModalOpen(false);
+	};
+
 	return (
 		<section className={styles.burgerConstructor}>
 			<div className={`${styles.selectedIngredients} pt-25 pl-4 pr-4`}>
@@ -24,7 +37,7 @@ const BurgerConstructor = ({ bun, items }) => {
 					/>
 				</div>
 				<div className={`${styles.mainElements} custom-scroll`}>
-					{items.map((item) => (
+					{ingredients.map((item) => (
 						<BurgerConstructorItem key={item.positionInCart} item={item} />
 					))}
 				</div>
@@ -40,8 +53,14 @@ const BurgerConstructor = ({ bun, items }) => {
 						thumbnail={bun.image}
 					/>
 				</div>
-				<OrderSummary bun={bun} items={items} />
+				<OrderSummary bun={bun} items={ingredients} onPlaceOrder={openModal} />
 			</div>
+
+			{isModalOpen && (
+				<Modal onClose={closeModal}>
+					<OrderDetails />
+				</Modal>
+			)}
 		</section>
 	);
 };
@@ -61,7 +80,7 @@ const BurgerConstructorItem = ({ item }) => {
 	);
 };
 
-const OrderSummary = ({ bun, items }) => {
+const OrderSummary = ({ bun, items, onPlaceOrder }) => {
 	const calculateTotalPrice = () => {
 		let total = 0;
 
@@ -82,7 +101,7 @@ const OrderSummary = ({ bun, items }) => {
 				<span className='text text_type_digits-medium'>{totalPrice}</span>
 				<CurrencyIcon type='primary' />
 			</div>
-			<Button type='primary' size='large'>
+			<Button type='primary' size='large' onClick={onPlaceOrder}>
 				Оформить заказ
 			</Button>
 		</div>
@@ -98,4 +117,5 @@ OrderSummary.propTypes = {
 			price: PropTypes.number.isRequired,
 		})
 	).isRequired,
+	onPlaceOrder: PropTypes.func.isRequired,
 };
