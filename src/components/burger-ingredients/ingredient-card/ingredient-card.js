@@ -4,7 +4,7 @@ import {
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../../modal/modal';
-import IngredientDetails from '../../ingredient-details/ingredient-details';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useState, useCallback } from 'react';
 import { ingredientPropType } from '../../../utils/prop-types';
 
