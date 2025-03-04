@@ -1,5 +1,4 @@
 import styles from './ingredient-card.module.css';
-import PropTypes from 'prop-types';
 import {
 	Counter,
 	CurrencyIcon,
@@ -7,6 +6,7 @@ import {
 import Modal from '../../modal/modal';
 import IngredientDetails from '../../ingredient-details/ingredient-details';
 import { useState, useCallback } from 'react';
+import { ingredientPropType } from '../../../utils/prop-types';
 
 const IngredientCard = ({ ingredient }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,11 +55,7 @@ const IngredientCard = ({ ingredient }) => {
 };
 
 IngredientCard.propTypes = {
-	ingredient: PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		price: PropTypes.number.isRequired,
-		image: PropTypes.string.isRequired,
-	}).isRequired,
+	ingredient: ingredientPropType.isRequired,
 };
 
 export default IngredientCard;

@@ -1,8 +1,8 @@
 import styles from './burger-ingredients.module.css';
-import PropTypes from 'prop-types';
 import Tabs from './tabs/tabs';
 import IngredientCategory from './ingredient-categories/ingredient-categories';
 import { useMemo } from 'react';
+import { ingredientArrayPropType } from '../../utils/prop-types';
 
 const BurgerIngredients = ({ ingredients }) => {
 	const filteredIngredients = useMemo(() => {
@@ -39,7 +39,7 @@ const BurgerIngredients = ({ ingredients }) => {
 };
 
 BurgerIngredients.propTypes = {
-	ingredients: PropTypes.array.isRequired,
+	ingredients: ingredientArrayPropType.isRequired,
 };
 
 export default BurgerIngredients;

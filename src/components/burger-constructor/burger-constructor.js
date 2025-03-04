@@ -9,8 +9,12 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
+import {
+	ingredientPropType,
+	ingredientArrayPropType,
+} from '../../utils/prop-types';
 
-const BurgerConstructor = ({ ingredients, bun = [] }) => {
+const BurgerConstructor = ({ ingredients, bun = null }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const openModal = () => {
@@ -28,30 +32,50 @@ const BurgerConstructor = ({ ingredients, bun = [] }) => {
 					<div className={styles.fakeDrag}>
 						<DragIcon type='primary' />
 					</div>
-					<ConstructorElement
-						type='top'
-						isLocked={true}
-						text={`${bun.name} (верх)`}
-						price={bun.price}
-						thumbnail={bun.image}
-					/>
+					{bun ? (
+						<ConstructorElement
+							type='top'
+							isLocked={true}
+							text={`${bun.name} (верх)`}
+							price={bun.price}
+							thumbnail={bun.image}
+						/>
+					) : (
+						<ConstructorElement
+							type='top'
+							isLocked={true}
+							text='Добавьте булку'
+							price={0}
+							thumbnail=''
+						/>
+					)}
 				</div>
 				<div className={`${styles.mainElements} custom-scroll`}>
 					{ingredients.map((item) => (
-						<BurgerConstructorItem key={item.positionInCart} item={item} />
+						<BurgerConstructorItem key={item._id} item={item} />
 					))}
 				</div>
 				<div className={`${styles.bunElement} mt-4`}>
 					<div className={styles.fakeDrag}>
 						<DragIcon type='primary' />
 					</div>
-					<ConstructorElement
-						type='bottom'
-						isLocked={true}
-						text={`${bun.name} (низ)`}
-						price={bun.price}
-						thumbnail={bun.image}
-					/>
+					{bun ? (
+						<ConstructorElement
+							type='bottom'
+							isLocked={true}
+							text={`${bun.name} (низ)`}
+							price={bun.price}
+							thumbnail={bun.image}
+						/>
+					) : (
+						<ConstructorElement
+							type='bottom'
+							isLocked={true}
+							text='Добавьте булку'
+							price={0}
+							thumbnail=''
+						/>
+					)}
 				</div>
 				<OrderSummary bun={bun} items={ingredients} onPlaceOrder={openModal} />
 			</div>
@@ -66,8 +90,8 @@ const BurgerConstructor = ({ ingredients, bun = [] }) => {
 };
 
 BurgerConstructor.propTypes = {
-	ingredients: PropTypes.array.isRequired,
-	bun: PropTypes.array.isRequired,
+	ingredients: ingredientArrayPropType.isRequired,
+	bun: ingredientPropType,
 };
 
 export default BurgerConstructor;
@@ -86,22 +110,18 @@ const BurgerConstructorItem = ({ item }) => {
 };
 
 BurgerConstructorItem.propTypes = {
-	item: PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		price: PropTypes.number.isRequired,
-		image: PropTypes.string.isRequired,
-	}).isRequired,
+	item: ingredientPropType.isRequired,
 };
 
 const OrderSummary = ({ bun, items, onPlaceOrder }) => {
 	const calculateTotalPrice = () => {
 		let total = 0;
 
-		if (bun) {
+		if (bun && typeof bun.price === 'number') {
 			total += bun.price * 2;
 		}
 		if (items && items.length) {
-			total += items.reduce((sum, item) => sum + item.price, 0);
+			total += items.reduce((sum, item) => sum + (item.price || 0), 0);
 		}
 		return total;
 	};
@@ -114,7 +134,11 @@ const OrderSummary = ({ bun, items, onPlaceOrder }) => {
 				<span className='text text_type_digits-medium'>{totalPrice}</span>
 				<CurrencyIcon type='primary' />
 			</div>
-			<Button type='primary' size='large' onClick={onPlaceOrder}>
+			<Button
+				type='primary'
+				size='large'
+				onClick={onPlaceOrder}
+				htmlType='button'>
 				Оформить заказ
 			</Button>
 		</div>
@@ -122,9 +146,7 @@ const OrderSummary = ({ bun, items, onPlaceOrder }) => {
 };
 
 OrderSummary.propTypes = {
-	bun: PropTypes.shape({
-		price: PropTypes.number.isRequired,
-	}),
-	items: PropTypes.array.isRequired,
+	bun: ingredientPropType,
+	items: ingredientArrayPropType.isRequired,
 	onPlaceOrder: PropTypes.func.isRequired,
 };

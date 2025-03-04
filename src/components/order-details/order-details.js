@@ -1,5 +1,6 @@
 import styles from '../modal/modal.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
 
 const OrderDetails = () => {
 	const orderNumber = '123456';
@@ -30,7 +31,6 @@ OrderDetails.propTypes = {
 	orderNumber: PropTypes.string.isRequired,
 	orderIdentifier: PropTypes.string.isRequired,
 	orderStatusMessage: PropTypes.string.isRequired,
-	orderStatusDescription: PropTypes.string.isRequired,
 };
 
 export default OrderDetails;
