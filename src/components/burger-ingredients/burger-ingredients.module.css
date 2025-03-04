@@ -8,6 +8,20 @@
 }
 
 .ingredients {
-	max-height: calc(100vh - 350px);
+	display: flex;
+	flex-direction: column;
+	max-width: 600px;
+}
+
+.tabs {
+	display: flex;
+}
+
+.items {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 32px 24px;
+	max-height: 716px;
+	margin-top: 40px;
 	overflow-y: auto;
 }
