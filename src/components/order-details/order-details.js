@@ -26,4 +26,11 @@ const OrderDetails = () => {
 	);
 };
 
+OrderDetails.propTypes = {
+	orderNumber: PropTypes.string.isRequired,
+	orderIdentifier: PropTypes.string.isRequired,
+	orderStatusMessage: PropTypes.string.isRequired,
+	orderStatusDescription: PropTypes.string.isRequired,
+};
+
 export default OrderDetails;

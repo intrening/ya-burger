@@ -6,7 +6,7 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 
@@ -65,6 +65,11 @@ const BurgerConstructor = ({ ingredients, bun = [] }) => {
 	);
 };
 
+BurgerConstructor.propTypes = {
+	ingredients: PropTypes.array.isRequired,
+	bun: PropTypes.array.isRequired,
+};
+
 export default BurgerConstructor;
 
 const BurgerConstructorItem = ({ item }) => {
@@ -78,6 +83,14 @@ const BurgerConstructorItem = ({ item }) => {
 			/>
 		</div>
 	);
+};
+
+BurgerConstructorItem.propTypes = {
+	item: PropTypes.shape({
+		name: PropTypes.string.isRequired,
+		price: PropTypes.number.isRequired,
+		image: PropTypes.string.isRequired,
+	}).isRequired,
 };
 
 const OrderSummary = ({ bun, items, onPlaceOrder }) => {
@@ -112,10 +125,6 @@ OrderSummary.propTypes = {
 	bun: PropTypes.shape({
 		price: PropTypes.number.isRequired,
 	}),
-	items: PropTypes.arrayOf(
-		PropTypes.shape({
-			price: PropTypes.number.isRequired,
-		})
-	).isRequired,
+	items: PropTypes.array.isRequired,
 	onPlaceOrder: PropTypes.func.isRequired,
 };
