@@ -22,9 +22,15 @@ function Modal({ children, header, onClose }) {
 		};
 	}, [onClose]);
 
+	const handleOverlayClick = (evt) => {
+		if (evt.target === evt.currentTarget) {
+			onClose();
+		}
+	};
+
 	return ReactDOM.createPortal(
 		<>
-			<ModalOverlay onClick={onClose} />
+			<ModalOverlay onClick={handleOverlayClick} />
 			<div className={styles.modal}>
 				<div className={styles.header}>
 					<h2 className='text text_type_main-large'>{header}</h2>

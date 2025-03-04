@@ -6,18 +6,18 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../../modal/modal';
 import IngredientDetails from '../../ingredient-details/ingredient-details';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 const IngredientCard = ({ ingredient }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
-	const openModal = () => {
+	const openModal = useCallback(() => {
 		setIsModalOpen(true);
-	};
+	}, []);
 
-	const closeModal = () => {
+	const closeModal = useCallback(() => {
 		setIsModalOpen(false);
-	};
+	}, []);
 
 	const handleKeyDown = (e) => {
 		if (e.key === 'Enter' || e.key === ' ') {
@@ -27,28 +27,30 @@ const IngredientCard = ({ ingredient }) => {
 	};
 
 	return (
-		<div
-			className={styles.ingredient}
-			onClick={openModal}
-			onKeyDown={handleKeyDown}
-			tabIndex={0}
-			role='button'
-			aria-label={`Ингредиент ${ingredient.name}`}>
-			<Counter count='1' size='default' />
-			<img src={ingredient.image} alt={ingredient.name} />
-			<div className={`${styles.price} mt-1 mb-1`}>
-				<span className='text text_type_digits-default mr-2'>
-					{ingredient.price}
-				</span>
-				<CurrencyIcon type='primary' />
+		<>
+			<div
+				className={styles.ingredient}
+				onClick={openModal}
+				onKeyDown={handleKeyDown}
+				tabIndex={0}
+				role='button'
+				aria-label={`Ингредиент ${ingredient.name}`}>
+				<Counter count='1' size='default' />
+				<img src={ingredient.image} alt={ingredient.name} />
+				<div className={`${styles.price} mt-1 mb-1`}>
+					<span className='text text_type_digits-default mr-2'>
+						{ingredient.price}
+					</span>
+					<CurrencyIcon type='primary' />
+				</div>
+				<p className='text text_type_main-default mb-2'>{ingredient.name}</p>
 			</div>
-			<p className='text text_type_main-default mb-2'>{ingredient.name}</p>
 			{isModalOpen && (
-				<Modal onClose={closeModal}>
+				<Modal header='Детали ингредиента' onClose={closeModal}>
 					<IngredientDetails ingredient={ingredient} />
 				</Modal>
 			)}
-		</div>
+		</>
 	);
 };
 
