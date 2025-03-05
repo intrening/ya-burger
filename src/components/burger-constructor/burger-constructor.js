@@ -26,6 +26,21 @@ const BurgerConstructor = ({ constructorData }) => {
 		setIsModalOpen(false);
 	};
 
+	const calculateTotalPrice = () => {
+		let total = 0;
+
+		if (bun && typeof bun.price === 'number') {
+			total += bun.price * 2;
+		}
+		if (constructorIngredients && constructorIngredients.length) {
+			total += constructorIngredients.reduce(
+				(sum, item) => sum + (item.price || 0),
+				0
+			);
+		}
+		return total;
+	};
+
 	return (
 		<section className={styles.burgerConstructor}>
 			<div className={`${styles.selectedIngredients} pt-25 pl-4 pr-4`}>
@@ -79,9 +94,8 @@ const BurgerConstructor = ({ constructorData }) => {
 					)}
 				</div>
 				<OrderSummary
-					bun={bun}
-					items={constructorIngredients}
 					onPlaceOrder={openModal}
+					totalPrice={calculateTotalPrice()}
 				/>
 			</div>
 
@@ -120,21 +134,7 @@ BurgerConstructorItem.propTypes = {
 	item: ingredientPropType.isRequired,
 };
 
-const OrderSummary = ({ bun, items, onPlaceOrder }) => {
-	const calculateTotalPrice = () => {
-		let total = 0;
-
-		if (bun && typeof bun.price === 'number') {
-			total += bun.price * 2;
-		}
-		if (items && items.length) {
-			total += items.reduce((sum, item) => sum + (item.price || 0), 0);
-		}
-		return total;
-	};
-
-	const totalPrice = calculateTotalPrice();
-
+const OrderSummary = ({ totalPrice, onPlaceOrder }) => {
 	return (
 		<div className={`${styles.totalSection} mr-4 mt-10`}>
 			<div className={styles.totalPrice}>
@@ -153,7 +153,6 @@ const OrderSummary = ({ bun, items, onPlaceOrder }) => {
 };
 
 OrderSummary.propTypes = {
-	bun: ingredientPropType,
-	items: ingredientArrayPropType.isRequired,
 	onPlaceOrder: PropTypes.func.isRequired,
+	totalPrice: PropTypes.number.isRequired,
 };
