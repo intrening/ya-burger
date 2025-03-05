@@ -8,32 +8,40 @@ const urlIngredients = 'https://norma.nomoreparties.space/api/ingredients';
 
 const App = () => {
 	const [ingredients, setIngredients] = useState([]);
-	useEffect(() => {
-		try {
-			const fetchIngredients = async () => {
-				const res = await fetch(urlIngredients);
-				const data = await res.json();
-				setIngredients(data.data);
-			};
-			fetchIngredients();
-		} catch (error) {
-			console.error('Ошибка при получении данных:', error);
-		}
-	}, []);
+	const [constructorData, setConstructorData] = useState({
+		bun: null,
+		constructorIngredients: [],
+	});
 
-	const filterBun = (ingredients) => {
-		return ingredients.find((item) => item.type === 'bun');
-	};
+	useEffect(() => {
+		const fetchIngredients = async () => {
+			try {
+				const res = await fetch(urlIngredients);
+				if (!res.ok) {
+					throw new Error(`Ошибка: ${res.status}`);
+				}
+				const data = await res.json();
+
+				setIngredients(data.data);
+				setConstructorData({
+					bun: data.data.find((item) => item.type === 'bun'),
+					constructorIngredients: data.data.filter(
+						(item) => item.type !== 'bun'
+					),
+				});
+			} catch (error) {
+				console.error('Ошибка при получении данных:', error);
+			}
+		};
+		fetchIngredients();
+	}, []);
 
 	return (
 		<div className={styles.app}>
 			<AppHeader />
 			<main className={styles.main}>
 				<BurgerIngredients ingredients={ingredients} />
-				<BurgerConstructor
-					ingredients={ingredients}
-					bun={filterBun(ingredients)}
-				/>
+				<BurgerConstructor constructorData={constructorData} />
 			</main>
 		</div>
 	);

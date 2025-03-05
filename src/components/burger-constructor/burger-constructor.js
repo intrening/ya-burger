@@ -14,8 +14,9 @@ import {
 	ingredientArrayPropType,
 } from '../../utils/prop-types';
 
-const BurgerConstructor = ({ ingredients, bun = null }) => {
+const BurgerConstructor = ({ constructorData }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const { bun, constructorIngredients } = constructorData;
 
 	const openModal = () => {
 		setIsModalOpen(true);
@@ -51,7 +52,7 @@ const BurgerConstructor = ({ ingredients, bun = null }) => {
 					)}
 				</div>
 				<div className={`${styles.mainElements} custom-scroll`}>
-					{ingredients.map((item) => (
+					{constructorIngredients.map((item) => (
 						<BurgerConstructorItem key={item._id} item={item} />
 					))}
 				</div>
@@ -77,7 +78,11 @@ const BurgerConstructor = ({ ingredients, bun = null }) => {
 						/>
 					)}
 				</div>
-				<OrderSummary bun={bun} items={ingredients} onPlaceOrder={openModal} />
+				<OrderSummary
+					bun={bun}
+					items={constructorIngredients}
+					onPlaceOrder={openModal}
+				/>
 			</div>
 
 			{isModalOpen && (
@@ -90,8 +95,10 @@ const BurgerConstructor = ({ ingredients, bun = null }) => {
 };
 
 BurgerConstructor.propTypes = {
-	ingredients: ingredientArrayPropType.isRequired,
-	bun: ingredientPropType,
+	constructorData: PropTypes.shape({
+		bun: ingredientPropType,
+		constructorIngredients: ingredientArrayPropType.isRequired,
+	}).isRequired,
 };
 
 export default BurgerConstructor;
