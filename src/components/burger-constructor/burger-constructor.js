@@ -2,8 +2,6 @@ import styles from './burger-constructor.module.css';
 import {
 	ConstructorElement,
 	DragIcon,
-	CurrencyIcon,
-	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
@@ -13,6 +11,8 @@ import {
 	ingredientPropType,
 	ingredientArrayPropType,
 } from '../../utils/prop-types';
+import BurgerConstructorItem from './burger-constructor-item';
+import OrderSummary from './order-summary';
 
 const BurgerConstructor = ({ constructorData }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -116,43 +116,3 @@ BurgerConstructor.propTypes = {
 };
 
 export default BurgerConstructor;
-
-const BurgerConstructorItem = ({ item }) => {
-	return (
-		<div className={`${styles.mainElement}`}>
-			<DragIcon type='primary' />
-			<ConstructorElement
-				text={item.name}
-				price={item.price}
-				thumbnail={item.image}
-			/>
-		</div>
-	);
-};
-
-BurgerConstructorItem.propTypes = {
-	item: ingredientPropType.isRequired,
-};
-
-const OrderSummary = ({ totalPrice, onPlaceOrder }) => {
-	return (
-		<div className={`${styles.totalSection} mr-4 mt-10`}>
-			<div className={styles.totalPrice}>
-				<span className='text text_type_digits-medium'>{totalPrice}</span>
-				<CurrencyIcon type='primary' />
-			</div>
-			<Button
-				type='primary'
-				size='large'
-				onClick={onPlaceOrder}
-				htmlType='button'>
-				Оформить заказ
-			</Button>
-		</div>
-	);
-};
-
-OrderSummary.propTypes = {
-	onPlaceOrder: PropTypes.func.isRequired,
-	totalPrice: PropTypes.number.isRequired,
-};
