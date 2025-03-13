@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-export const getAllIngredients = (state) => state.ingredients.ingredients;
+export const getAllIngredients = (state) => state.burgerIngredients.ingredients;
 
 export const getBunIngredients = createSelector(
 	[getAllIngredients],

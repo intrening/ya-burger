@@ -14,8 +14,8 @@ const BurgerIngredients = () => {
 	const bunIngredients = useSelector(getBunIngredients);
 	const sauceIngredients = useSelector(getSauceIngredients);
 	const mainIngredients = useSelector(getMainIngredients);
-	const isLoading = useSelector((store) => store.ingredients.isLoading);
-	const error = useSelector((store) => store.ingredients.error);
+	const isLoading = useSelector((state) => state.burgerIngredients.isLoading);
+	const error = useSelector((state) => state.burgerIngredients.error);
 
 	const dispach = useDispatch();
 

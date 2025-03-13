@@ -3,20 +3,17 @@ import {
 	ConstructorElement,
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import {
-	ingredientPropType,
-	ingredientArrayPropType,
-} from '../../utils/prop-types';
 import BurgerConstructorItem from './burger-constructor-item';
 import OrderSummary from './order-summary';
+import { useSelector } from 'react-redux';
 
-const BurgerConstructor = ({ constructorData }) => {
+const BurgerConstructor = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const { bun, constructorIngredients } = constructorData;
+
+	const { ingredients, bun } = useSelector((state) => state.burgerConstructor);
 
 	const openModal = () => {
 		setIsModalOpen(true);
@@ -32,11 +29,8 @@ const BurgerConstructor = ({ constructorData }) => {
 		if (bun && typeof bun.price === 'number') {
 			total += bun.price * 2;
 		}
-		if (constructorIngredients && constructorIngredients.length) {
-			total += constructorIngredients.reduce(
-				(sum, item) => sum + (item.price || 0),
-				0
-			);
+		if (ingredients && ingredients.length) {
+			total += ingredients.reduce((sum, item) => sum + (item.price || 0), 0);
 		}
 		return total;
 	};
@@ -67,7 +61,7 @@ const BurgerConstructor = ({ constructorData }) => {
 					)}
 				</div>
 				<div className={`${styles.mainElements} custom-scroll`}>
-					{constructorIngredients.map((item) => (
+					{ingredients.map((item) => (
 						<BurgerConstructorItem key={item._id} item={item} />
 					))}
 				</div>
@@ -106,13 +100,6 @@ const BurgerConstructor = ({ constructorData }) => {
 			)}
 		</section>
 	);
-};
-
-BurgerConstructor.propTypes = {
-	constructorData: PropTypes.shape({
-		bun: ingredientPropType,
-		constructorIngredients: ingredientArrayPropType.isRequired,
-	}).isRequired,
 };
 
 export default BurgerConstructor;
