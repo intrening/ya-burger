@@ -24,7 +24,7 @@ export const fetchIngredients = () => {
 		try {
 			const response = await fetch(urlIngredients);
 			const data = await response.json();
-			dispatch(getIngredientsSuccess(data));
+			dispatch(getIngredientsSuccess(data.data));
 		} catch (error) {
 			dispatch(getIngredientsError(error));
 		}

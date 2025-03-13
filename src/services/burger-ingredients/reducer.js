@@ -6,6 +6,8 @@ import {
 
 const initialState = {
 	ingredients: [],
+	isLoading: false,
+	error: null,
 };
 
 export const ingredientsReducer = (state = initialState, action) => {

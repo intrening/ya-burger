@@ -1,17 +1,35 @@
 import styles from './burger-ingredients.module.css';
 import Tabs from './tabs/tabs';
 import IngredientCategory from './ingredient-categories/ingredient-categories';
-import { useMemo } from 'react';
-import { ingredientArrayPropType } from '../../utils/prop-types';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchIngredients } from '../../services/burger-ingredients/actions';
+import {
+	getBunIngredients,
+	getSauceIngredients,
+	getMainIngredients,
+} from '../../services/burger-ingredients/selectors';
 
-const BurgerIngredients = ({ ingredients }) => {
-	const filteredIngredients = useMemo(() => {
-		return {
-			bun: ingredients.filter((item) => item.type === 'bun'),
-			sauce: ingredients.filter((item) => item.type === 'sauce'),
-			main: ingredients.filter((item) => item.type === 'main'),
-		};
-	}, [ingredients]);
+const BurgerIngredients = () => {
+	const bunIngredients = useSelector(getBunIngredients);
+	const sauceIngredients = useSelector(getSauceIngredients);
+	const mainIngredients = useSelector(getMainIngredients);
+	const isLoading = useSelector((store) => store.ingredients.isLoading);
+	const error = useSelector((store) => store.ingredients.error);
+
+	const dispach = useDispatch();
+
+	useEffect(() => {
+		dispach(fetchIngredients());
+	}, [dispach]);
+
+	if (isLoading) {
+		return <p>Loading...</p>;
+	}
+
+	if (error) {
+		return <p>Error: {error}</p>;
+	}
 
 	return (
 		<section className={styles.burgerIngredients}>
@@ -21,25 +39,21 @@ const BurgerIngredients = ({ ingredients }) => {
 				<IngredientCategory
 					id='bun'
 					title='Булки'
-					ingredients={filteredIngredients.bun}
+					ingredients={bunIngredients}
 				/>
 				<IngredientCategory
 					id='sauce'
 					title='Соусы'
-					ingredients={filteredIngredients.sauce}
+					ingredients={sauceIngredients}
 				/>
 				<IngredientCategory
 					id='main'
 					title='Начинки'
-					ingredients={filteredIngredients.main}
+					ingredients={mainIngredients}
 				/>
 			</div>
 		</section>
 	);
-};
-
-BurgerIngredients.propTypes = {
-	ingredients: ingredientArrayPropType.isRequired,
 };
 
 export default BurgerIngredients;

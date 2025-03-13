@@ -4,10 +4,7 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { useEffect, useState } from 'react';
 
-const urlIngredients = 'https://norma.nomoreparties.space/api/ingredients';
-
 const App = () => {
-	const [ingredients, setIngredients] = useState([]);
 	const [constructorData, setConstructorData] = useState({
 		bun: null,
 		constructorIngredients: [],
@@ -16,13 +13,6 @@ const App = () => {
 	useEffect(() => {
 		const fetchIngredients = async () => {
 			try {
-				const res = await fetch(urlIngredients);
-				if (!res.ok) {
-					throw new Error(`Ошибка: ${res.status}`);
-				}
-				const data = await res.json();
-
-				setIngredients(data.data);
 				setConstructorData({
 					bun: data.data.find((item) => item.type === 'bun'),
 					constructorIngredients: data.data.filter(
@@ -40,7 +30,7 @@ const App = () => {
 		<div className={styles.app}>
 			<AppHeader />
 			<main className={styles.main}>
-				<BurgerIngredients ingredients={ingredients} />
+				<BurgerIngredients />
 				<BurgerConstructor constructorData={constructorData} />
 			</main>
 		</div>
