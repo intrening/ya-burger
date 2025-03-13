@@ -1,8 +1,26 @@
 import styles from '../modal/modal.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { createOrder } from '../../services/order/actions';
+import { useEffect } from 'react';
 
 const OrderDetails = () => {
-	const orderNumber = '123456';
+	const dispatch = useDispatch();
+	const { orderNumber, loading, error } = useSelector((state) => state.order);
+
+	const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
+
+	useEffect(() => {
+		dispatch(createOrder(bun, ingredients));
+	}, [dispatch, bun, ingredients]);
+
+	if (loading) {
+		return <p>Loading...</p>;
+	}
+
+	if (error) {
+		return <p>Error: {error}</p>;
+	}
 
 	return (
 		<div className={styles.content}>
