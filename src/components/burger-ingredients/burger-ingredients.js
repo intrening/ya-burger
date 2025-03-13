@@ -15,8 +15,7 @@ const BurgerIngredients = () => {
 	const sauceIngredients = useSelector(getSauceIngredients);
 	const mainIngredients = useSelector(getMainIngredients);
 
-	const isLoading = useSelector((state) => state.burgerIngredients.isLoading);
-	const error = useSelector((state) => state.burgerIngredients.error);
+	const { isLoading, error } = useSelector((state) => state.burgerIngredients);
 	const [activeTab, setActiveTab] = useState('bun');
 	const containerRef = useRef(null);
 	const bunRef = useRef(null);
@@ -29,17 +28,38 @@ const BurgerIngredients = () => {
 		dispatch(fetchIngredients());
 	}, [dispatch]);
 
+	const ingredientCategories = [
+		{
+			id: 'bun',
+			title: 'Булки',
+			ingredients: bunIngredients,
+			ref: bunRef,
+		},
+		{
+			id: 'sauce',
+			title: 'Соусы',
+			ingredients: sauceIngredients,
+			ref: sauceRef,
+		},
+		{
+			id: 'main',
+			title: 'Начинки',
+			ingredients: mainIngredients,
+			ref: mainRef,
+		},
+	];
+
 	const handleScroll = useCallback(() => {
 		const containerRect = containerRef.current.getBoundingClientRect();
-		const bunRect = bunRef.current.getBoundingClientRect();
-		const sauceRect = sauceRef.current.getBoundingClientRect();
-		const mainRect = mainRef.current.getBoundingClientRect();
-
-		let bunDistance, sauceDistance, mainDistance;
-
-		bunDistance = Math.abs(bunRect.top - containerRect.top);
-		sauceDistance = Math.abs(sauceRect.top - containerRect.top);
-		mainDistance = Math.abs(mainRect.top - containerRect.top);
+		const bunDistance = Math.abs(
+			bunRef.current.getBoundingClientRect().top - containerRect.top
+		);
+		const sauceDistance = Math.abs(
+			sauceRef.current.getBoundingClientRect().top - containerRect.top
+		);
+		const mainDistance = Math.abs(
+			mainRef.current.getBoundingClientRect().top - containerRect.top
+		);
 
 		let newActiveTab;
 
@@ -54,25 +74,9 @@ const BurgerIngredients = () => {
 		setActiveTab(newActiveTab);
 	}, []);
 
-	const handleTabClick = useCallback((tab) => {
-		setActiveTab(tab);
-
-		let ref;
-		switch (tab) {
-			case 'bun':
-				ref = bunRef;
-				break;
-			case 'sauce':
-				ref = sauceRef;
-				break;
-			case 'main':
-				ref = mainRef;
-				break;
-			default:
-				return;
-		}
-
+	const handleTabClick = useCallback((ref) => {
 		if (ref && ref.current) {
+			setActiveTab(ref.current.id);
 			ref.current.scrollIntoView({ behavior: 'smooth' });
 		}
 	}, []);
@@ -85,36 +89,12 @@ const BurgerIngredients = () => {
 		return <p>Error: {error}</p>;
 	}
 
-	const ingredientCategories = [
-		{
-			id: 'bun',
-			title: 'Булки',
-			ingredients: bunIngredients,
-			ref: bunRef,
-			label: 'Булки',
-		},
-		{
-			id: 'sauce',
-			title: 'Соусы',
-			ingredients: sauceIngredients,
-			ref: sauceRef,
-			label: 'Соусы',
-		},
-		{
-			id: 'main',
-			title: 'Начинки',
-			ingredients: mainIngredients,
-			ref: mainRef,
-			label: 'Начинки',
-		},
-	];
-
 	return (
 		<section className={styles.burgerIngredients}>
 			<p className='text text_type_main-large'>Соберите бургер</p>
 			<Tabs
 				activeTab={activeTab}
-				onTabClick={handleTabClick}
+				onTabClick={(ref) => handleTabClick(ref)}
 				ingredientCategories={ingredientCategories}
 			/>
 			<div

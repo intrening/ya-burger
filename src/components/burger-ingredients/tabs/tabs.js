@@ -10,8 +10,8 @@ const Tabs = ({ activeTab, onTabClick, ingredientCategories }) => {
 					key={category.id}
 					value={category.id}
 					active={activeTab === category.id}
-					onClick={() => onTabClick(category.id)}>
-					{category.label}
+					onClick={() => onTabClick(category.ref)}>
+					{category.title}
 				</Tab>
 			))}
 		</div>
@@ -27,7 +27,6 @@ Tabs.propTypes = {
 			title: PropTypes.string.isRequired,
 			ingredients: PropTypes.array.isRequired,
 			ref: PropTypes.object.isRequired,
-			label: PropTypes.string.isRequired,
 		})
 	),
 };
