@@ -1,12 +1,14 @@
+import { thunk } from 'redux-thunk';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
 import { ingredientsReducer } from './burger-ingredients/reducer.js';
 import { burgerConstructorReducer } from './burger-constructor/reducer.js';
-import { thunk } from 'redux-thunk';
+import { reducer as currentIngredientReducer } from './current-ingredient/reducer.js';
 
 const rootReducer = combineReducers({
 	burgerIngredients: ingredientsReducer,
 	burgerConstructor: burgerConstructorReducer,
+	currentIngredient: currentIngredientReducer,
 });
 
 export const configureStore = (initialState) => {
