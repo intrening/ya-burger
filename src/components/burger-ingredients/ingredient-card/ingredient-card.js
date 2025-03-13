@@ -12,9 +12,18 @@ import {
 	setCurrentIngredient,
 	clearCurrentIngredient,
 } from '../../../services/current-ingredient/actions';
+import { useDrag } from 'react-dnd';
 
 const IngredientCard = ({ ingredient }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const [{ isDragging }, dragRef] = useDrag({
+		type: 'ingredient',
+		item: { ingredient },
+		collect: (monitor) => ({
+			isDragging: !!monitor.isDragging(),
+		}),
+	});
 
 	const dispatch = useDispatch();
 
@@ -38,14 +47,19 @@ const IngredientCard = ({ ingredient }) => {
 	return (
 		<>
 			<div
-				className={styles.ingredient}
+				className={`${styles.ingredient} ${isDragging ? styles.dragging : ''}`}
 				onClick={openModal}
 				onKeyDown={handleKeyDown}
 				tabIndex={0}
 				role='button'
 				aria-label={`Ингредиент ${ingredient.name}`}>
 				<Counter count='1' size='default' />
-				<img src={ingredient.image} alt={ingredient.name} />
+				<img
+					src={ingredient.image}
+					alt={ingredient.name}
+					ref={dragRef}
+					style={{ opacity: isDragging ? 0.5 : 1 }}
+				/>
 				<div className={`${styles.price} mt-1 mb-1`}>
 					<span className='text text_type_digits-default mr-2'>
 						{ingredient.price}

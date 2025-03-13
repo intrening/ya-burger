@@ -9,9 +9,20 @@ import OrderDetails from '../order-details/order-details';
 import BurgerConstructorItem from './burger-constructor-item';
 import OrderSummary from './order-summary';
 import { useSelector } from 'react-redux';
+import { useDrop } from 'react-dnd';
 
 const BurgerConstructor = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const [{ isOver }, dropRef] = useDrop({
+		accept: 'ingredient',
+		drop: (ingredient) => {
+			console.log(ingredient);
+		},
+		collect: (monitor) => ({
+			isOver: monitor.isOver(),
+		}),
+	});
 
 	const { ingredients, bun } = useSelector((state) => state.burgerConstructor);
 
@@ -35,8 +46,13 @@ const BurgerConstructor = () => {
 		return total;
 	};
 
+	const borderColor = isOver ? '#4C4CFF' : 'rgba(0, 0, 0, 0.2)';
+
 	return (
-		<section className={styles.burgerConstructor}>
+		<section
+			className={styles.burgerConstructor}
+			style={{ border: `1px solid ${borderColor}` }}
+			ref={dropRef}>
 			<div className={`${styles.selectedIngredients} pt-25 pl-4 pr-4`}>
 				<div className={`${styles.bunElement} mb-4`}>
 					<div className={styles.fakeDrag}>
