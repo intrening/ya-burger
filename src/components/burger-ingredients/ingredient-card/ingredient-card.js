@@ -7,17 +7,26 @@ import Modal from '../../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useState, useCallback } from 'react';
 import { ingredientPropType } from '../../../utils/prop-types';
+import { useDispatch } from 'react-redux';
+import {
+	setCurrentIngredient,
+	clearCurrentIngredient,
+} from '../../../services/current-ingredient/actions';
 
 const IngredientCard = ({ ingredient }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
+	const dispatch = useDispatch();
+
 	const openModal = useCallback(() => {
 		setIsModalOpen(true);
-	}, []);
+		dispatch(setCurrentIngredient(ingredient));
+	}, [dispatch, ingredient]);
 
 	const closeModal = useCallback(() => {
 		setIsModalOpen(false);
-	}, []);
+		dispatch(clearCurrentIngredient());
+	}, [dispatch]);
 
 	const handleKeyDown = (e) => {
 		if (e.key === 'Enter' || e.key === ' ') {
