@@ -8,16 +8,19 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import BurgerConstructorItem from './burger-constructor-item';
 import OrderSummary from './order-summary';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
+import { addIngredient } from '../../services/burger-constructor/actions';
 
 const BurgerConstructor = () => {
+	const dispatch = useDispatch();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const [{ isOver }, dropRef] = useDrop({
 		accept: 'ingredient',
 		drop: (ingredient) => {
 			console.log(ingredient);
+			dispatch(addIngredient(ingredient));
 		},
 		collect: (monitor) => ({
 			isOver: monitor.isOver(),
