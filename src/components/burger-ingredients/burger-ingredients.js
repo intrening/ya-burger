@@ -3,12 +3,16 @@ import Tabs from './tabs/tabs';
 import IngredientCategory from './ingredient-categories/ingredient-categories';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchIngredients } from '../../services/burger-ingredients/actions';
+import {
+	fetchIngredients,
+	resetIngredientsState,
+} from '../../services/burger-ingredients/actions';
 import {
 	getBunIngredients,
 	getSauceIngredients,
 	getMainIngredients,
 } from '../../services/burger-ingredients/selectors';
+import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const BurgerIngredients = () => {
 	const bunIngredients = useSelector(getBunIngredients);
@@ -50,6 +54,15 @@ const BurgerIngredients = () => {
 	];
 
 	const handleScroll = useCallback(() => {
+		if (
+			!containerRef.current ||
+			!bunRef.current ||
+			!sauceRef.current ||
+			!mainRef.current
+		) {
+			return;
+		}
+
 		const containerRect = containerRef.current.getBoundingClientRect();
 		const bunDistance = Math.abs(
 			bunRef.current.getBoundingClientRect().top - containerRect.top
@@ -81,12 +94,38 @@ const BurgerIngredients = () => {
 		}
 	}, []);
 
+	const handleRetry = () => {
+		dispatch(resetIngredientsState());
+		dispatch(fetchIngredients());
+	};
+
 	if (isLoading) {
-		return <p>Loading...</p>;
+		return (
+			<section className={styles.burgerIngredients}>
+				<p className='text text_type_main-large'>Загрузка ингредиентов...</p>
+				<div className={styles.loaderContainer}>
+					<div className={styles.loader}></div>
+				</div>
+			</section>
+		);
 	}
 
 	if (error) {
-		return <p>Error: {error}</p>;
+		return (
+			<section className={styles.burgerIngredients}>
+				<p className='text text_type_main-large mb-5'>
+					Не удалось загрузить ингредиенты
+				</p>
+				<p className='text text_type_main-default mb-10'>{error}</p>
+				<Button
+					htmlType='button'
+					type='primary'
+					size='medium'
+					onClick={handleRetry}>
+					Попробовать снова
+				</Button>
+			</section>
+		);
 	}
 
 	return (

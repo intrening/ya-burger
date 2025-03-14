@@ -1,25 +1,54 @@
 import styles from '../modal/modal.module.css';
-import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import {
+	CheckMarkIcon,
+	Button,
+} from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { createOrder } from '../../services/order/actions';
+import { createOrder, resetOrderState } from '../../services/order/actions';
 import { useEffect } from 'react';
 
 const OrderDetails = () => {
 	const dispatch = useDispatch();
 	const { orderNumber, loading, error } = useSelector((state) => state.order);
-
 	const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
 
 	useEffect(() => {
-		dispatch(createOrder(bun, ingredients));
-	}, [dispatch, bun, ingredients]);
+		if (!orderNumber && !error && !loading) {
+			dispatch(createOrder(bun, ingredients));
+		}
+	}, [dispatch, bun, ingredients, orderNumber, error, loading]);
+
+	const handleRetry = () => {
+		dispatch(resetOrderState());
+	};
 
 	if (loading) {
-		return <p>Loading...</p>;
+		return (
+			<div className={styles.content}>
+				<p className={'text text_type_main-medium mt-8 mb-8'}>
+					Оформляем ваш заказ...
+				</p>
+				<div className={styles.spinner}></div>
+			</div>
+		);
 	}
 
 	if (error) {
-		return <p>Error: {error}</p>;
+		return (
+			<div className={styles.content}>
+				<p className={`text text_type_main-medium mb-6 ${styles.errorText}`}>
+					Ошибка при оформлении заказа
+				</p>
+				<p className={'text text_type_main-default mb-10'}>{error}</p>
+				<Button
+					htmlType='button'
+					type='primary'
+					size='medium'
+					onClick={handleRetry}>
+					Попробовать снова
+				</Button>
+			</div>
+		);
 	}
 
 	return (

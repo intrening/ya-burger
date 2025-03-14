@@ -13,6 +13,8 @@
 - ESLint и Stylelint для линтинга
 - Prettier для форматирования кода
 - Компоненты из @ya.praktikum/react-developer-burger-ui-components
+- Redux для управления состоянием
+- DnD для перетаскивания ингредиентов
 
 ## Как запустить проект
 

@@ -27,3 +27,38 @@
 	margin-top: 40px;
 	overflow-y: auto;
 }
+
+.loaderContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 200px;
+}
+
+.loader {
+	display: inline-block;
+	width: 80px;
+	height: 80px;
+}
+
+.loader::after {
+	display: block;
+	width: 64px;
+	height: 64px;
+	margin: 8px;
+	border: 6px solid #4c4cff;
+	border-color: #4c4cff transparent;
+	border-radius: 50%;
+	animation: loader-animation 1.2s linear infinite;
+	content: ' ';
+}
+
+@keyframes loader-animation {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
