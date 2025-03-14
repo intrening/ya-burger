@@ -5,9 +5,9 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { ingredientPropType } from '../../../utils/prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	setCurrentIngredient,
 	clearCurrentIngredient,
@@ -44,6 +44,25 @@ const IngredientCard = ({ ingredient }) => {
 		}
 	};
 
+	const burgerConstructor = useSelector((state) => state.burgerConstructor);
+
+	const calculateCount = useMemo(() => {
+		const { bun, ingredients } = burgerConstructor;
+		let count = 0;
+
+		if (bun && bun._id === ingredient._id) {
+			count = 2;
+		} else {
+			ingredients.forEach((item) => {
+				if (item._id === ingredient._id) {
+					count++;
+				}
+			});
+		}
+
+		return count;
+	}, [burgerConstructor, ingredient._id]);
+
 	return (
 		<>
 			<div
@@ -53,7 +72,7 @@ const IngredientCard = ({ ingredient }) => {
 				tabIndex={0}
 				role='button'
 				aria-label={`Ингредиент ${ingredient.name}`}>
-				<Counter count='1' size='default' />
+				<Counter count={calculateCount} size='default' />
 				<img
 					src={ingredient.image}
 					alt={ingredient.name}
