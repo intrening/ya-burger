@@ -10,7 +10,10 @@ import BurgerConstructorItem from './burger-constructor-item';
 import OrderSummary from './order-summary';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
-import { addIngredient } from '../../services/burger-constructor/actions';
+import {
+	addIngredient,
+	setIngredients,
+} from '../../services/burger-constructor/actions';
 
 const BurgerConstructor = () => {
 	const dispatch = useDispatch();
@@ -49,6 +52,14 @@ const BurgerConstructor = () => {
 		return total;
 	};
 
+	const moveIngredientCard = (dragIndex, hoverIndex) => {
+		const dragItem = ingredients[dragIndex];
+		const newIngredients = [...ingredients];
+		newIngredients.splice(dragIndex, 1);
+		newIngredients.splice(hoverIndex, 0, dragItem);
+		dispatch(setIngredients(newIngredients));
+	};
+
 	const borderColor = isOver ? '#4C4CFF' : 'rgba(0, 0, 0, 0.2)';
 
 	return (
@@ -80,8 +91,13 @@ const BurgerConstructor = () => {
 					)}
 				</div>
 				<div className={`${styles.mainElements} custom-scroll`}>
-					{ingredients.map((item) => (
-						<BurgerConstructorItem key={item._id} item={item} />
+					{ingredients.map((item, index) => (
+						<BurgerConstructorItem
+							key={item.uuid}
+							item={item}
+							index={index}
+							moveIngredientCard={moveIngredientCard}
+						/>
 					))}
 				</div>
 				<div className={`${styles.bunElement} mt-4`}>

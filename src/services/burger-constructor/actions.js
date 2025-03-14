@@ -1,27 +1,14 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export const ADD_INGREDIENT = 'ADD_INGREDIENT';
+export const SET_INGREDIENTS = 'SET_INGREDIENTS';
 
 export const addIngredient = (ingredient) => ({
 	type: ADD_INGREDIENT,
-	payload: ingredient,
+	payload: { ...ingredient, uuid: uuidv4() },
 });
 
-export const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT';
-
-export const removeIngredient = (ingredient) => ({
-	type: REMOVE_INGREDIENT,
-	payload: ingredient,
-});
-
-export const MOVE_INGREDIENT = 'MOVE_INGREDIENT';
-
-export const moveIngredient = (ingredient) => ({
-	type: MOVE_INGREDIENT,
-	payload: ingredient,
-});
-
-export const SET_BUN = 'SET_BUN';
-
-export const setBun = (bun) => ({
-	type: SET_BUN,
-	payload: bun,
+export const setIngredients = (ingredients) => ({
+	type: SET_INGREDIENTS,
+	payload: ingredients,
 });
