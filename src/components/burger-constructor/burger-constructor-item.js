@@ -6,8 +6,11 @@ import {
 import { ingredientPropType } from '../../utils/prop-types';
 import { useDrag, useDrop } from 'react-dnd';
 import { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { removeIngredient } from '../../services/burger-constructor/actions';
 
 const BurgerConstructorItem = ({ item, index, moveIngredientCard }) => {
+	const dispatch = useDispatch();
 	const ref = useRef(null);
 	const [{ isDragging }, dragRef] = useDrag({
 		type: 'constructor-ingredient',
@@ -49,6 +52,10 @@ const BurgerConstructorItem = ({ item, index, moveIngredientCard }) => {
 	dragRef(dropTarget(ref));
 	const opacity = isDragging ? 0 : 1;
 
+	const handleRemoveIngredient = () => {
+		dispatch(removeIngredient(index));
+	};
+
 	return (
 		<div className={`${styles.mainElement}`} ref={ref} style={{ opacity }}>
 			<DragIcon type='primary' />
@@ -56,6 +63,7 @@ const BurgerConstructorItem = ({ item, index, moveIngredientCard }) => {
 				text={item.name}
 				price={item.price}
 				thumbnail={item.image}
+				handleClose={handleRemoveIngredient}
 			/>
 		</div>
 	);

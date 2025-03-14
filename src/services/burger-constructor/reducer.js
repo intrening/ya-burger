@@ -1,4 +1,4 @@
-import { ADD_INGREDIENT, SET_INGREDIENTS } from './actions';
+import { ADD_INGREDIENT, SET_INGREDIENTS, REMOVE_INGREDIENT } from './actions';
 
 const initialState = {
 	ingredients: [],
@@ -12,6 +12,13 @@ export const burgerConstructorReducer = (state = initialState, action) => {
 			return { ...state, ingredients: [...state.ingredients, action.payload] };
 		case SET_INGREDIENTS:
 			return { ...state, ingredients: action.payload };
+		case REMOVE_INGREDIENT:
+			return {
+				...state,
+				ingredients: state.ingredients.filter(
+					(_, index) => index !== action.payload
+				),
+			};
 		default:
 			return state;
 	}
