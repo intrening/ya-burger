@@ -22,7 +22,6 @@ const BurgerConstructor = () => {
 	const [{ isOver }, dropRef] = useDrop({
 		accept: 'ingredient',
 		drop: (ingredient) => {
-			console.log(ingredient);
 			dispatch(addIngredient(ingredient));
 		},
 		collect: (monitor) => ({
@@ -38,18 +37,6 @@ const BurgerConstructor = () => {
 
 	const closeModal = () => {
 		setIsModalOpen(false);
-	};
-
-	const calculateTotalPrice = () => {
-		let total = 0;
-
-		if (bun && typeof bun.price === 'number') {
-			total += bun.price * 2;
-		}
-		if (ingredients && ingredients.length) {
-			total += ingredients.reduce((sum, item) => sum + (item.price || 0), 0);
-		}
-		return total;
 	};
 
 	const moveIngredientCard = (dragIndex, hoverIndex) => {
@@ -122,10 +109,7 @@ const BurgerConstructor = () => {
 						/>
 					)}
 				</div>
-				<OrderSummary
-					onPlaceOrder={openModal}
-					totalPrice={calculateTotalPrice()}
-				/>
+				<OrderSummary onPlaceOrder={openModal} />
 			</div>
 
 			{isModalOpen && (

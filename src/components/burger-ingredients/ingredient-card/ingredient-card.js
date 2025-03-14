@@ -72,7 +72,9 @@ const IngredientCard = ({ ingredient }) => {
 				tabIndex={0}
 				role='button'
 				aria-label={`Ингредиент ${ingredient.name}`}>
-				<Counter count={calculateCount} size='default' />
+				{calculateCount > 0 && (
+					<Counter count={calculateCount} size='default' />
+				)}
 				<img
 					src={ingredient.image}
 					alt={ingredient.name}
