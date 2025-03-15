@@ -1,4 +1,4 @@
-import { INGREDIENTS_URL } from '../../utils/constants';
+import { INGREDIENTS_URL, checkResponse } from '../../utils/api';
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
@@ -29,19 +29,10 @@ export const fetchIngredients = () => {
 		try {
 			const response = await fetch(INGREDIENTS_URL);
 
-			if (!response.ok) {
-				const errorData = await response.json().catch(() => null);
-				throw new Error(
-					errorData?.message ||
-						`Ошибка загрузки ингредиентов: ${response.status} ${response.statusText}`
-				);
-			}
-
-			const data = await response.json();
-
-			if (!data.success) {
-				throw new Error(data.message || 'API вернул неуспешный статус');
-			}
+			const data = await checkResponse(
+				response,
+				'Ошибка загрузки ингредиентов'
+			);
 
 			if (!data.data || !Array.isArray(data.data)) {
 				throw new Error('Некорректный формат данных с сервера');

@@ -1,4 +1,4 @@
-import { ORDERS_URL } from '../../utils/constants';
+import { ORDERS_URL, checkResponse } from '../../utils/api';
 
 export const ORDER_REQUEST = 'ORDER_REQUEST';
 export const ORDER_SUCCESS = 'ORDER_SUCCESS';
@@ -46,34 +46,21 @@ export const createOrder = (bun, ingredients) => {
 				}),
 			});
 
-			if (!response.ok) {
-				const errorData = await response.json().catch(() => null);
-				throw new Error(
-					errorData?.message ||
-						`Ошибка оформления заказа: ${response.status} ${response.statusText}`
-				);
-			}
-
-			const data = await response.json();
-
-			if (!data.success) {
-				throw new Error(data.message || 'API вернул неуспешный статус');
-			}
+			const data = await checkResponse(response, 'Ошибка оформления заказа');
 
 			if (!data.order || !data.order.number) {
 				throw new Error('Сервер вернул некорректный номер заказа');
 			}
 
 			dispatch(orderSuccess(data.order.number));
+			setTimeout(() => {
+				dispatch(resetOrderState());
+			}, 5000);
 		} catch (error) {
 			console.error('Ошибка при оформлении заказа:', error);
 			dispatch(
 				orderError(error.message || 'Неизвестная ошибка оформления заказа')
 			);
-
-			setTimeout(() => {
-				dispatch(resetOrderState());
-			}, 5000);
 		}
 	};
 };
