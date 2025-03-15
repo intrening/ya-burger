@@ -3,7 +3,6 @@ import {
 	ConstructorElement,
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState } from 'react';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import BurgerConstructorItem from './burger-constructor-item';
@@ -14,10 +13,10 @@ import {
 	addIngredient,
 	setIngredients,
 } from '../../services/burger-constructor/actions';
-
+import { useModal } from '../hooks/useModal';
 const BurgerConstructor = () => {
 	const dispatch = useDispatch();
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const { isModalOpen, openModal, closeModal } = useModal();
 
 	const [{ isOver }, dropRef] = useDrop({
 		accept: 'ingredient',
@@ -30,14 +29,6 @@ const BurgerConstructor = () => {
 	});
 
 	const { ingredients, bun } = useSelector((state) => state.burgerConstructor);
-
-	const openModal = () => {
-		setIsModalOpen(true);
-	};
-
-	const closeModal = () => {
-		setIsModalOpen(false);
-	};
 
 	const moveIngredientCard = (dragIndex, hoverIndex) => {
 		const dragItem = ingredients[dragIndex];

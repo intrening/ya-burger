@@ -3,9 +3,10 @@ import {
 	Counter,
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useModal } from '../../hooks/useModal';
 import Modal from '../../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { useState, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { ingredientPropType } from '../../../utils/prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -15,7 +16,7 @@ import {
 import { useDrag } from 'react-dnd';
 
 const IngredientCard = ({ ingredient }) => {
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const { isModalOpen, openModal, closeModal } = useModal();
 
 	const [{ isDragging }, dragRef] = useDrag({
 		type: 'ingredient',
@@ -27,20 +28,20 @@ const IngredientCard = ({ ingredient }) => {
 
 	const dispatch = useDispatch();
 
-	const openModal = useCallback(() => {
-		setIsModalOpen(true);
+	const openIngredientModal = useCallback(() => {
+		openModal();
 		dispatch(setCurrentIngredient(ingredient));
-	}, [dispatch, ingredient]);
+	}, [dispatch, ingredient, openModal]);
 
-	const closeModal = useCallback(() => {
-		setIsModalOpen(false);
+	const closeIngredientModal = useCallback(() => {
+		closeModal();
 		dispatch(clearCurrentIngredient());
-	}, [dispatch]);
+	}, [dispatch, closeModal]);
 
 	const handleKeyDown = (e) => {
 		if (e.key === 'Enter' || e.key === ' ') {
 			e.preventDefault();
-			openModal();
+			openIngredientModal();
 		}
 	};
 
@@ -67,7 +68,7 @@ const IngredientCard = ({ ingredient }) => {
 		<>
 			<div
 				className={`${styles.ingredient} ${isDragging ? styles.dragging : ''}`}
-				onClick={openModal}
+				onClick={openIngredientModal}
 				onKeyDown={handleKeyDown}
 				tabIndex={0}
 				role='button'
@@ -90,7 +91,7 @@ const IngredientCard = ({ ingredient }) => {
 				<p className='text text_type_main-default mb-2'>{ingredient.name}</p>
 			</div>
 			{isModalOpen && (
-				<Modal header='Детали ингредиента' onClose={closeModal}>
+				<Modal header='Детали ингредиента' onClose={closeIngredientModal}>
 					<IngredientDetails ingredient={ingredient} />
 				</Modal>
 			)}
