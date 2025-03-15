@@ -1,9 +1,9 @@
+import { INGREDIENTS_URL } from '../../utils/constants';
+
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
 export const GET_INGREDIENTS_ERROR = 'GET_INGREDIENTS_ERROR';
 export const GET_INGREDIENTS_RESET = 'GET_INGREDIENTS_RESET';
-
-const urlIngredients = 'https://norma.nomoreparties.space/api/ingredients';
 
 export const getIngredientsRequest = () => ({
 	type: GET_INGREDIENTS_REQUEST,
@@ -27,7 +27,7 @@ export const fetchIngredients = () => {
 	return async (dispatch) => {
 		dispatch(getIngredientsRequest());
 		try {
-			const response = await fetch(urlIngredients);
+			const response = await fetch(INGREDIENTS_URL);
 
 			if (!response.ok) {
 				const errorData = await response.json().catch(() => null);

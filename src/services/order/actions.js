@@ -1,9 +1,9 @@
+import { ORDERS_URL } from '../../utils/constants';
+
 export const ORDER_REQUEST = 'ORDER_REQUEST';
 export const ORDER_SUCCESS = 'ORDER_SUCCESS';
 export const ORDER_ERROR = 'ORDER_ERROR';
 export const ORDER_RESET = 'ORDER_RESET';
-
-const API_URL = 'https://1norma.nomoreparties.space/api/orders';
 
 export const orderRequest = () => ({
 	type: ORDER_REQUEST,
@@ -32,7 +32,7 @@ export const createOrder = (bun, ingredients) => {
 
 		dispatch(orderRequest());
 		try {
-			const response = await fetch(API_URL, {
+			const response = await fetch(ORDERS_URL, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
