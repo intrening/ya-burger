@@ -2,7 +2,9 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 100%;
+	max-width: 720px;
+	margin: 120px auto;
+	padding: 0 20px;
 }
 
 .title {
@@ -26,15 +28,15 @@
 
 .nutritionalInfo {
 	display: flex;
-	justify-content: space-between;
 	gap: 20px;
-	width: 100%;
+	margin-top: 32px;
 }
 
 .nutrient {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	min-width: 112px;
 	text-align: center;
 }
 

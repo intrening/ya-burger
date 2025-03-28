@@ -1,9 +1,58 @@
 import styles from './ingredient-details.module.css';
-import { ingredientPropType } from '../utils/prop-types';
+import { useParams, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchIngredients } from '../services/burger-ingredients/actions';
 
-function IngredientDetails({ ingredient }) {
+function IngredientsDetails() {
+	const { ingredientId } = useParams();
+	const location = useLocation();
+	const dispatch = useDispatch();
+	const background = location.state?.background;
+
+	const { ingredients, isLoading, error } = useSelector(
+		(state) => state.burgerIngredients
+	);
+
+	useEffect(() => {
+		if (!background && (!ingredients || ingredients.length === 0)) {
+			dispatch(fetchIngredients());
+		}
+	}, [background, ingredients, dispatch]);
+
+	const ingredient = ingredients.find((item) => item._id === ingredientId);
+
+	if (isLoading) {
+		return (
+			<div className={styles.container}>
+				<p className='text text_type_main-medium'>Загрузка...</p>
+			</div>
+		);
+	}
+
+	if (error) {
+		return (
+			<div className={styles.container}>
+				<p className='text text_type_main-medium text_color_error'>{error}</p>
+			</div>
+		);
+	}
+
+	if (!ingredient) {
+		return (
+			<div className={styles.container}>
+				<p className='text text_type_main-medium text_color_error'>
+					Ингредиент не найден
+				</p>
+			</div>
+		);
+	}
+
 	return (
 		<div className={styles.container}>
+			{!background && (
+				<h2 className={'text text_type_main-large mb-5'}>Детали ингредиента</h2>
+			)}
 			<img
 				className={styles.image}
 				src={ingredient.image_large}
@@ -48,8 +97,4 @@ function IngredientDetails({ ingredient }) {
 	);
 }
 
-IngredientDetails.propTypes = {
-	ingredient: ingredientPropType.isRequired,
-};
-
-export default IngredientDetails;
+export default IngredientsDetails;

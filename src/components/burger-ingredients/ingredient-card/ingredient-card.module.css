@@ -12,10 +12,20 @@
 	width: calc(50% - 12px);
 	text-align: center;
 	cursor: pointer;
+	text-decoration: none;
+	color: inherit;
+}
+
+.ingredient:hover {
+	opacity: 0.9;
 }
 
 .ingredient img {
 	width: 240px;
 	height: 120px;
 	object-fit: contain;
+}
+
+.dragging {
+	opacity: 0.5;
 }

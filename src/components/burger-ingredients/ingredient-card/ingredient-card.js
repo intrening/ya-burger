@@ -6,10 +6,11 @@ import {
 import { ingredientPropType } from '../../../utils/prop-types';
 import { useSelector } from 'react-redux';
 import { useDrag } from 'react-dnd';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
 
 const IngredientCard = ({ ingredient }) => {
+	const location = useLocation();
 	const [{ isDragging }, dragRef] = useDrag({
 		type: 'ingredient',
 		item: ingredient,
@@ -43,8 +44,6 @@ const IngredientCard = ({ ingredient }) => {
 				className={`${styles.ingredient} ${isDragging ? styles.dragging : ''}`}
 				to={`/ingredients/${ingredient._id}`}
 				state={{ background: location }}
-				tabIndex={0}
-				role='button'
 				aria-label={`Ингредиент ${ingredient.name}`}>
 				{calculateCount > 0 && (
 					<Counter count={calculateCount} size='default' />
