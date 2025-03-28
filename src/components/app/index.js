@@ -6,6 +6,9 @@ import Login from '../pages/login';
 import Register from '../pages/register';
 import ForgotPassword from '../pages/forgot-password';
 import ResetPassword from '../pages/reset-password';
+import Profile from '../pages/profile';
+import ProfileForm from '../pages/profile/profile-form';
+import OrderHistory from '../pages/profile/order-history';
 
 const App = () => {
 	return (
@@ -18,6 +21,11 @@ const App = () => {
 					<Route path='/register' element={<Register />} />
 					<Route path='/forgot-password' element={<ForgotPassword />} />
 					<Route path='/reset-password' element={<ResetPassword />} />
+					<Route path='/profile' element={<Profile />}>
+						<Route index element={<ProfileForm />} />
+						<Route path='orders' element={<OrderHistory />} />
+						<Route path='orders/:number' element={<div>Order Details</div>} />
+					</Route>
 				</Routes>
 			</div>
 		</BrowserRouter>
