@@ -9,6 +9,7 @@ import ResetPassword from '../../pages/reset-password';
 import Profile from '../../pages/profile';
 import ProfileForm from '../../pages/profile/profile-form';
 import OrderHistory from '../../pages/profile/order-history';
+import NotFound from '../../pages/not-found';
 
 const App = () => {
 	return (
@@ -26,6 +27,7 @@ const App = () => {
 						<Route path='orders' element={<OrderHistory />} />
 						<Route path='orders/:number' element={<div>Order Details</div>} />
 					</Route>
+					<Route path='*' element={<NotFound />} />
 				</Routes>
 			</div>
 		</BrowserRouter>
