@@ -1,14 +1,14 @@
 import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from '../pages/home';
-import Login from '../pages/login';
-import Register from '../pages/register';
-import ForgotPassword from '../pages/forgot-password';
-import ResetPassword from '../pages/reset-password';
-import Profile from '../pages/profile';
-import ProfileForm from '../pages/profile/profile-form';
-import OrderHistory from '../pages/profile/order-history';
+import Home from '../../pages/home';
+import Login from '../../pages/login';
+import Register from '../../pages/register';
+import ForgotPassword from '../../pages/forgot-password';
+import ResetPassword from '../../pages/reset-password';
+import Profile from '../../pages/profile';
+import ProfileForm from '../../pages/profile/profile-form';
+import OrderHistory from '../../pages/profile/order-history';
 
 const App = () => {
 	return (

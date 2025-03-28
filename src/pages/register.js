@@ -4,8 +4,8 @@ import {
 	Input,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import AuthForm from '../auth/auth-form';
-import styles from '../auth/auth-form.module.css';
+import AuthForm from '../components/auth/auth-form';
+import styles from '../components/auth/auth-form.module.css';
 import { useState } from 'react';
 
 const Register = () => {
