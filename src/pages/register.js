@@ -3,29 +3,46 @@ import {
 	PasswordInput,
 	Input,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthForm from '../components/auth/auth-form';
 import styles from '../components/auth/auth-form.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { registerUser } from '../services/auth/actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthError, getUserInfo } from '../services/auth/selectors';
 
 const Register = () => {
 	const [form, setForm] = useState({ name: '', email: '', password: '' });
 	const dispatch = useDispatch();
-	const handleSubmit = (e) => {
+	const navigate = useNavigate();
+	const authError = useSelector(getAuthError);
+	const user = useSelector(getUserInfo);
+
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		dispatch(registerUser(form.email, form.password, form.name));
-		// todo: navigation
 	};
 
+	useEffect(() => {
+		if (user) {
+			navigate('/login');
+		}
+	}, [user, navigate]);
+
 	const extraContent = (
-		<p className='text text_type_main-default text_color_inactive'>
-			Уже зарегистрированы?{' '}
-			<Link to='/login' className={styles.link}>
-				Войти
-			</Link>
-		</p>
+		<>
+			{authError && (
+				<p className='text text_type_main-default text_color_error mb-4'>
+					{authError}
+				</p>
+			)}
+			<p className='text text_type_main-default text_color_inactive'>
+				Уже зарегистрированы?{' '}
+				<Link to='/login' className={styles.link}>
+					Войти
+				</Link>
+			</p>
+		</>
 	);
 
 	return (

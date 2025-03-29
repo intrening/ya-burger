@@ -45,24 +45,34 @@ export const fetchWithRefresh = async (url, options) => {
 	}
 };
 
-export const apiRegisterUser = async (email, password, name) => {
-	const response = await fetch(`${AUTH_URL}/register`, {
+export const registerUserRequest = async (email, password, name) => {
+	const res = await fetch(`${AUTH_URL}/register`, {
 		method: 'POST',
+		mode: 'cors',
+		cache: 'no-cache',
+		credentials: 'same-origin',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		redirect: 'follow',
+		referrerPolicy: 'no-referrer',
 		body: JSON.stringify({ email, password, name }),
 	});
-
-	const data = await checkResponse(response);
-
-	return data;
+	return checkResponse(res);
 };
 
-export const apiLoginUser = async (email, password) => {
-	const response = await fetch(`${AUTH_URL}/login`, {
+export const loginUserRequest = async (email, password) => {
+	const res = await fetch(`${AUTH_URL}/login`, {
 		method: 'POST',
+		mode: 'cors',
+		cache: 'no-cache',
+		credentials: 'same-origin',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		redirect: 'follow',
+		referrerPolicy: 'no-referrer',
 		body: JSON.stringify({ email, password }),
 	});
-
-	const data = await checkResponse(response);
-
-	return data;
+	return checkResponse(res);
 };
