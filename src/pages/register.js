@@ -3,22 +3,23 @@ import {
 	PasswordInput,
 	Input,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthForm from '../components/auth/auth-form';
 import styles from '../components/auth/auth-form.module.css';
 import { useState } from 'react';
 import { registerUser } from '../services/auth/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuthError } from '../services/auth/selectors';
 
 const Register = () => {
 	const [form, setForm] = useState({ name: '', email: '', password: '' });
 	const dispatch = useDispatch();
-	const authError = useSelector(getAuthError);
+	const authError = useSelector((state) => state.auth.authError);
+	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		dispatch(registerUser(form.email, form.password, form.name));
+		dispatch(registerUser(form));
+		navigate('/login');
 	};
 
 	const extraContent = (

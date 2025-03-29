@@ -4,15 +4,18 @@ export const SET_AUTH_ERROR = 'SET_AUTH_ERROR';
 export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
 export const SET_USER = 'SET_USER';
 
-export const registerUser = (email, password, name) => async (dispatch) => {
-	try {
-		const res = await registerUserRequest(email, password, name);
-		dispatch(setUser(res.user));
-		dispatch(setAuthError(null));
-	} catch (error) {
-		dispatch(setAuthError(error.message));
-	}
-};
+export const registerUser =
+	({ email, password, name }) =>
+	async (dispatch) => {
+		try {
+			const res = await registerUserRequest(email, password, name);
+			dispatch(setAuthError(null));
+			return res;
+		} catch (error) {
+			dispatch(setAuthError(error.message));
+			return res;
+		}
+	};
 
 export const loginUser = (email, password) => async (dispatch) => {
 	try {
