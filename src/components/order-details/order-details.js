@@ -6,13 +6,18 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder, resetOrderState } from '../../services/order/actions';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const OrderDetails = () => {
 	const dispatch = useDispatch();
 	const { orderNumber, loading, error } = useSelector((state) => state.order);
 	const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
-
+	const user = useSelector((state) => state.auth.user);
+	const navigate = useNavigate();
 	useEffect(() => {
+		if (!user) {
+			navigate('/login');
+		}
 		if (!orderNumber && !error && !loading) {
 			dispatch(createOrder(bun, ingredients));
 		}

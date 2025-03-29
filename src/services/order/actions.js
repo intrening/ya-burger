@@ -1,4 +1,4 @@
-import { ORDERS_URL, checkResponse } from '../../utils/api';
+import { createOrderRequest } from '../../utils/api';
 
 export const ORDER_REQUEST = 'ORDER_REQUEST';
 export const ORDER_SUCCESS = 'ORDER_SUCCESS';
@@ -32,26 +32,10 @@ export const createOrder = (bun, ingredients) => {
 
 		dispatch(orderRequest());
 		try {
-			const response = await fetch(ORDERS_URL, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					ingredients: [
-						bun._id,
-						...ingredients.map((item) => item._id),
-						bun._id,
-					],
-				}),
-			});
-
-			const data = await checkResponse(response);
-
+			const data = await createOrderRequest(bun, ingredients);
 			if (!data.order || !data.order.number) {
 				throw new Error('Сервер вернул некорректный номер заказа');
 			}
-
 			dispatch(orderSuccess(data.order.number));
 			setTimeout(() => {
 				dispatch(resetOrderState());

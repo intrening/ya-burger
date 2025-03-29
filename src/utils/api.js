@@ -163,3 +163,21 @@ export const logoutUserRequest = async () => {
 	localStorage.removeItem('accessToken');
 	return res;
 };
+
+export const createOrderRequest = async (bun, ingredients) => {
+	const res = await fetchWithRefresh(ORDERS_URL, {
+		method: 'POST',
+		mode: 'cors',
+		cache: 'no-cache',
+		credentials: 'same-origin',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: localStorage.getItem('accessToken'),
+		},
+		body: JSON.stringify({
+			ingredients: [bun._id, ...ingredients.map((item) => item._id), bun._id],
+		}),
+	});
+
+	return res;
+};
