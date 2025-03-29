@@ -14,6 +14,7 @@ const ResetPassword = () => {
 	const dispatch = useDispatch();
 	const authError = useSelector((state) => state.auth.authError);
 	const navigate = useNavigate();
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		dispatch(resetPassword(form));

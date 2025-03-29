@@ -3,6 +3,7 @@ export const INGREDIENTS_URL = `${API_URL_DOMAIN}/api/ingredients`;
 export const ORDERS_URL = `${API_URL_DOMAIN}/api/orders`;
 
 const AUTH_URL = `${API_URL_DOMAIN}/api/auth`;
+const PASSWORD_RESET_URL = `${API_URL_DOMAIN}/api/password-reset`;
 
 export const checkResponse = (res) => {
 	return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -99,7 +100,7 @@ export const getUserRequest = async () => {
 };
 
 export const forgotPasswordRequest = async (email) => {
-	const res = await fetch(`${AUTH_URL}/forgot-password`, {
+	const res = await fetch(`${PASSWORD_RESET_URL}`, {
 		method: 'POST',
 		mode: 'cors',
 		cache: 'no-cache',
@@ -113,7 +114,7 @@ export const forgotPasswordRequest = async (email) => {
 };
 
 export const resetPasswordRequest = async (form) => {
-	const res = await fetch(`${AUTH_URL}/reset-password`, {
+	const res = await fetch(`${PASSWORD_RESET_URL}/reset`, {
 		method: 'POST',
 		mode: 'cors',
 		cache: 'no-cache',

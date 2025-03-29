@@ -1,5 +1,5 @@
 import { EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthForm from '../../components/auth/auth-form';
 import styles from '../../components/auth/auth-form.module.css';
 import { useState } from 'react';
@@ -8,12 +8,14 @@ import { forgotPassword } from '../../services/auth/actions';
 
 const ForgotPassword = () => {
 	const [email, setEmail] = useState('');
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const authError = useSelector((state) => state.auth.authError);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		dispatch(forgotPassword(email));
+		navigate('/reset-password');
 	};
 
 	const extraContent = (
