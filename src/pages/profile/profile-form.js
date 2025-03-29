@@ -5,7 +5,9 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './profile-form.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { updateUser } from '../../services/auth/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ProfileForm = () => {
 	const [form, setForm] = useState({
@@ -14,7 +16,9 @@ const ProfileForm = () => {
 		password: '',
 	});
 	const [isEdited, setIsEdited] = useState(false);
-
+	const dispatch = useDispatch();
+	const user = useSelector((state) => state.auth.user);
+	const authError = useSelector((state) => state.auth.authError);
 	const handleChange = (e, field) => {
 		setForm({ ...form, [field]: e.target.value });
 		setIsEdited(true);
@@ -22,11 +26,20 @@ const ProfileForm = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		dispatch(updateUser(form));
 	};
 
 	const handleCancel = () => {
 		setIsEdited(false);
 	};
+
+	useEffect(() => {
+		setForm({
+			name: user.name,
+			email: user.email,
+			password: '',
+		});
+	}, [user]);
 
 	return (
 		<form className={styles.form} onSubmit={handleSubmit}>
@@ -38,7 +51,7 @@ const ProfileForm = () => {
 				onChange={(e) => handleChange(e, 'name')}
 			/>
 			<EmailInput
-				placeholder='Логин'
+				placeholder='E-mail'
 				icon='EditIcon'
 				value={form.email}
 				onChange={(e) => handleChange(e, 'email')}
@@ -62,6 +75,11 @@ const ProfileForm = () => {
 						Сохранить
 					</Button>
 				</div>
+			)}
+			{authError && (
+				<p className='text text_type_main-default text_color_error mb-4'>
+					{authError}
+				</p>
 			)}
 		</form>
 	);

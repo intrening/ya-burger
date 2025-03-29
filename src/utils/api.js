@@ -125,3 +125,20 @@ export const resetPasswordRequest = async (form) => {
 	});
 	return checkResponse(res);
 };
+
+export const updateUserRequest = async (form) => {
+	console.log('form', form);
+	const res = await fetchWithRefresh(`${AUTH_URL}/user`, {
+		method: 'PATCH',
+		mode: 'cors',
+		cache: 'no-cache',
+		credentials: 'same-origin',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: localStorage.getItem('accessToken'),
+		},
+		body: JSON.stringify(form),
+	});
+
+	return res;
+};
