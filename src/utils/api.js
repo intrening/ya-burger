@@ -86,3 +86,17 @@ export const getUserRequest = async () => {
 	});
 	return checkResponse(res);
 };
+
+export const forgotPasswordRequest = async (email) => {
+	const res = await fetch(`${AUTH_URL}/forgot-password`, {
+		method: 'POST',
+		mode: 'cors',
+		cache: 'no-cache',
+		credentials: 'same-origin',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({ email }),
+	});
+	return checkResponse(res);
+};

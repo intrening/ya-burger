@@ -1,4 +1,8 @@
-import { registerUserRequest, loginUserRequest } from '../../utils/api';
+import {
+	registerUserRequest,
+	loginUserRequest,
+	forgotPasswordRequest,
+} from '../../utils/api';
 
 export const SET_AUTH_ERROR = 'SET_AUTH_ERROR';
 export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
@@ -57,3 +61,12 @@ export const setAuthError = (errorMessage) => ({
 	type: SET_AUTH_ERROR,
 	payload: errorMessage,
 });
+
+export const forgotPassword = (email) => async (dispatch) => {
+	try {
+		await forgotPasswordRequest(email);
+		dispatch(setAuthError(null));
+	} catch (error) {
+		dispatch(setAuthError(error.message));
+	}
+};

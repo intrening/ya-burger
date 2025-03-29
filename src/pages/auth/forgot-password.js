@@ -3,12 +3,17 @@ import { Link } from 'react-router-dom';
 import AuthForm from '../../components/auth/auth-form';
 import styles from '../../components/auth/auth-form.module.css';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { forgotPassword } from '../../services/auth/actions';
 
 const ForgotPassword = () => {
 	const [email, setEmail] = useState('');
+	const dispatch = useDispatch();
+	const authError = useSelector((state) => state.auth.authError);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		dispatch(forgotPassword(email));
 	};
 
 	const extraContent = (
@@ -31,6 +36,11 @@ const ForgotPassword = () => {
 				value={email}
 				onChange={(e) => setEmail(e.target.value)}
 			/>
+			{authError && (
+				<p className='text text_type_main-default text_color_error mb-4'>
+					{authError}
+				</p>
+			)}
 		</AuthForm>
 	);
 };
