@@ -2,7 +2,7 @@ import {
 	PasswordInput,
 	Input,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import AuthForm from '../../components/auth/auth-form';
 import styles from '../../components/auth/auth-form.module.css';
 import { useState } from 'react';
@@ -14,6 +14,11 @@ const ResetPassword = () => {
 	const dispatch = useDispatch();
 	const authError = useSelector((state) => state.auth.authError);
 	const navigate = useNavigate();
+	const location = useLocation();
+
+	if (!location.state?.from?.pathname?.includes('/forgot-password')) {
+		return <Navigate to='/forgot-password' replace />;
+	}
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
