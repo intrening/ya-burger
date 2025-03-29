@@ -5,7 +5,7 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './profile-form.module.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { updateUser } from '../../services/auth/actions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -29,17 +29,22 @@ const ProfileForm = () => {
 		dispatch(updateUser(form));
 	};
 
-	const handleCancel = () => {
-		setIsEdited(false);
-	};
-
-	useEffect(() => {
+	const setDefaultForm = useCallback(() => {
 		setForm({
 			name: user.name,
 			email: user.email,
 			password: '',
 		});
 	}, [user]);
+
+	const handleCancel = () => {
+		setIsEdited(false);
+		setDefaultForm();
+	};
+
+	useEffect(() => {
+		setDefaultForm();
+	}, [user, setDefaultForm]);
 
 	return (
 		<form className={styles.form} onSubmit={handleSubmit}>

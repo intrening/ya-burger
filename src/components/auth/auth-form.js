@@ -1,6 +1,6 @@
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './auth-form.module.css';
-
+import PropTypes from 'prop-types';
 const AuthForm = ({ title, children, buttonText, onSubmit, extraContent }) => {
 	return (
 		<div className={styles.container}>
@@ -17,3 +17,11 @@ const AuthForm = ({ title, children, buttonText, onSubmit, extraContent }) => {
 };
 
 export default AuthForm;
+
+AuthForm.propTypes = {
+	title: PropTypes.string.isRequired,
+	children: PropTypes.node.isRequired,
+	buttonText: PropTypes.string.isRequired,
+	onSubmit: PropTypes.func.isRequired,
+	extraContent: PropTypes.node,
+};

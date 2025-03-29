@@ -14,6 +14,7 @@ import {
 	setIngredients,
 } from '../../services/burger-constructor/actions';
 import { useModal } from '../hooks/useModal';
+
 const BurgerConstructor = () => {
 	const dispatch = useDispatch();
 	const { isModalOpen, openModal, closeModal } = useModal();

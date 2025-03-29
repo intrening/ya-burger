@@ -21,7 +21,7 @@ const OrderDetails = () => {
 		if (!orderNumber && !error && !loading) {
 			dispatch(createOrder(bun, ingredients));
 		}
-	}, [dispatch, bun, ingredients, orderNumber, error, loading]);
+	}, [dispatch, bun, ingredients, orderNumber, error, loading, user, navigate]);
 
 	const handleRetry = () => {
 		dispatch(resetOrderState());

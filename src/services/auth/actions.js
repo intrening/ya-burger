@@ -12,6 +12,21 @@ export const SET_AUTH_ERROR = 'SET_AUTH_ERROR';
 export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
 export const SET_USER = 'SET_USER';
 
+export const setAuthChecked = (value) => ({
+	type: SET_AUTH_CHECKED,
+	payload: value,
+});
+
+export const setUser = (user) => ({
+	type: SET_USER,
+	payload: user,
+});
+
+export const setAuthError = (errorMessage) => ({
+	type: SET_AUTH_ERROR,
+	payload: errorMessage,
+});
+
 export const registerUser =
 	({ email, password, name }) =>
 	async (dispatch) => {
@@ -38,16 +53,6 @@ export const loginUser =
 		}
 	};
 
-export const setAuthChecked = (value) => ({
-	type: SET_AUTH_CHECKED,
-	payload: value,
-});
-
-export const setUser = (user) => ({
-	type: SET_USER,
-	payload: user,
-});
-
 export const checkUserAuth = () => async (dispatch) => {
 	try {
 		if (localStorage.getItem('accessToken')) {
@@ -57,29 +62,6 @@ export const checkUserAuth = () => async (dispatch) => {
 		} else {
 			dispatch(setAuthChecked(true));
 		}
-	} catch (error) {
-		dispatch(setAuthError(error.message));
-	}
-};
-
-export const setAuthError = (errorMessage) => ({
-	type: SET_AUTH_ERROR,
-	payload: errorMessage,
-});
-
-export const forgotPassword = (email) => async (dispatch) => {
-	try {
-		await forgotPasswordRequest(email);
-		dispatch(setAuthError(null));
-	} catch (error) {
-		dispatch(setAuthError(error.message));
-	}
-};
-
-export const resetPassword = (form) => async (dispatch) => {
-	try {
-		await resetPasswordRequest(form);
-		dispatch(setAuthError(null));
 	} catch (error) {
 		dispatch(setAuthError(error.message));
 	}
@@ -99,6 +81,24 @@ export const logoutUser = () => async (dispatch) => {
 	try {
 		await logoutUserRequest();
 		dispatch(setUser(null));
+		dispatch(setAuthError(null));
+	} catch (error) {
+		dispatch(setAuthError(error.message));
+	}
+};
+
+export const forgotPassword = (email) => async (dispatch) => {
+	try {
+		await forgotPasswordRequest(email);
+		dispatch(setAuthError(null));
+	} catch (error) {
+		dispatch(setAuthError(error.message));
+	}
+};
+
+export const resetPassword = (form) => async (dispatch) => {
+	try {
+		await resetPasswordRequest(form);
 		dispatch(setAuthError(null));
 	} catch (error) {
 		dispatch(setAuthError(error.message));
