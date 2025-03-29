@@ -2,6 +2,7 @@ import {
 	registerUserRequest,
 	loginUserRequest,
 	forgotPasswordRequest,
+	resetPasswordRequest,
 } from '../../utils/api';
 
 export const SET_AUTH_ERROR = 'SET_AUTH_ERROR';
@@ -65,6 +66,15 @@ export const setAuthError = (errorMessage) => ({
 export const forgotPassword = (email) => async (dispatch) => {
 	try {
 		await forgotPasswordRequest(email);
+		dispatch(setAuthError(null));
+	} catch (error) {
+		dispatch(setAuthError(error.message));
+	}
+};
+
+export const resetPassword = (form) => async (dispatch) => {
+	try {
+		await resetPasswordRequest(form);
 		dispatch(setAuthError(null));
 	} catch (error) {
 		dispatch(setAuthError(error.message));
