@@ -1,25 +1,22 @@
 import {
 	EmailInput,
 	PasswordInput,
-	Input,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, useNavigate } from 'react-router-dom';
-import AuthForm from '../components/auth/auth-form';
-import styles from '../components/auth/auth-form.module.css';
+import { Link } from 'react-router-dom';
+import AuthForm from '../../components/auth/auth-form';
+import styles from '../../components/auth/auth-form.module.css';
 import { useState } from 'react';
-import { registerUser } from '../services/auth/actions';
+import { loginUser } from '../../services/auth/actions';
 import { useDispatch, useSelector } from 'react-redux';
 
-const Register = () => {
-	const [form, setForm] = useState({ name: '', email: '', password: '' });
+const Login = () => {
+	const [form, setForm] = useState({ email: '', password: '' });
 	const dispatch = useDispatch();
 	const authError = useSelector((state) => state.auth.authError);
-	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		dispatch(registerUser(form));
-		navigate('/login');
+		dispatch(loginUser(form));
 	};
 
 	const extraContent = (
@@ -30,9 +27,15 @@ const Register = () => {
 				</p>
 			)}
 			<p className='text text_type_main-default text_color_inactive'>
-				Уже зарегистрированы?{' '}
-				<Link to='/login' className={styles.link}>
-					Войти
+				Вы — новый пользователь?{' '}
+				<Link to='/register' className={styles.link}>
+					Зарегистрироваться
+				</Link>
+			</p>
+			<p className='text text_type_main-default text_color_inactive'>
+				Забыли пароль?{' '}
+				<Link to='/forgot-password' className={styles.link}>
+					Восстановить пароль
 				</Link>
 			</p>
 		</>
@@ -40,16 +43,10 @@ const Register = () => {
 
 	return (
 		<AuthForm
-			title='Регистрация'
-			buttonText='Зарегистрироваться'
+			title='Вход'
+			buttonText='Войти'
 			onSubmit={handleSubmit}
 			extraContent={extraContent}>
-			<Input
-				type='text'
-				placeholder='Имя'
-				value={form.name}
-				onChange={(e) => setForm({ ...form, name: e.target.value })}
-			/>
 			<EmailInput
 				value={form.email}
 				onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -62,4 +59,4 @@ const Register = () => {
 	);
 };
 
-export default Register;
+export default Login;
