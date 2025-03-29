@@ -142,3 +142,23 @@ export const updateUserRequest = async (form) => {
 
 	return res;
 };
+
+export const logoutUserRequest = async () => {
+	const token = localStorage.getItem('accessToken');
+	const res = await fetchWithRefresh(`${AUTH_URL}/logout`, {
+		method: 'POST',
+		mode: 'cors',
+		cache: 'no-cache',
+		credentials: 'same-origin',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
+		body: JSON.stringify({
+			token: localStorage.getItem('refreshToken'),
+		}),
+	});
+	localStorage.removeItem('refreshToken');
+	localStorage.removeItem('accessToken');
+	return res;
+};
