@@ -5,27 +5,41 @@ import {
 	ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
-
+import { NavLink } from 'react-router-dom';
 const AppHeader = () => {
 	return (
 		<header className={styles.header}>
 			<nav className={styles.container}>
 				<ul className={styles.menu}>
 					<li className={`${styles.menuItem} p-2 mr-2`}>
-						<a className={styles.link} href='/'>
-							<BurgerIcon type='primary' />
-							<span className='text text_type_main-default ml-2'>
-								Конструктор
-							</span>
-						</a>
+						<NavLink to='/' className={styles.link}>
+							{({ isActive }) => (
+								<>
+									<BurgerIcon type={isActive ? 'primary' : 'secondary'} />
+									<span
+										className={`text text_type_main-default ml-2 ${
+											!isActive && 'text_color_inactive'
+										}`}>
+										Конструктор
+									</span>
+								</>
+							)}
+						</NavLink>
 					</li>
 					<li className={`${styles.menuItem} p-2`}>
-						<a className={styles.link} href='/feed'>
-							<ListIcon type='secondary' />
-							<span className='text text_type_main-default text_color_inactive ml-2'>
-								Лента заказов
-							</span>
-						</a>
+						<NavLink to='/feed' className={styles.link}>
+							{({ isActive }) => (
+								<>
+									<ListIcon type={isActive ? 'primary' : 'secondary'} />
+									<span
+										className={`text text_type_main-default ml-2 ${
+											!isActive && 'text_color_inactive'
+										}`}>
+										Лента заказов
+									</span>
+								</>
+							)}
+						</NavLink>
 					</li>
 				</ul>
 
@@ -33,12 +47,19 @@ const AppHeader = () => {
 					<Logo />
 				</a>
 
-				<a className={styles.link} href='/profile'>
-					<ProfileIcon type='secondary' />
-					<span className='text text_type_main-default text_color_inactive ml-2'>
-						Личный кабинет
-					</span>
-				</a>
+				<NavLink to='/profile' className={styles.link}>
+					{({ isActive }) => (
+						<>
+							<ProfileIcon type={isActive ? 'primary' : 'secondary'} />
+							<span
+								className={`text text_type_main-default ml-2 ${
+									!isActive && 'text_color_inactive'
+								}`}>
+								Личный кабинет
+							</span>
+						</>
+					)}
+				</NavLink>
 			</nav>
 		</header>
 	);

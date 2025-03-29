@@ -10,10 +10,10 @@
 	flex-direction: column;
 	align-items: center;
 	width: calc(50% - 12px);
-	text-align: center;
-	cursor: pointer;
-	text-decoration: none;
 	color: inherit;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
 }
 
 .ingredient:hover {

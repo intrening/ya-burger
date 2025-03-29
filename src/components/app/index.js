@@ -16,6 +16,7 @@ import { checkUserAuth } from '../../services/auth/actions';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { OnlyAuth, OnlyUnAuth } from '../protected-route';
+import Feed from '../../pages/feed';
 
 const App = () => {
 	const location = useLocation();
@@ -55,6 +56,7 @@ const App = () => {
 						<Route path='orders' element={<OrderHistory />} />
 						<Route path='orders/:number' element={<div>Order Details</div>} />
 					</Route>
+					<Route path='/feed' element={<Feed />} />
 					<Route
 						path='/ingredients/:ingredientId'
 						element={<IngredientsDetails />}

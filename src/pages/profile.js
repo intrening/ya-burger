@@ -1,5 +1,6 @@
 import styles from './profile.module.css';
-import { NavLink, Outlet, Link } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
+
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../services/auth/actions';
 
@@ -23,7 +24,9 @@ const Profile = () => {
 				<NavLink to='/profile/orders' className={getNavLinkClass}>
 					История заказов
 				</NavLink>
-				<NavLink onClick={handleLogout} className={getNavLinkClass}>
+				<NavLink
+					onClick={handleLogout}
+					className={`text text_type_main-medium text_color_inactive ${styles.link}`}>
 					Выход
 				</NavLink>
 				<p
