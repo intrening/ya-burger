@@ -7,12 +7,16 @@ import { Link } from 'react-router-dom';
 import AuthForm from '../components/auth/auth-form';
 import styles from '../components/auth/auth-form.module.css';
 import { useState } from 'react';
+import { registerUser } from '../services/auth/actions';
+import { useDispatch } from 'react-redux';
 
 const Register = () => {
 	const [form, setForm] = useState({ name: '', email: '', password: '' });
-
+	const dispatch = useDispatch();
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		dispatch(registerUser(form.email, form.password, form.name));
+		// todo: navigation
 	};
 
 	const extraContent = (

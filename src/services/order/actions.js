@@ -46,7 +46,7 @@ export const createOrder = (bun, ingredients) => {
 				}),
 			});
 
-			const data = await checkResponse(response, 'Ошибка оформления заказа');
+			const data = await checkResponse(response);
 
 			if (!data.order || !data.order.number) {
 				throw new Error('Сервер вернул некорректный номер заказа');

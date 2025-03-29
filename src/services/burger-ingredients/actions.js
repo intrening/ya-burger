@@ -29,10 +29,7 @@ export const fetchIngredients = () => {
 		try {
 			const response = await fetch(INGREDIENTS_URL);
 
-			const data = await checkResponse(
-				response,
-				'Ошибка загрузки ингредиентов'
-			);
+			const data = await checkResponse(response);
 
 			if (!data.data || !Array.isArray(data.data)) {
 				throw new Error('Некорректный формат данных с сервера');
