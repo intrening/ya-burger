@@ -83,17 +83,19 @@ export const loginUserRequest = async (email, password) => {
 };
 
 export const getUserRequest = async () => {
-	const res = await fetch(`${AUTH_URL}/user`, {
+	const res = await fetchWithRefresh(`${AUTH_URL}/user`, {
 		method: 'GET',
 		mode: 'cors',
 		cache: 'no-cache',
 		credentials: 'same-origin',
+		redirect: 'follow',
+		referrerPolicy: 'no-referrer',
 		headers: {
 			'Content-Type': 'application/json',
-			// Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+			Authorization: localStorage.getItem('accessToken'),
 		},
 	});
-	return checkResponse(res);
+	return res;
 };
 
 export const forgotPasswordRequest = async (email) => {
