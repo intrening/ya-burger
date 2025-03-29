@@ -8,25 +8,28 @@ export const registerUser =
 	({ email, password, name }) =>
 	async (dispatch) => {
 		try {
-			const res = await registerUserRequest(email, password, name);
+			await registerUserRequest(email, password, name);
 			dispatch(setAuthError(null));
-			return res;
 		} catch (error) {
 			dispatch(setAuthError(error.message));
-			return res;
 		}
 	};
 
-export const loginUser = (email, password) => async (dispatch) => {
-	try {
-		const res = await loginUserRequest(email, password);
-		dispatch(setUser(res.user));
-		dispatch(setAuthError(null));
-		dispatch(setAuthChecked(true));
-	} catch (error) {
-		dispatch(setAuthError(error.message));
-	}
-};
+export const loginUser =
+	({ email, password }) =>
+	async (dispatch) => {
+		try {
+			const res = await loginUserRequest(email, password);
+			console.log('res', res);
+			dispatch(setUser(res.user));
+			dispatch(setAuthError(null));
+			dispatch(setAuthChecked(true));
+			return res;
+		} catch (error) {
+			dispatch(setAuthError(error.message));
+			return null;
+		}
+	};
 
 export const setAuthChecked = (value) => ({
 	type: SET_AUTH_CHECKED,

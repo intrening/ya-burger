@@ -8,16 +8,15 @@ import styles from '../components/auth/auth-form.module.css';
 import { useState } from 'react';
 import { loginUser } from '../services/auth/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuthError } from '../services/auth/selectors';
 
 const Login = () => {
 	const [form, setForm] = useState({ email: '', password: '' });
 	const dispatch = useDispatch();
-	const authError = useSelector(getAuthError);
+	const authError = useSelector((state) => state.auth.authError);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		dispatch(loginUser(form.email, form.password));
+		dispatch(loginUser(form));
 	};
 
 	const extraContent = (
