@@ -74,14 +74,23 @@ export const loginUserRequest = async (email, password) => {
 		referrerPolicy: 'no-referrer',
 		body: JSON.stringify({ email, password }),
 	});
-	return checkResponse(res);
+	const data = await checkResponse(res);
+	if (data.success) {
+		localStorage.setItem('refreshToken', data.refreshToken);
+		localStorage.setItem('accessToken', data.accessToken);
+	}
+	return data;
 };
 
 export const getUserRequest = async () => {
 	const res = await fetch(`${AUTH_URL}/user`, {
 		method: 'GET',
+		mode: 'cors',
+		cache: 'no-cache',
+		credentials: 'same-origin',
 		headers: {
 			'Content-Type': 'application/json',
+			// Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
 		},
 	});
 	return checkResponse(res);

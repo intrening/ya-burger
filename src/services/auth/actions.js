@@ -3,6 +3,7 @@ import {
 	loginUserRequest,
 	forgotPasswordRequest,
 	resetPasswordRequest,
+	getUserRequest,
 } from '../../utils/api';
 
 export const SET_AUTH_ERROR = 'SET_AUTH_ERROR';
@@ -24,12 +25,11 @@ export const loginUser =
 	({ email, password }) =>
 	async (dispatch) => {
 		try {
-			const res = await loginUserRequest(email, password);
-			console.log('res', res);
-			dispatch(setUser(res.user));
+			const data = await loginUserRequest(email, password);
+			dispatch(setUser(data.user));
 			dispatch(setAuthError(null));
 			dispatch(setAuthChecked(true));
-			return res;
+			return data;
 		} catch (error) {
 			dispatch(setAuthError(error.message));
 			return null;
@@ -46,16 +46,18 @@ export const setUser = (user) => ({
 	payload: user,
 });
 
-export const checkUserAuth = () => {
-	return (dispatch) => {
+export const checkUserAuth = () => async (dispatch) => {
+	try {
 		if (localStorage.getItem('accessToken')) {
-			getUserRequest()
-				.then((res) => dispatch(setUser(res.user)))
-				.finally(() => dispatch(setAuthChecked(true)));
+			const data = await getUserRequest();
+			dispatch(setUser(data.user));
+			dispatch(setAuthChecked(true));
 		} else {
 			dispatch(setAuthChecked(true));
 		}
-	};
+	} catch (error) {
+		dispatch(setAuthError(error.message));
+	}
 };
 
 export const setAuthError = (errorMessage) => ({
