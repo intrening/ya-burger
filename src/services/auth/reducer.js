@@ -1,18 +1,28 @@
-import { REGISTER_USER, LOGIN_USER, AUTH_ERROR } from './actions';
+import { SET_AUTH_ERROR, SET_AUTH_CHECKED, SET_USER } from './actions';
 
 const initialState = {
 	user: null,
-	error: null,
+	authError: null,
+	isAuthChecked: false,
 };
 
 export const authReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case REGISTER_USER:
-			return { ...state, user: action.payload, error: null };
-		case LOGIN_USER:
-			return { ...state, user: action.payload, error: null };
-		case AUTH_ERROR:
-			return { ...state, error: action.payload };
+		case SET_USER:
+			return {
+				...state,
+				user: action.payload,
+			};
+		case SET_AUTH_ERROR:
+			return {
+				...state,
+				authError: action.payload,
+			};
+		case SET_AUTH_CHECKED:
+			return {
+				...state,
+				isAuthChecked: action.payload,
+			};
 		default:
 			return state;
 	}

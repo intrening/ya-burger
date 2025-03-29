@@ -7,20 +7,26 @@ import AuthForm from '../components/auth/auth-form';
 import styles from '../components/auth/auth-form.module.css';
 import { useState } from 'react';
 import { loginUser } from '../services/auth/actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthError } from '../services/auth/selectors';
 
 const Login = () => {
 	const [form, setForm] = useState({ email: '', password: '' });
 	const dispatch = useDispatch();
+	const authError = useSelector(getAuthError);
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		dispatch(loginUser(form.email, form.password));
-		//todo navigation
 	};
 
 	const extraContent = (
 		<>
+			{authError && (
+				<p className='text text_type_main-default text_color_error mb-4'>
+					{authError}
+				</p>
+			)}
 			<p className='text text_type_main-default text_color_inactive'>
 				Вы — новый пользователь?{' '}
 				<Link to='/register' className={styles.link}>

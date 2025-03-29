@@ -1,39 +1,53 @@
 import { registerUserRequest, loginUserRequest } from '../../utils/api';
 
-export const REGISTER_USER = 'REGISTER_USER';
-export const LOGIN_USER = 'LOGIN_USER';
-export const AUTH_ERROR = 'AUTH_ERROR';
-export const CLEAR_AUTH_ERROR = 'CLEAR_AUTH_ERROR';
+export const SET_AUTH_ERROR = 'SET_AUTH_ERROR';
+export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
+export const SET_USER = 'SET_USER';
 
 export const registerUser = (email, password, name) => async (dispatch) => {
 	try {
 		const res = await registerUserRequest(email, password, name);
-		dispatch({
-			type: REGISTER_USER,
-			payload: res.user,
-		});
-		return res;
+		dispatch(setUser(res.user));
+		dispatch(setAuthError(null));
 	} catch (error) {
-		dispatch({
-			type: AUTH_ERROR,
-			payload: error.message || 'Произошла ошибка при регистрации',
-		});
+		dispatch(setAuthError(error.message));
 	}
 };
 
 export const loginUser = (email, password) => async (dispatch) => {
 	try {
 		const res = await loginUserRequest(email, password);
-		dispatch({
-			type: LOGIN_USER,
-			payload: res.user,
-		});
-		return res;
+		dispatch(setUser(res.user));
+		dispatch(setAuthError(null));
+		dispatch(setAuthChecked(true));
 	} catch (error) {
-		dispatch({
-			type: AUTH_ERROR,
-			payload: error.message || 'Произошла ошибка при входе',
-		});
-		throw error;
+		dispatch(setAuthError(error.message));
 	}
 };
+
+export const setAuthChecked = (value) => ({
+	type: SET_AUTH_CHECKED,
+	payload: value,
+});
+
+export const setUser = (user) => ({
+	type: SET_USER,
+	payload: user,
+});
+
+export const checkUserAuth = () => {
+	return (dispatch) => {
+		if (localStorage.getItem('accessToken')) {
+			getUserRequest()
+				.then((res) => dispatch(setUser(res.user)))
+				.finally(() => dispatch(setAuthChecked(true)));
+		} else {
+			dispatch(setAuthChecked(true));
+		}
+	};
+};
+
+export const setAuthError = (errorMessage) => ({
+	type: SET_AUTH_ERROR,
+	payload: errorMessage,
+});

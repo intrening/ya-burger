@@ -76,3 +76,13 @@ export const loginUserRequest = async (email, password) => {
 	});
 	return checkResponse(res);
 };
+
+export const getUserRequest = async () => {
+	const res = await fetch(`${AUTH_URL}/user`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	return checkResponse(res);
+};
