@@ -5,29 +5,51 @@ export const ORDERS_URL = `${API_URL_DOMAIN}/api/orders`;
 const AUTH_URL = `${API_URL_DOMAIN}/api/auth`;
 const PASSWORD_RESET_URL = `${API_URL_DOMAIN}/api/password-reset`;
 
+const setTokens = ({ accessToken, refreshToken }) => {
+	localStorage.setItem('accessToken', accessToken);
+	localStorage.setItem('refreshToken', refreshToken);
+};
+
+const getTokens = () => {
+	return {
+		accessToken: localStorage.getItem('accessToken'),
+		refreshToken: localStorage.getItem('refreshToken'),
+	};
+};
+
+const clearTokens = () => {
+	localStorage.removeItem('accessToken');
+	localStorage.removeItem('refreshToken');
+};
+
 export const checkResponse = (res) => {
 	return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export const refreshToken = () => {
-	return fetch(`${AUTH_URL}/token`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json;charset=utf-8',
-		},
-		body: JSON.stringify({
-			token: localStorage.getItem('refreshToken'),
-		}),
-	})
-		.then(checkResponse)
-		.then((refreshData) => {
-			if (!refreshData.success) {
-				return Promise.reject(refreshData);
-			}
-			localStorage.setItem('refreshToken', refreshData.refreshToken);
-			localStorage.setItem('accessToken', refreshData.accessToken);
-			return refreshData;
+export const refreshToken = async () => {
+	try {
+		const res = await fetch(`${AUTH_URL}/token`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8',
+			},
+			body: JSON.stringify({
+				token: getTokens().refreshToken,
+			}),
 		});
+		const refreshData = await checkResponse(res);
+		if (!refreshData.success) {
+			return Promise.reject(refreshData);
+		}
+		setTokens(refreshData);
+		return refreshData;
+	} catch (err) {
+		if (err.message === 'Token is invalid') {
+			clearTokens();
+			return await checkResponse(res);
+		}
+		return Promise.reject(err);
+	}
 };
 
 export const fetchWithRefresh = async (url, options) => {
@@ -77,8 +99,7 @@ export const loginUserRequest = async (email, password) => {
 	});
 	const data = await checkResponse(res);
 	if (data.success) {
-		localStorage.setItem('refreshToken', data.refreshToken);
-		localStorage.setItem('accessToken', data.accessToken);
+		setTokens(data);
 	}
 	return data;
 };
@@ -93,7 +114,7 @@ export const getUserRequest = async () => {
 		referrerPolicy: 'no-referrer',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: localStorage.getItem('accessToken'),
+			Authorization: getTokens().accessToken,
 		},
 	});
 	return res;
@@ -136,7 +157,7 @@ export const updateUserRequest = async (form) => {
 		credentials: 'same-origin',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: localStorage.getItem('accessToken'),
+			Authorization: getTokens().accessToken,
 		},
 		body: JSON.stringify(form),
 	});
@@ -145,7 +166,7 @@ export const updateUserRequest = async (form) => {
 };
 
 export const logoutUserRequest = async () => {
-	const token = localStorage.getItem('accessToken');
+	const token = getTokens().accessToken;
 	const res = await fetchWithRefresh(`${AUTH_URL}/logout`, {
 		method: 'POST',
 		mode: 'cors',
@@ -156,11 +177,10 @@ export const logoutUserRequest = async () => {
 			Authorization: `Bearer ${token}`,
 		},
 		body: JSON.stringify({
-			token: localStorage.getItem('refreshToken'),
+			token: getTokens().refreshToken,
 		}),
 	});
-	localStorage.removeItem('refreshToken');
-	localStorage.removeItem('accessToken');
+	clearTokens();
 	return res;
 };
 
@@ -172,7 +192,7 @@ export const createOrderRequest = async (bun, ingredients) => {
 		credentials: 'same-origin',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: localStorage.getItem('accessToken'),
+			Authorization: getTokens().accessToken,
 		},
 		body: JSON.stringify({
 			ingredients: [bun._id, ...ingredients.map((item) => item._id), bun._id],
