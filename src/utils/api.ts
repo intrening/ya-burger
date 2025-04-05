@@ -72,6 +72,7 @@ export const fetchWithRefresh = async <T>(
 ): Promise<T> => {
 	try {
 		const res = await fetch(url, options);
+		console.log(res);
 		return await checkResponse<T>(res);
 	} catch (err) {
 		if (err instanceof Error && err.message === 'jwt expired') {
@@ -135,13 +136,20 @@ export const loginUserRequest = async ({
 };
 
 export const getUserRequest = async (): Promise<TUser> => {
-	return await fetchWithRefresh<TUser>(`${AUTH_URL}/user`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: getTokens().accessToken,
-		},
-	});
+	const res: TAPIResponseData = await fetchWithRefresh<TAPIResponseData>(
+		`${AUTH_URL}/user`,
+		{
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: getTokens().accessToken,
+			},
+		}
+	);
+	if (!res.success || !res.user) {
+		throw new Error('User not found');
+	}
+	return res.user;
 };
 
 export const forgotPasswordRequest = async (email: string): Promise<any> => {

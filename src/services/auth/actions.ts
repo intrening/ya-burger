@@ -66,14 +66,13 @@ export const checkUserAuth =
 			if (localStorage.getItem('accessToken')) {
 				const user: TUser = await getUserRequest();
 				dispatch(setUser(user));
-				dispatch(setAuthChecked(true));
-			} else {
-				dispatch(setAuthChecked(true));
 			}
 		} catch (error) {
 			dispatch(
 				setAuthError(error instanceof Error ? error.message : 'Unknown error')
 			);
+		} finally {
+			dispatch(setAuthChecked(true));
 		}
 	};
 
