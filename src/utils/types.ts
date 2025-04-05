@@ -6,8 +6,13 @@ export type TIngredient = {
 	image_mobile: string;
 };
 
+export type TUser = {
+	email: string;
+	name: string;
+};
+
 export type TUserForm = {
 	email: string;
-	password: string;
 	name?: string;
+	password: string;
 };

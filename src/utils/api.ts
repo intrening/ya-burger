@@ -1,30 +1,21 @@
 export const API_URL_DOMAIN = 'https://norma.nomoreparties.space';
 export const INGREDIENTS_URL = `${API_URL_DOMAIN}/api/ingredients`;
 export const ORDERS_URL = `${API_URL_DOMAIN}/api/orders`;
-import { TIngredient, TUserForm } from './types';
+import { TIngredient, TUserForm, TUser } from './types';
 
 const AUTH_URL = `${API_URL_DOMAIN}/api/auth`;
 const PASSWORD_RESET_URL = `${API_URL_DOMAIN}/api/password-reset`;
 
 type TTokens = {
-	success?: boolean;
 	accessToken: string;
 	refreshToken: string;
 };
 
-interface IApiResponse {
-	success: boolean;
-	user: {
-		email: string;
-		name: string;
-	};
-	accessToken: string;
-	refreshToken: string;
-}
-
 type TAPIResponseData = {
 	data: Array<TIngredient>;
 	success: boolean;
+	tokens?: TTokens;
+	user?: TUser;
 };
 
 const setTokens = ({ accessToken, refreshToken }: TTokens) => {
@@ -48,7 +39,7 @@ export const checkResponse = <T>(res: Response): Promise<T> => {
 	return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export const refreshToken = async (): Promise<TTokens> => {
+export const refreshTokens = async (): Promise<TTokens> => {
 	try {
 		const res = await fetch(`${AUTH_URL}/token`, {
 			method: 'POST',
@@ -59,12 +50,14 @@ export const refreshToken = async (): Promise<TTokens> => {
 				token: getTokens().refreshToken,
 			}),
 		});
-		const refreshData = await checkResponse<TTokens>(res);
-		if (!refreshData.success) {
+		const refreshData: TAPIResponseData = await checkResponse<TAPIResponseData>(
+			res
+		);
+		if (!refreshData.success || !refreshData.tokens) {
 			return Promise.reject(refreshData);
 		}
-		setTokens(refreshData);
-		return refreshData;
+		setTokens(refreshData.tokens);
+		return refreshData.tokens;
 	} catch (err) {
 		if (err instanceof Error && err.message === 'Token is invalid') {
 			clearTokens();
@@ -82,8 +75,8 @@ export const fetchWithRefresh = async <T>(
 		return await checkResponse<T>(res);
 	} catch (err) {
 		if (err instanceof Error && err.message === 'jwt expired') {
-			const refreshData = await refreshToken();
-			options.headers.authorization = refreshData.accessToken;
+			const tokens: TTokens = await refreshTokens();
+			options.headers.authorization = tokens.accessToken;
 			const res = await fetch(url, options);
 			return await checkResponse<T>(res);
 		} else {
@@ -110,33 +103,39 @@ export const registerUserRequest = async ({
 	email,
 	password,
 	name,
-}: TUserForm): Promise<IApiResponse> => {
+}: TUserForm): Promise<TAPIResponseData> => {
 	const res = await fetch(`${AUTH_URL}/register`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ email, password, name }),
 	});
-	return checkResponse<IApiResponse>(res);
+	return checkResponse<TAPIResponseData>(res);
 };
 
 export const loginUserRequest = async ({
 	email,
 	password,
-}: Omit<TUserForm, 'name'>): Promise<IApiResponse> => {
+}: Omit<TUserForm, 'name'>): Promise<TUser> => {
 	const res = await fetch(`${AUTH_URL}/login`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ email, password }),
 	});
-	const data = await checkResponse<IApiResponse>(res);
-	if (data.success) {
-		setTokens(data);
+	const responseData: TAPIResponseData = await checkResponse<TAPIResponseData>(
+		res
+	);
+	console.log(responseData);
+	if (responseData.success && responseData.tokens) {
+		setTokens(responseData.tokens);
 	}
-	return data;
+	if (!responseData.user) {
+		throw new Error('User not found');
+	}
+	return responseData.user;
 };
 
-export const getUserRequest = async (): Promise<IApiResponse> => {
-	return await fetchWithRefresh<IApiResponse>(`${AUTH_URL}/user`, {
+export const getUserRequest = async (): Promise<TUser> => {
+	return await fetchWithRefresh<TUser>(`${AUTH_URL}/user`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
