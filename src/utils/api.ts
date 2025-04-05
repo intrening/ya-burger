@@ -1,6 +1,7 @@
 export const API_URL_DOMAIN = 'https://norma.nomoreparties.space';
 export const INGREDIENTS_URL = `${API_URL_DOMAIN}/api/ingredients`;
 export const ORDERS_URL = `${API_URL_DOMAIN}/api/orders`;
+import { TIngredient, TUserForm } from './types';
 
 const AUTH_URL = `${API_URL_DOMAIN}/api/auth`;
 const PASSWORD_RESET_URL = `${API_URL_DOMAIN}/api/password-reset`;
@@ -9,20 +10,6 @@ type TTokens = {
 	success?: boolean;
 	accessToken: string;
 	refreshToken: string;
-};
-
-type TIngredient = {
-	_id: string;
-	name: string;
-	price: number;
-	image: string;
-	image_mobile: string;
-};
-
-type TUserForm = {
-	email: string;
-	password: string;
-	name?: string;
 };
 
 interface IApiResponse {
