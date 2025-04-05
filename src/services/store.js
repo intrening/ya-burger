@@ -1,10 +1,10 @@
 import { thunk } from 'redux-thunk';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
-import { ingredientsReducer } from './burger-ingredients/reducer.js';
-import { burgerConstructorReducer } from './burger-constructor/reducer.js';
-import { orderReducer } from './order/reducer.js';
-import { authReducer } from './auth/reducer.js';
+import { ingredientsReducer } from './burger-ingredients/reducer';
+import { burgerConstructorReducer } from './burger-constructor/reducer';
+import { orderReducer } from './order/reducer';
+import { authReducer } from './auth/reducer';
 
 const rootReducer = combineReducers({
 	burgerIngredients: ingredientsReducer,

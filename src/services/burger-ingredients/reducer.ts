@@ -1,3 +1,4 @@
+import { TIngredient } from '../../utils/types';
 import {
 	GET_INGREDIENTS_REQUEST,
 	GET_INGREDIENTS_SUCCESS,
@@ -5,13 +6,24 @@ import {
 	GET_INGREDIENTS_RESET,
 } from './actions';
 
-const initialState = {
+type TInitialState = {
+	ingredients: Array<TIngredient>;
+	isLoading: boolean;
+	error: string | null;
+};
+
+type TAction = {
+	type: string;
+	payload: Array<TIngredient> | string | null;
+};
+
+const initialState: TInitialState = {
 	ingredients: [],
 	isLoading: false,
 	error: null,
 };
 
-export const ingredientsReducer = (state = initialState, action) => {
+export const ingredientsReducer = (state = initialState, action: TAction) => {
 	switch (action.type) {
 		case GET_INGREDIENTS_REQUEST:
 			return { ...state, isLoading: true, error: null };
