@@ -1,4 +1,4 @@
-import { INGREDIENTS_URL, checkResponse } from '../../utils/api';
+import { fetchIngredientsRequest } from '../../utils/api';
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
@@ -27,17 +27,9 @@ export const fetchIngredients = () => {
 	return async (dispatch) => {
 		dispatch(getIngredientsRequest());
 		try {
-			const response = await fetch(INGREDIENTS_URL);
-
-			const data = await checkResponse(response);
-
-			if (!data.data || !Array.isArray(data.data)) {
-				throw new Error('Некорректный формат данных с сервера');
-			}
-
-			dispatch(getIngredientsSuccess(data.data));
+			const ingredients = await fetchIngredientsRequest();
+			dispatch(getIngredientsSuccess(ingredients));
 		} catch (error) {
-			console.error('Ошибка при загрузке ингредиентов:', error);
 			dispatch(
 				getIngredientsError(
 					error.message || 'Неизвестная ошибка загрузки ингредиентов'

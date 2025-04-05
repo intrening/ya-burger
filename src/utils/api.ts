@@ -5,15 +5,50 @@ export const ORDERS_URL = `${API_URL_DOMAIN}/api/orders`;
 const AUTH_URL = `${API_URL_DOMAIN}/api/auth`;
 const PASSWORD_RESET_URL = `${API_URL_DOMAIN}/api/password-reset`;
 
-const setTokens = ({ accessToken, refreshToken }) => {
+type TTokens = {
+	success?: boolean;
+	accessToken: string;
+	refreshToken: string;
+};
+
+type TIngredient = {
+	_id: string;
+	name: string;
+	price: number;
+	image: string;
+	image_mobile: string;
+};
+
+type TUserForm = {
+	email: string;
+	password: string;
+	name?: string;
+};
+
+interface IApiResponse {
+	success: boolean;
+	user: {
+		email: string;
+		name: string;
+	};
+	accessToken: string;
+	refreshToken: string;
+}
+
+type TAPIResponseData = {
+	data: Array<TIngredient>;
+	success: boolean;
+};
+
+const setTokens = ({ accessToken, refreshToken }: TTokens) => {
 	localStorage.setItem('accessToken', accessToken);
 	localStorage.setItem('refreshToken', refreshToken);
 };
 
-const getTokens = () => {
+const getTokens = (): TTokens => {
 	return {
-		accessToken: localStorage.getItem('accessToken'),
-		refreshToken: localStorage.getItem('refreshToken'),
+		accessToken: localStorage.getItem('accessToken') || '',
+		refreshToken: localStorage.getItem('refreshToken') || '',
 	};
 };
 
@@ -22,11 +57,11 @@ const clearTokens = () => {
 	localStorage.removeItem('refreshToken');
 };
 
-export const checkResponse = (res) => {
+export const checkResponse = <T>(res: Response): Promise<T> => {
 	return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export const refreshToken = async () => {
+export const refreshToken = async (): Promise<TTokens> => {
 	try {
 		const res = await fetch(`${AUTH_URL}/token`, {
 			method: 'POST',
@@ -37,90 +72,93 @@ export const refreshToken = async () => {
 				token: getTokens().refreshToken,
 			}),
 		});
-		const refreshData = await checkResponse(res);
+		const refreshData = await checkResponse<TTokens>(res);
 		if (!refreshData.success) {
 			return Promise.reject(refreshData);
 		}
 		setTokens(refreshData);
 		return refreshData;
 	} catch (err) {
-		if (err.message === 'Token is invalid') {
+		if (err instanceof Error && err.message === 'Token is invalid') {
 			clearTokens();
-			return await checkResponse(res);
 		}
 		return Promise.reject(err);
 	}
 };
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async <T>(
+	url: string,
+	options: RequestInit & { headers: Record<string, string> }
+): Promise<T> => {
 	try {
 		const res = await fetch(url, options);
-		return await checkResponse(res);
+		return await checkResponse<T>(res);
 	} catch (err) {
-		if (err.message === 'jwt expired') {
+		if (err instanceof Error && err.message === 'jwt expired') {
 			const refreshData = await refreshToken();
 			options.headers.authorization = refreshData.accessToken;
 			const res = await fetch(url, options);
-			return await checkResponse(res);
+			return await checkResponse<T>(res);
 		} else {
 			return Promise.reject(err);
 		}
 	}
 };
 
-export const registerUserRequest = async (email, password, name) => {
-	const res = await fetch(`${AUTH_URL}/register`, {
-		method: 'POST',
-		mode: 'cors',
-		cache: 'no-cache',
-		credentials: 'same-origin',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		redirect: 'follow',
-		referrerPolicy: 'no-referrer',
-		body: JSON.stringify({ email, password, name }),
-	});
-	return checkResponse(res);
+export const fetchIngredientsRequest = async (): Promise<
+	Array<TIngredient>
+> => {
+	const res = await fetch(INGREDIENTS_URL);
+
+	const responseData: TAPIResponseData = await checkResponse<TAPIResponseData>(
+		res
+	);
+	if (!responseData.data || !Array.isArray(responseData.data)) {
+		throw new Error('Некорректный формат данных с сервера');
+	}
+	return responseData.data;
 };
 
-export const loginUserRequest = async (email, password) => {
+export const registerUserRequest = async ({
+	email,
+	password,
+	name,
+}: TUserForm): Promise<IApiResponse> => {
+	const res = await fetch(`${AUTH_URL}/register`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ email, password, name }),
+	});
+	return checkResponse<IApiResponse>(res);
+};
+
+export const loginUserRequest = async ({
+	email,
+	password,
+}: Omit<TUserForm, 'name'>): Promise<IApiResponse> => {
 	const res = await fetch(`${AUTH_URL}/login`, {
 		method: 'POST',
-		mode: 'cors',
-		cache: 'no-cache',
-		credentials: 'same-origin',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		redirect: 'follow',
-		referrerPolicy: 'no-referrer',
+		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ email, password }),
 	});
-	const data = await checkResponse(res);
+	const data = await checkResponse<IApiResponse>(res);
 	if (data.success) {
 		setTokens(data);
 	}
 	return data;
 };
 
-export const getUserRequest = async () => {
-	const res = await fetchWithRefresh(`${AUTH_URL}/user`, {
+export const getUserRequest = async (): Promise<IApiResponse> => {
+	return await fetchWithRefresh<IApiResponse>(`${AUTH_URL}/user`, {
 		method: 'GET',
-		mode: 'cors',
-		cache: 'no-cache',
-		credentials: 'same-origin',
-		redirect: 'follow',
-		referrerPolicy: 'no-referrer',
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: getTokens().accessToken,
 		},
 	});
-	return res;
 };
 
-export const forgotPasswordRequest = async (email) => {
+export const forgotPasswordRequest = async (email: string): Promise<any> => {
 	const res = await fetch(`${PASSWORD_RESET_URL}`, {
 		method: 'POST',
 		mode: 'cors',
@@ -134,7 +172,7 @@ export const forgotPasswordRequest = async (email) => {
 	return checkResponse(res);
 };
 
-export const resetPasswordRequest = async (form) => {
+export const resetPasswordRequest = async (form: TUserForm): Promise<any> => {
 	const res = await fetch(`${PASSWORD_RESET_URL}/reset`, {
 		method: 'POST',
 		mode: 'cors',
@@ -148,8 +186,7 @@ export const resetPasswordRequest = async (form) => {
 	return checkResponse(res);
 };
 
-export const updateUserRequest = async (form) => {
-	console.log('form', form);
+export const updateUserRequest = async (form: TUserForm): Promise<any> => {
 	const res = await fetchWithRefresh(`${AUTH_URL}/user`, {
 		method: 'PATCH',
 		mode: 'cors',
@@ -165,7 +202,7 @@ export const updateUserRequest = async (form) => {
 	return res;
 };
 
-export const logoutUserRequest = async () => {
+export const logoutUserRequest = async (): Promise<any> => {
 	const token = getTokens().accessToken;
 	const res = await fetchWithRefresh(`${AUTH_URL}/logout`, {
 		method: 'POST',
@@ -184,7 +221,10 @@ export const logoutUserRequest = async () => {
 	return res;
 };
 
-export const createOrderRequest = async (bun, ingredients) => {
+export const createOrderRequest = async (
+	bun: TIngredient,
+	ingredients: Array<TIngredient>
+): Promise<any> => {
 	const res = await fetchWithRefresh(ORDERS_URL, {
 		method: 'POST',
 		mode: 'cors',
