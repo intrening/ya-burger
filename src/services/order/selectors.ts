@@ -1,11 +1,13 @@
 import { createSelector } from 'reselect';
-
-export const getBun = (state) => state.burgerConstructor.bun;
-export const getIngredients = (state) => state.burgerConstructor.ingredients;
+import { TStore } from '@services/types';
+import { TIngredient } from '@utils/types';
+export const getBun = (state: TStore) => state.burgerConstructor.bun;
+export const getIngredients = (state: TStore) =>
+	state.burgerConstructor.ingredients;
 
 export const calculateTotalPrice = createSelector(
 	[getBun, getIngredients],
-	(bun, ingredients) => {
+	(bun: TIngredient | null, ingredients: Array<TIngredient>) => {
 		let total = 0;
 
 		if (bun && typeof bun.price === 'number') {

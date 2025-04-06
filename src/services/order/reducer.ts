@@ -4,14 +4,22 @@ import {
 	ORDER_ERROR,
 	ORDER_RESET,
 } from './actions';
-
+import { TOrderState } from '../types';
 const initialState = {
 	orderNumber: null,
 	loading: false,
 	error: null,
 };
 
-export const orderReducer = (state = initialState, action) => {
+type TOrderAction = {
+	type: string;
+	payload: number | string | null;
+};
+
+export const orderReducer = (
+	state: TOrderState = initialState,
+	action: TOrderAction
+) => {
 	switch (action.type) {
 		case ORDER_REQUEST:
 			return { ...state, loading: true, error: null };

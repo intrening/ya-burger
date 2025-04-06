@@ -1,10 +1,14 @@
 import { createSelector } from 'reselect';
+import { TIngredient } from '@utils/types';
+import { TStore } from '@services/types';
 
-export const getAllIngredients = (state) => state.burgerIngredients.ingredients;
+export const getAllIngredients = (state: TStore) =>
+	state.burgerIngredients.ingredients;
 
 export const getBunIngredients = createSelector(
 	[getAllIngredients],
-	(ingredients) => ingredients.filter((ingredient) => ingredient.type === 'bun')
+	(ingredients: Array<TIngredient>) =>
+		ingredients.filter((ingredient) => ingredient.type === 'bun')
 );
 
 export const getSauceIngredients = createSelector(
