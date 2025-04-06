@@ -3,13 +3,17 @@ import {
 	CurrencyIcon,
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { calculateTotalPrice } from '../../services/order/selectors';
+import { TStore } from '../../services/types';
 
-const OrderSummary = ({ onPlaceOrder }) => {
-	const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
+const OrderSummary: React.FC<{ onPlaceOrder: () => void }> = ({
+	onPlaceOrder,
+}) => {
+	const { bun, ingredients } = useSelector(
+		(state: TStore) => state.burgerConstructor
+	);
 	const totalPrice = useSelector(calculateTotalPrice);
 
 	const isOrderPossible = useMemo(() => {
@@ -32,10 +36,6 @@ const OrderSummary = ({ onPlaceOrder }) => {
 			</Button>
 		</div>
 	);
-};
-
-OrderSummary.propTypes = {
-	onPlaceOrder: PropTypes.func.isRequired,
 };
 
 export default OrderSummary;

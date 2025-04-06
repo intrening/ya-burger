@@ -7,7 +7,7 @@ import {
 import styles from './app-header.module.css';
 import { NavLink } from 'react-router-dom';
 
-const AppHeader = () => {
+const AppHeader: React.FC = () => {
 	return (
 		<header className={styles.header}>
 			<nav className={styles.container}>

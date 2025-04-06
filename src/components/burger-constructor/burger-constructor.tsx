@@ -17,12 +17,13 @@ import {
 import { resetOrderState, createOrder } from '../../services/order/actions';
 import { useModal } from '../hooks/useModal';
 import { useNavigate } from 'react-router-dom';
-
+import { TStore } from '../../services/types';
+import { TIngredient } from '../../utils/types';
 const BurgerConstructor = () => {
 	const dispatch = useDispatch();
 	const { isModalOpen, openModal, closeModal } = useModal();
-	const { orderNumber } = useSelector((state) => state.order);
-	const user = useSelector((state) => state.auth.user);
+	const { orderNumber } = useSelector((state: TStore) => state.order);
+	const user = useSelector((state: TStore) => state.auth.user);
 	const navigate = useNavigate();
 
 	const handlePlaceOrder = async () => {
@@ -30,6 +31,7 @@ const BurgerConstructor = () => {
 			navigate('/login');
 		}
 		openModal();
+		// @ts-expect-error: Redux
 		dispatch(createOrder(bun, ingredients));
 	};
 
@@ -43,7 +45,7 @@ const BurgerConstructor = () => {
 
 	const [{ isOver }, dropRef] = useDrop({
 		accept: 'ingredient',
-		drop: (ingredient) => {
+		drop: (ingredient: TIngredient) => {
 			dispatch(addIngredient(ingredient));
 		},
 		collect: (monitor) => ({
@@ -51,9 +53,11 @@ const BurgerConstructor = () => {
 		}),
 	});
 
-	const { ingredients, bun } = useSelector((state) => state.burgerConstructor);
+	const { ingredients, bun } = useSelector(
+		(state: TStore) => state.burgerConstructor
+	);
 
-	const moveIngredientCard = (dragIndex, hoverIndex) => {
+	const moveIngredientCard = (dragIndex: number, hoverIndex: number) => {
 		const dragItem = ingredients[dragIndex];
 		const newIngredients = [...ingredients];
 		newIngredients.splice(dragIndex, 1);
@@ -92,7 +96,7 @@ const BurgerConstructor = () => {
 					)}
 				</div>
 				<div className={`${styles.mainElements} custom-scroll`}>
-					{ingredients.map((item, index) => (
+					{ingredients.map((item: TIngredient, index: number) => (
 						<BurgerConstructorItem
 							key={item.uuid}
 							item={item}

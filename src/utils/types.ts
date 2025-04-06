@@ -5,6 +5,7 @@ export type TIngredient = {
 	image: string;
 	image_mobile: string;
 	type: string;
+	uuid: string;
 };
 
 export type TUser = {

@@ -41,7 +41,6 @@ export const createOrder =
 		try {
 			const orderNumber: number = await createOrderRequest(bun, ingredients);
 			dispatch(orderSuccess(orderNumber));
-			dispatch(resetOrderError());
 		} catch (error) {
 			// @ts-expect-error: Redux
 			dispatch(orderError(error.message));

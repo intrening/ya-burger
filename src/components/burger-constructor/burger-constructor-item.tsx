@@ -3,15 +3,18 @@ import {
 	ConstructorElement,
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredientPropType } from '../../utils/prop-types';
-import { useDrag, useDrop } from 'react-dnd';
+import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { removeIngredient } from '../../services/burger-constructor/actions';
-
-const BurgerConstructorItem = ({ item, index, moveIngredientCard }) => {
+import { TIngredient } from '../../utils/types';
+const BurgerConstructorItem: React.FC<{
+	item: TIngredient;
+	index: number;
+	moveIngredientCard: (dragIndex: number, hoverIndex: number) => void;
+}> = ({ item, index, moveIngredientCard }) => {
 	const dispatch = useDispatch();
-	const ref = useRef(null);
+	const ref = useRef<HTMLDivElement>(null);
 	const [{ isDragging }, dragRef] = useDrag({
 		type: 'constructor-ingredient',
 		item: () => {
@@ -23,12 +26,13 @@ const BurgerConstructorItem = ({ item, index, moveIngredientCard }) => {
 	});
 	const [, dropTarget] = useDrop({
 		accept: 'constructor-ingredient',
-		hover(item, monitor) {
+		hover(item: unknown, monitor: DropTargetMonitor) {
 			if (!ref.current) {
 				return;
 			}
 
-			const dragIndex = item.index;
+			const dragItem = item as { index: number };
+			const dragIndex = dragItem.index;
 			const hoverIndex = index;
 
 			if (dragIndex === undefined || dragIndex === hoverIndex) {
@@ -38,6 +42,9 @@ const BurgerConstructorItem = ({ item, index, moveIngredientCard }) => {
 			const hoverMiddleY =
 				(hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 			const clientOffset = monitor.getClientOffset();
+			if (!clientOffset) {
+				return;
+			}
 			const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 			if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
 				return;
@@ -46,7 +53,7 @@ const BurgerConstructorItem = ({ item, index, moveIngredientCard }) => {
 				return;
 			}
 			moveIngredientCard(dragIndex, hoverIndex);
-			item.index = hoverIndex;
+			dragItem.index = hoverIndex;
 		},
 	});
 	dragRef(dropTarget(ref));
@@ -67,10 +74,6 @@ const BurgerConstructorItem = ({ item, index, moveIngredientCard }) => {
 			/>
 		</div>
 	);
-};
-
-BurgerConstructorItem.propTypes = {
-	item: ingredientPropType.isRequired,
 };
 
 export default BurgerConstructorItem;
