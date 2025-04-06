@@ -6,8 +6,14 @@ import {
 	getUserRequest,
 	updateUserRequest,
 	logoutUserRequest,
+	getTokens,
 } from '../../utils/api';
-import { TUser, TUserForm, TUserRegisterForm } from '../../utils/types';
+import {
+	TUser,
+	TUserLoginForm,
+	TUserResetPasswordForm,
+	TUserRegisterUpdateForm,
+} from '../../utils/types';
 import { Dispatch } from 'redux';
 export const SET_AUTH_ERROR = 'SET_AUTH_ERROR';
 export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
@@ -29,7 +35,7 @@ export const setAuthError = (errorMessage: string | null) => ({
 });
 
 export const registerUser =
-	({ email, password, name }: TUserRegisterForm) =>
+	({ email, password, name }: TUserRegisterUpdateForm) =>
 	async (dispatch: Dispatch): Promise<boolean> => {
 		try {
 			await registerUserRequest({ email, password, name });
@@ -43,8 +49,8 @@ export const registerUser =
 	};
 
 export const loginUser =
-	({ email, password }: Omit<TUserForm, 'name'>) =>
-	async (dispatch: Dispatch) => {
+	({ email, password }: TUserLoginForm) =>
+	async (dispatch: Dispatch): Promise<TUser | null> => {
 		try {
 			const user: TUser = await loginUserRequest({ email, password });
 			dispatch(setUser(user));
@@ -53,7 +59,8 @@ export const loginUser =
 			return user;
 		} catch (error) {
 			dispatch(
-				setAuthError(error instanceof Error ? error.message : 'Unknown error')
+				// @ts-expect-error: Redux
+				setAuthError(error.message)
 			);
 			return null;
 		}
@@ -63,13 +70,14 @@ export const checkUserAuth =
 	() =>
 	async (dispatch: Dispatch): Promise<void> => {
 		try {
-			if (localStorage.getItem('accessToken')) {
+			if (getTokens().accessToken) {
 				const user: TUser = await getUserRequest();
 				dispatch(setUser(user));
 			}
 		} catch (error) {
 			dispatch(
-				setAuthError(error instanceof Error ? error.message : 'Unknown error')
+				// @ts-expect-error: Redux
+				setAuthError(error.message)
 			);
 		} finally {
 			dispatch(setAuthChecked(true));
@@ -77,16 +85,15 @@ export const checkUserAuth =
 	};
 
 export const updateUser =
-	({ email, password, name }: TUserForm) =>
+	({ email, password, name }: TUserRegisterUpdateForm) =>
 	async (dispatch: Dispatch): Promise<void> => {
 		try {
 			const user: TUser = await updateUserRequest({ email, password, name });
 			dispatch(setUser(user));
 			dispatch(setAuthError(null));
 		} catch (error) {
-			dispatch(
-				setAuthError(error instanceof Error ? error.message : 'Unknown error')
-			);
+			// @ts-expect-error: Redux
+			dispatch(setAuthError(error.message));
 		}
 	};
 
@@ -98,9 +105,8 @@ export const logoutUser =
 			dispatch(setUser(null));
 			dispatch(setAuthError(null));
 		} catch (error) {
-			dispatch(
-				setAuthError(error instanceof Error ? error.message : 'Unknown error')
-			);
+			// @ts-expect-error: Redux
+			dispatch(setAuthError(error.message));
 		}
 	};
 
@@ -111,21 +117,19 @@ export const forgotPassword =
 			await forgotPasswordRequest(email);
 			dispatch(setAuthError(null));
 		} catch (error) {
-			dispatch(
-				setAuthError(error instanceof Error ? error.message : 'Unknown error')
-			);
+			// @ts-expect-error: Redux
+			dispatch(setAuthError(error.message));
 		}
 	};
 
 export const resetPassword =
-	({ email, password }: TUserForm) =>
+	({ password, token }: TUserResetPasswordForm) =>
 	async (dispatch: Dispatch): Promise<void> => {
 		try {
-			await resetPasswordRequest({ email, password });
+			await resetPasswordRequest({ password, token });
 			dispatch(setAuthError(null));
 		} catch (error) {
-			dispatch(
-				setAuthError(error instanceof Error ? error.message : 'Unknown error')
-			);
+			// @ts-expect-error: Redux
+			dispatch(setAuthError(error.message));
 		}
 	};

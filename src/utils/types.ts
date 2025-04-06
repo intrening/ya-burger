@@ -12,16 +12,18 @@ export type TUser = {
 	name: string;
 };
 
-export type TUserForm = {
-	email: string;
-	name?: string;
+export type TUserRegisterUpdateForm = TUser & {
 	password: string;
 };
 
-export type TUserRegisterForm = {
+export type TUserLoginForm = {
 	email: string;
-	name: string;
 	password: string;
+};
+
+export type TUserResetPasswordForm = {
+	password: string;
+	token: string;
 };
 
 export type TOrder = {

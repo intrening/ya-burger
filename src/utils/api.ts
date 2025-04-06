@@ -3,10 +3,11 @@ export const INGREDIENTS_URL = `${API_URL_DOMAIN}/api/ingredients`;
 export const ORDERS_URL = `${API_URL_DOMAIN}/api/orders`;
 import {
 	TIngredient,
-	TUserForm,
 	TUser,
 	TOrder,
-	TUserRegisterForm,
+	TUserLoginForm,
+	TUserRegisterUpdateForm,
+	TUserResetPasswordForm,
 } from './types';
 
 const AUTH_URL = `${API_URL_DOMAIN}/api/auth`;
@@ -38,7 +39,7 @@ const setTokens = (responseData: TAPIResponseData): TTokens => {
 	};
 };
 
-const getTokens = (): TTokens => {
+export const getTokens = (): TTokens => {
 	return {
 		accessToken: localStorage.getItem('accessToken') || '',
 		refreshToken: localStorage.getItem('refreshToken') || '',
@@ -115,7 +116,7 @@ export const registerUserRequest = async ({
 	email,
 	password,
 	name,
-}: TUserRegisterForm): Promise<TAPIResponseData> => {
+}: TUserRegisterUpdateForm): Promise<TAPIResponseData> => {
 	const res = await fetch(`${AUTH_URL}/register`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -127,16 +128,14 @@ export const registerUserRequest = async ({
 export const loginUserRequest = async ({
 	email,
 	password,
-}: Omit<TUserForm, 'name'>): Promise<TUser> => {
+}: TUserLoginForm): Promise<TUser> => {
 	const res = await fetch(`${AUTH_URL}/login`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ email, password }),
 	});
 	const responseData = await checkResponse(res);
-	if (responseData.success) {
-		setTokens(responseData);
-	}
+	setTokens(responseData);
 	if (!responseData.user) {
 		throw new Error('User not found');
 	}
@@ -157,7 +156,7 @@ export const getUserRequest = async (): Promise<TUser> => {
 	return res.user;
 };
 
-export const forgotPasswordRequest = async (email: string): Promise<any> => {
+export const forgotPasswordRequest = async (email: string): Promise<void> => {
 	const res = await fetch(`${PASSWORD_RESET_URL}`, {
 		method: 'POST',
 		mode: 'cors',
@@ -168,11 +167,13 @@ export const forgotPasswordRequest = async (email: string): Promise<any> => {
 		},
 		body: JSON.stringify({ email }),
 	});
-	return checkResponse(res);
+	await checkResponse(res);
 };
 
-export const resetPasswordRequest = async (form: TUserForm): Promise<any> => {
-	const res = await fetch(`${PASSWORD_RESET_URL}/reset`, {
+export const resetPasswordRequest = async (
+	form: TUserResetPasswordForm
+): Promise<void> => {
+	const responseData = await fetch(`${PASSWORD_RESET_URL}/reset`, {
 		method: 'POST',
 		mode: 'cors',
 		cache: 'no-cache',
@@ -182,11 +183,13 @@ export const resetPasswordRequest = async (form: TUserForm): Promise<any> => {
 		},
 		body: JSON.stringify(form),
 	});
-	return checkResponse(res);
+	await checkResponse(responseData);
 };
 
-export const updateUserRequest = async (form: TUserForm): Promise<any> => {
-	const res = await fetchWithRefresh(`${AUTH_URL}/user`, {
+export const updateUserRequest = async (
+	form: TUserRegisterUpdateForm
+): Promise<TUser> => {
+	const responseData = await fetchWithRefresh(`${AUTH_URL}/user`, {
 		method: 'PATCH',
 		mode: 'cors',
 		cache: 'no-cache',
@@ -197,13 +200,15 @@ export const updateUserRequest = async (form: TUserForm): Promise<any> => {
 		},
 		body: JSON.stringify(form),
 	});
-
-	return res;
+	if (!responseData.success || !responseData.user) {
+		throw new Error('User not found');
+	}
+	return responseData.user;
 };
 
-export const logoutUserRequest = async (): Promise<any> => {
+export const logoutUserRequest = async (): Promise<void> => {
 	const token = getTokens().accessToken;
-	const res = await fetchWithRefresh(`${AUTH_URL}/logout`, {
+	await fetchWithRefresh(`${AUTH_URL}/logout`, {
 		method: 'POST',
 		mode: 'cors',
 		cache: 'no-cache',
@@ -217,7 +222,6 @@ export const logoutUserRequest = async (): Promise<any> => {
 		}),
 	});
 	clearTokens();
-	return res;
 };
 
 export const createOrderRequest = async (
