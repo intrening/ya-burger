@@ -1,16 +1,19 @@
-import React from 'react';
 import styles from './modal.module.css';
-import PropTypes from 'prop-types';
 
-const ModalOverlay = ({ onClick }) => {
-	const handleClick = (e) => {
+const ModalOverlay = ({
+	onClick,
+}: {
+	onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+}) => {
+	const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
 		e.stopPropagation();
 		onClick(e);
 	};
 
-	const handleKeyDown = (e) => {
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
 		if (e.key === 'Enter' || e.key === ' ') {
 			e.preventDefault();
+			// @ts-expect-error: Redux
 			onClick(e);
 		}
 	};
@@ -23,10 +26,6 @@ const ModalOverlay = ({ onClick }) => {
 			role='button'
 			tabIndex={0}></div>
 	);
-};
-
-ModalOverlay.propTypes = {
-	onClick: PropTypes.func.isRequired,
 };
 
 export default ModalOverlay;

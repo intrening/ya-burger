@@ -3,13 +3,16 @@ import {
 	Counter,
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredientPropType } from '../../../utils/prop-types';
 import { useSelector } from 'react-redux';
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
+import { TIngredient } from '../../../utils/types';
+import { TStore } from '../../../services/types';
 
-const IngredientCard = ({ ingredient }) => {
+const IngredientCard: React.FC<{ ingredient: TIngredient }> = ({
+	ingredient,
+}) => {
 	const location = useLocation();
 	const [{ isDragging }, dragRef] = useDrag({
 		type: 'ingredient',
@@ -19,7 +22,9 @@ const IngredientCard = ({ ingredient }) => {
 		}),
 	});
 
-	const burgerConstructor = useSelector((state) => state.burgerConstructor);
+	const burgerConstructor = useSelector(
+		(state: TStore) => state.burgerConstructor
+	);
 
 	const calculateCount = useMemo(() => {
 		const { bun, ingredients } = burgerConstructor;
@@ -64,10 +69,6 @@ const IngredientCard = ({ ingredient }) => {
 			</Link>
 		</>
 	);
-};
-
-IngredientCard.propTypes = {
-	ingredient: ingredientPropType.isRequired,
 };
 
 export default IngredientCard;

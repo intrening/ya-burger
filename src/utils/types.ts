@@ -8,6 +8,13 @@ export type TIngredient = {
 	uuid: string;
 };
 
+export type TIngredientCategory = {
+	id: string;
+	title: string;
+	ingredients: Array<TIngredient>;
+	ref: React.RefObject<HTMLDivElement>;
+};
+
 export type TUser = {
 	email: string;
 	name: string;

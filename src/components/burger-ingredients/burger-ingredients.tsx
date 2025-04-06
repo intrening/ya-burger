@@ -13,22 +13,26 @@ import {
 	getMainIngredients,
 } from '../../services/burger-ingredients/selectors';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { TStore } from '@services/types';
 
 const BurgerIngredients = () => {
 	const bunIngredients = useSelector(getBunIngredients);
 	const sauceIngredients = useSelector(getSauceIngredients);
 	const mainIngredients = useSelector(getMainIngredients);
 
-	const { isLoading, error } = useSelector((state) => state.burgerIngredients);
+	const { isLoading, error } = useSelector(
+		(state: TStore) => state.burgerIngredients
+	);
 	const [activeTab, setActiveTab] = useState('bun');
-	const containerRef = useRef(null);
-	const bunRef = useRef(null);
-	const sauceRef = useRef(null);
-	const mainRef = useRef(null);
+	const containerRef = useRef<HTMLDivElement>(null);
+	const bunRef = useRef<HTMLDivElement>(null);
+	const sauceRef = useRef<HTMLDivElement>(null);
+	const mainRef = useRef<HTMLDivElement>(null);
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		// @ts-expect-error: Redux
 		dispatch(fetchIngredients());
 	}, [dispatch]);
 
@@ -87,7 +91,7 @@ const BurgerIngredients = () => {
 		setActiveTab(newActiveTab);
 	}, []);
 
-	const handleTabClick = useCallback((ref) => {
+	const handleTabClick = useCallback((ref: React.RefObject<HTMLDivElement>) => {
 		if (ref && ref.current) {
 			setActiveTab(ref.current.id);
 			ref.current.scrollIntoView({ behavior: 'smooth' });
@@ -96,7 +100,7 @@ const BurgerIngredients = () => {
 
 	const handleRetry = () => {
 		dispatch(resetIngredientsState());
-		dispatch(fetchIngredients());
+		fetchIngredients();
 	};
 
 	if (isLoading) {

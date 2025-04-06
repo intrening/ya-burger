@@ -18,7 +18,7 @@ import { useEffect } from 'react';
 import { OnlyAuth, OnlyUnAuth } from '../protected-route';
 import Feed from '../../pages/feed';
 
-const App = () => {
+const App: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -29,6 +29,7 @@ const App = () => {
 	};
 
 	useEffect(() => {
+		// @ts-expect-error: Redux
 		dispatch(checkUserAuth());
 	}, [dispatch]);
 
