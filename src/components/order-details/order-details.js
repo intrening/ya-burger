@@ -1,31 +1,9 @@
 import styles from '../modal/modal.module.css';
-import {
-	CheckMarkIcon,
-	Button,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { createOrder, resetOrderState } from '../../services/order/actions';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useSelector } from 'react-redux';
 
 const OrderDetails = () => {
-	const dispatch = useDispatch();
 	const { orderNumber, loading, error } = useSelector((state) => state.order);
-	const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
-	const user = useSelector((state) => state.auth.user);
-	const navigate = useNavigate();
-	useEffect(() => {
-		if (!user) {
-			navigate('/login');
-		}
-		if (!orderNumber && !error && !loading) {
-			dispatch(createOrder(bun, ingredients));
-		}
-	}, [dispatch, bun, ingredients, orderNumber, error, loading, user, navigate]);
-
-	const handleRetry = () => {
-		dispatch(resetOrderState());
-	};
 
 	if (loading) {
 		return (
@@ -45,13 +23,6 @@ const OrderDetails = () => {
 					Ошибка при оформлении заказа
 				</p>
 				<p className={'text text_type_main-default mb-10'}>{error}</p>
-				<Button
-					htmlType='button'
-					type='primary'
-					size='medium'
-					onClick={handleRetry}>
-					Попробовать снова
-				</Button>
 			</div>
 		);
 	}

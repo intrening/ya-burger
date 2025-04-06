@@ -1,5 +1,5 @@
 import { createOrderRequest } from '../../utils/api';
-import { TOrder, TIngredient } from '../../utils/types';
+import { TIngredient } from '../../utils/types';
 import { Dispatch } from 'redux';
 
 export const ORDER_REQUEST = 'ORDER_REQUEST';
@@ -11,9 +11,9 @@ export const orderRequest = () => ({
 	type: ORDER_REQUEST,
 });
 
-export const orderSuccess = (data: TOrder) => ({
+export const orderSuccess = (orderNumber: number) => ({
 	type: ORDER_SUCCESS,
-	payload: data.number,
+	payload: orderNumber,
 });
 
 export const orderError = (error: string) => ({
@@ -21,34 +21,29 @@ export const orderError = (error: string) => ({
 	payload: error,
 });
 
+export const resetOrderError = () => ({
+	type: ORDER_ERROR,
+	payload: null,
+});
+
 export const resetOrderState = () => ({
 	type: ORDER_RESET,
 });
 
-export const createOrder = (
-	bun: TIngredient,
-	ingredients: Array<TIngredient>
-) => {
-	return async (dispatch: Dispatch) => {
+export const createOrder =
+	(bun: TIngredient, ingredients: Array<TIngredient>) =>
+	async (dispatch: Dispatch): Promise<void> => {
 		if (!bun || !bun._id) {
 			dispatch(orderError('Необходимо добавить булку для оформления заказа'));
 			return;
 		}
 		dispatch(orderRequest());
 		try {
-			const order: TOrder = await createOrderRequest(bun, ingredients);
-			dispatch(orderSuccess(order));
-			setTimeout(() => {
-				dispatch(resetOrderState());
-			}, 5000);
+			const orderNumber: number = await createOrderRequest(bun, ingredients);
+			dispatch(orderSuccess(orderNumber));
+			dispatch(resetOrderError());
 		} catch (error) {
-			dispatch(
-				orderError(
-					error instanceof Error
-						? error.message
-						: 'Неизвестная ошибка оформления заказа'
-				)
-			);
+			// @ts-expect-error: Redux
+			dispatch(orderError(error.message));
 		}
 	};
-};

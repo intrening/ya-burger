@@ -4,7 +4,6 @@ export const ORDERS_URL = `${API_URL_DOMAIN}/api/orders`;
 import {
 	TIngredient,
 	TUser,
-	TOrder,
 	TUserLoginForm,
 	TUserRegisterUpdateForm,
 	TUserResetPasswordForm,
@@ -227,7 +226,7 @@ export const logoutUserRequest = async (): Promise<void> => {
 export const createOrderRequest = async (
 	bun: TIngredient,
 	ingredients: Array<TIngredient>
-): Promise<TOrder> => {
+): Promise<number> => {
 	const responseData = await fetchWithRefresh(ORDERS_URL, {
 		method: 'POST',
 		mode: 'cors',
@@ -249,5 +248,5 @@ export const createOrderRequest = async (
 	) {
 		throw new Error('Некорректный формат данных с сервера');
 	}
-	return responseData.order;
+	return responseData.order.number;
 };

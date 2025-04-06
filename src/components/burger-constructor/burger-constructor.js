@@ -12,12 +12,34 @@ import { useDrop } from 'react-dnd';
 import {
 	addIngredient,
 	setIngredients,
+	resetConstructor,
 } from '../../services/burger-constructor/actions';
+import { resetOrderState, createOrder } from '../../services/order/actions';
 import { useModal } from '../hooks/useModal';
+import { useNavigate } from 'react-router-dom';
 
 const BurgerConstructor = () => {
 	const dispatch = useDispatch();
 	const { isModalOpen, openModal, closeModal } = useModal();
+	const { orderNumber } = useSelector((state) => state.order);
+	const user = useSelector((state) => state.auth.user);
+	const navigate = useNavigate();
+
+	const handlePlaceOrder = async () => {
+		if (!user) {
+			navigate('/login');
+		}
+		openModal();
+		dispatch(createOrder(bun, ingredients));
+	};
+
+	const handleModalClose = () => {
+		closeModal();
+		if (orderNumber) {
+			dispatch(resetOrderState());
+			dispatch(resetConstructor());
+		}
+	};
 
 	const [{ isOver }, dropRef] = useDrop({
 		accept: 'ingredient',
@@ -101,11 +123,11 @@ const BurgerConstructor = () => {
 						/>
 					)}
 				</div>
-				<OrderSummary onPlaceOrder={openModal} />
+				<OrderSummary onPlaceOrder={handlePlaceOrder} />
 			</div>
 
 			{isModalOpen && (
-				<Modal onClose={closeModal}>
+				<Modal onClose={handleModalClose}>
 					<OrderDetails />
 				</Modal>
 			)}

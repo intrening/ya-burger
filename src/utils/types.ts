@@ -25,7 +25,3 @@ export type TUserResetPasswordForm = {
 	password: string;
 	token: string;
 };
-
-export type TOrder = {
-	number: number;
-};

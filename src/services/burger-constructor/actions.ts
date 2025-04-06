@@ -6,6 +6,7 @@ export const ADD_INGREDIENT = 'ADD_INGREDIENT';
 export const SET_BUN = 'SET_BUN';
 export const SET_INGREDIENTS = 'SET_INGREDIENTS';
 export const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT';
+export const RESET_CONSTRUCTOR = 'RESET_CONSTRUCTOR';
 
 export const addIngredient = (ingredient: TIngredient) => {
 	if (ingredient.type === 'bun') {
@@ -29,4 +30,8 @@ export const removeIngredient = (index: number) => ({
 export const setIngredients = (ingredients: Array<TIngredient>) => ({
 	type: SET_INGREDIENTS,
 	payload: ingredients,
+});
+
+export const resetConstructor = () => ({
+	type: RESET_CONSTRUCTOR,
 });

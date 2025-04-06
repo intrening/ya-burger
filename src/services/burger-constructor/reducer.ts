@@ -3,6 +3,7 @@ import {
 	SET_BUN,
 	SET_INGREDIENTS,
 	REMOVE_INGREDIENT,
+	RESET_CONSTRUCTOR,
 } from './actions';
 import { TConstructorState } from '../types';
 import { TIngredient } from '@utils/types';
@@ -37,6 +38,8 @@ export const burgerConstructorReducer = (
 			return { ...state, ingredients: action.payload };
 		case SET_BUN:
 			return { ...state, bun: action.payload };
+		case RESET_CONSTRUCTOR:
+			return initialState;
 		default:
 			return state;
 	}
