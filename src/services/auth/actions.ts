@@ -39,7 +39,6 @@ export const registerUser =
 	async (dispatch: Dispatch): Promise<boolean> => {
 		try {
 			await registerUserRequest({ email, password, name });
-			dispatch(setAuthError(null));
 			return true;
 		} catch (error) {
 			// @ts-expect-error: Redux

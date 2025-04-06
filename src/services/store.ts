@@ -1,5 +1,10 @@
-import { thunk } from 'redux-thunk';
-import { combineReducers, createStore, applyMiddleware } from 'redux';
+import { thunk, ThunkDispatch } from 'redux-thunk';
+import {
+	combineReducers,
+	createStore,
+	applyMiddleware,
+	AnyAction,
+} from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
 import { ingredientsReducer } from './burger-ingredients/reducer';
 import { burgerConstructorReducer } from './burger-constructor/reducer';
@@ -13,6 +18,8 @@ const rootReducer = combineReducers({
 	order: orderReducer,
 	auth: authReducer,
 });
+
+export type AppDispatch = ThunkDispatch<TStore, any, AnyAction>;
 
 export const configureStore = (initialState: TStore) => {
 	return createStore(

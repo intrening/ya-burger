@@ -8,15 +8,17 @@ import AuthForm from '../../components/auth/auth-form';
 import styles from '../../components/auth/auth-form.module.css';
 import { useState } from 'react';
 import { registerUser } from '../../services/auth/actions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { TStore } from '@services/types';
+import { AppDispatch } from '../../services/store';
 
 const Register = () => {
 	const [form, setForm] = useState({ name: '', email: '', password: '' });
-	const dispatch = useDispatch();
-	const authError = useSelector((state) => state.auth.authError);
+	const authError = useSelector((state: TStore) => state.auth.authError);
 	const navigate = useNavigate();
+	const dispatch = useDispatch<AppDispatch>();
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const success = await dispatch(registerUser(form));
 		if (success) {
