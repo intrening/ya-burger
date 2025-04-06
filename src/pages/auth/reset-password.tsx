@@ -11,7 +11,7 @@ import { resetPassword } from '../../services/auth/actions';
 import { TStore } from '@services/types';
 import { AppDispatch } from '../../services/store';
 
-const ResetPassword = () => {
+const ResetPassword: React.FC = () => {
 	const [form, setForm] = useState({ password: '', token: '' });
 	const dispatch = useDispatch<AppDispatch>();
 	const authError = useSelector((state: TStore) => state.auth.authError);

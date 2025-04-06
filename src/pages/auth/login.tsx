@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TStore } from '../../services/types';
 import { AppDispatch } from '../../services/store';
 
-const Login = () => {
+const Login: React.FC = () => {
 	const [form, setForm] = useState({ email: '', password: '' });
 	const authError = useSelector((state: TStore) => state.auth.authError);
 	const dispatch = useDispatch<AppDispatch>();

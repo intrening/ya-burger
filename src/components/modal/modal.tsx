@@ -6,15 +6,11 @@ import styles from './modal.module.css';
 
 const modalRoot = document.getElementById('react-modals');
 
-function Modal({
-	children,
-	header,
-	onClose,
-}: {
+const Modal: React.FC<{
 	children: React.ReactNode;
-	header: string;
+	header?: string;
 	onClose: () => void;
-}) {
+}> = ({ children, header = '', onClose }) => {
 	useEffect(() => {
 		const handleEscKeydown = (evt: KeyboardEvent) => {
 			if (evt.key === 'Escape') {
@@ -53,10 +49,6 @@ function Modal({
 		</>,
 		modalRoot as HTMLElement
 	);
-}
-
-Modal.defaultProps = {
-	header: '',
 };
 
 export default Modal;

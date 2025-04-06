@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { TStore } from '@services/types';
 import { AppDispatch } from '../../services/store';
 
-const Register = () => {
+const Register: React.FC = () => {
 	const [form, setForm] = useState({ name: '', email: '', password: '' });
 	const authError = useSelector((state: TStore) => state.auth.authError);
 	const navigate = useNavigate();

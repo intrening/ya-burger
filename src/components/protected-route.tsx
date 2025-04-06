@@ -2,13 +2,10 @@ import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import { TStore } from '@services/types';
 
-const Protected = ({
-	onlyUnAuth = false,
-	component,
-}: {
+const Protected: React.FC<{
 	onlyUnAuth: boolean;
 	component: React.ReactNode;
-}) => {
+}> = ({ onlyUnAuth, component }) => {
 	const isAuthChecked = useSelector(
 		(store: TStore) => store.auth.isAuthChecked
 	);

@@ -3,7 +3,7 @@ import styles from '../modal/modal.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from 'react-redux';
 
-const OrderDetails = () => {
+const OrderDetails: React.FC = () => {
 	const { orderNumber, loading, error } = useSelector(
 		(state: TStore) => state.order
 	);

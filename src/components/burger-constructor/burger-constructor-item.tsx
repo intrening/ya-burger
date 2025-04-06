@@ -8,6 +8,7 @@ import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { removeIngredient } from '../../services/burger-constructor/actions';
 import { TIngredient } from '../../utils/types';
+
 const BurgerConstructorItem: React.FC<{
 	item: TIngredient;
 	index: number;

@@ -8,7 +8,7 @@ import { forgotPassword } from '../../services/auth/actions';
 import { TStore } from '@services/types';
 import { AppDispatch } from '../../services/store';
 
-const ForgotPassword = () => {
+const ForgotPassword: React.FC = () => {
 	const [email, setEmail] = useState('');
 	const navigate = useNavigate();
 	const location = useLocation();

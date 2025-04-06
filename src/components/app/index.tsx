@@ -18,6 +18,7 @@ import { useEffect } from 'react';
 import { OnlyAuth, OnlyUnAuth } from '../protected-route';
 import Feed from '../../pages/feed';
 import { AppDispatch } from '../../services/store';
+
 const App: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
