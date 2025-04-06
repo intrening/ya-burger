@@ -5,7 +5,8 @@ import { ingredientsReducer } from './burger-ingredients/reducer';
 import { burgerConstructorReducer } from './burger-constructor/reducer';
 import { orderReducer } from './order/reducer';
 import { authReducer } from './auth/reducer';
-import { TStore } from '../utils/types';
+import { TStore } from './types';
+
 const rootReducer = combineReducers({
 	burgerIngredients: ingredientsReducer,
 	burgerConstructor: burgerConstructorReducer,
