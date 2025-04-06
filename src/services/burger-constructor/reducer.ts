@@ -4,6 +4,8 @@ import {
 	SET_INGREDIENTS,
 	REMOVE_INGREDIENT,
 } from './actions';
+import { TConstructorState } from '../types';
+import { TIngredient } from '@utils/types';
 
 const initialState = {
 	ingredients: [],
@@ -12,7 +14,15 @@ const initialState = {
 	error: null,
 };
 
-export const burgerConstructorReducer = (state = initialState, action) => {
+type TConstructorAction = {
+	type: string;
+	payload: TIngredient | number;
+};
+
+export const burgerConstructorReducer = (
+	state: TConstructorState = initialState,
+	action: TConstructorAction
+) => {
 	switch (action.type) {
 		case ADD_INGREDIENT:
 			return { ...state, ingredients: [...state.ingredients, action.payload] };
