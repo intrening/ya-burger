@@ -123,12 +123,14 @@ export const forgotPassword =
 
 export const resetPassword =
 	({ password, token }: TUserResetPasswordForm) =>
-	async (dispatch: Dispatch): Promise<void> => {
+	async (dispatch: Dispatch): Promise<boolean> => {
 		try {
 			await resetPasswordRequest({ password, token });
 			dispatch(setAuthError(null));
+			return true;
 		} catch (error) {
 			// @ts-expect-error: Redux
 			dispatch(setAuthError(error.message));
+			return false;
 		}
 	};

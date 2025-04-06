@@ -8,11 +8,13 @@ import styles from '../../components/auth/auth-form.module.css';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetPassword } from '../../services/auth/actions';
+import { TStore } from '@services/types';
+import { AppDispatch } from '../../services/store';
 
 const ResetPassword = () => {
 	const [form, setForm] = useState({ password: '', token: '' });
-	const dispatch = useDispatch();
-	const authError = useSelector((state) => state.auth.authError);
+	const dispatch = useDispatch<AppDispatch>();
+	const authError = useSelector((state: TStore) => state.auth.authError);
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -20,10 +22,12 @@ const ResetPassword = () => {
 		return <Navigate to='/forgot-password' replace />;
 	}
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		dispatch(resetPassword(form));
-		navigate('/login');
+		const success = await dispatch(resetPassword(form));
+		if (success) {
+			navigate('/login');
+		}
 	};
 
 	const extraContent = (
