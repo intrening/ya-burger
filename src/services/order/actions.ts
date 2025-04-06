@@ -31,7 +31,7 @@ export const resetOrderState = () => ({
 });
 
 export const createOrder =
-	(bun: TIngredient, ingredients: Array<TIngredient>) =>
+	(bun: TIngredient | null, ingredients: Array<TIngredient>) =>
 	async (dispatch: Dispatch): Promise<void> => {
 		if (!bun || !bun._id) {
 			dispatch(orderError('Необходимо добавить булку для оформления заказа'));

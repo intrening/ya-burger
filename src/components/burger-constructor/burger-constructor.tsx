@@ -19,8 +19,10 @@ import { useModal } from '../hooks/useModal';
 import { useNavigate } from 'react-router-dom';
 import { TStore } from '../../services/types';
 import { TIngredient } from '../../utils/types';
-const BurgerConstructor = () => {
-	const dispatch = useDispatch();
+import { AppDispatch } from '../../services/store';
+
+const BurgerConstructor: React.FC = () => {
+	const dispatch = useDispatch<AppDispatch>();
 	const { isModalOpen, openModal, closeModal } = useModal();
 	const { orderNumber } = useSelector((state: TStore) => state.order);
 	const user = useSelector((state: TStore) => state.auth.user);
@@ -31,8 +33,7 @@ const BurgerConstructor = () => {
 			navigate('/login');
 		}
 		openModal();
-		// @ts-expect-error: Redux
-		dispatch(createOrder(bun, ingredients));
+		await dispatch(createOrder(bun, ingredients));
 	};
 
 	const handleModalClose = () => {

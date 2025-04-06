@@ -1,18 +1,22 @@
 import styles from './profile.module.css';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../services/auth/actions';
+import { AppDispatch } from '../services/store';
 
 const Profile = () => {
-	const dispatch = useDispatch();
-	const getNavLinkClass = ({ isActive }) =>
+	const dispatch = useDispatch<AppDispatch>();
+	const navigate = useNavigate();
+	const getNavLinkClass = ({ isActive }: { isActive: boolean }) =>
 		`text text_type_main-medium ${
 			isActive ? styles.link_active : 'text_color_inactive'
 		} ${styles.link}`;
 
-	const handleLogout = () => {
-		dispatch(logoutUser());
+	const handleLogout = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+		e.preventDefault();
+		await dispatch(logoutUser());
+		navigate('/login');
 	};
 
 	return (
@@ -25,6 +29,7 @@ const Profile = () => {
 					История заказов
 				</NavLink>
 				<NavLink
+					to='/login'
 					onClick={handleLogout}
 					className={`text text_type_main-medium text_color_inactive ${styles.link}`}>
 					Выход

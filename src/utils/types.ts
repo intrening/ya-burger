@@ -6,6 +6,11 @@ export type TIngredient = {
 	image_mobile: string;
 	type: string;
 	uuid: string;
+	image_large: string;
+	proteins: number;
+	fat: number;
+	carbohydrates: number;
+	calories: number;
 };
 
 export type TIngredientCategory = {

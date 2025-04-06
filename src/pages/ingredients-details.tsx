@@ -3,15 +3,17 @@ import { useParams, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchIngredients } from '../services/burger-ingredients/actions';
+import { TStore } from '@services/types';
+import { AppDispatch } from '../services/store';
 
-function IngredientsDetails() {
+const IngredientsDetails: React.FC = () => {
 	const { ingredientId } = useParams();
 	const location = useLocation();
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 	const background = location.state?.background;
 
 	const { ingredients, isLoading, error } = useSelector(
-		(state) => state.burgerIngredients
+		(state: TStore) => state.burgerIngredients
 	);
 
 	useEffect(() => {
@@ -95,6 +97,6 @@ function IngredientsDetails() {
 			</div>
 		</div>
 	);
-}
+};
 
 export default IngredientsDetails;

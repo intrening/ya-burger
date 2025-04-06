@@ -57,10 +57,8 @@ export const loginUser =
 			dispatch(setAuthChecked(true));
 			return user;
 		} catch (error) {
-			dispatch(
-				// @ts-expect-error: Redux
-				setAuthError(error.message)
-			);
+			// @ts-expect-error: Redux
+			dispatch(setAuthError(error.message));
 			return null;
 		}
 	};
@@ -74,10 +72,8 @@ export const checkUserAuth =
 				dispatch(setUser(user));
 			}
 		} catch (error) {
-			dispatch(
-				// @ts-expect-error: Redux
-				setAuthError(error.message)
-			);
+			// @ts-expect-error: Redux
+			dispatch(setAuthError(error.message));
 		} finally {
 			dispatch(setAuthChecked(true));
 		}

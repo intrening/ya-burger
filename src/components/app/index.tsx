@@ -17,11 +17,11 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { OnlyAuth, OnlyUnAuth } from '../protected-route';
 import Feed from '../../pages/feed';
-
+import { AppDispatch } from '../../services/store';
 const App: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 	const background = location.state && location.state.background;
 
 	const handleModalClose = () => {
@@ -29,7 +29,6 @@ const App: React.FC = () => {
 	};
 
 	useEffect(() => {
-		// @ts-expect-error: Redux
 		dispatch(checkUserAuth());
 	}, [dispatch]);
 
