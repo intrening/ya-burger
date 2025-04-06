@@ -7,6 +7,7 @@ import {
 	updateUserRequest,
 	logoutUserRequest,
 	getTokens,
+	parseApiError,
 } from '../../utils/api';
 import {
 	TUser,
@@ -41,8 +42,7 @@ export const registerUser =
 			await registerUserRequest({ email, password, name });
 			return true;
 		} catch (error) {
-			// @ts-expect-error: Redux
-			dispatch(setAuthError(error.message));
+			dispatch(setAuthError(parseApiError(error)));
 			return false;
 		}
 	};
@@ -57,8 +57,7 @@ export const loginUser =
 			dispatch(setAuthChecked(true));
 			return user;
 		} catch (error) {
-			// @ts-expect-error: Redux
-			dispatch(setAuthError(error.message));
+			dispatch(setAuthError(parseApiError(error)));
 			return null;
 		}
 	};
@@ -72,8 +71,7 @@ export const checkUserAuth =
 				dispatch(setUser(user));
 			}
 		} catch (error) {
-			// @ts-expect-error: Redux
-			dispatch(setAuthError(error.message));
+			dispatch(setAuthError(parseApiError(error)));
 		} finally {
 			dispatch(setAuthChecked(true));
 		}
@@ -87,8 +85,7 @@ export const updateUser =
 			dispatch(setUser(user));
 			dispatch(setAuthError(null));
 		} catch (error) {
-			// @ts-expect-error: Redux
-			dispatch(setAuthError(error.message));
+			dispatch(setAuthError(parseApiError(error)));
 		}
 	};
 
@@ -100,8 +97,7 @@ export const logoutUser =
 			dispatch(setUser(null));
 			dispatch(setAuthError(null));
 		} catch (error) {
-			// @ts-expect-error: Redux
-			dispatch(setAuthError(error.message));
+			dispatch(setAuthError(parseApiError(error)));
 		}
 	};
 
@@ -112,8 +108,7 @@ export const forgotPassword =
 			await forgotPasswordRequest(email);
 			dispatch(setAuthError(null));
 		} catch (error) {
-			// @ts-expect-error: Redux
-			dispatch(setAuthError(error.message));
+			dispatch(setAuthError(parseApiError(error)));
 		}
 	};
 
@@ -125,8 +120,7 @@ export const resetPassword =
 			dispatch(setAuthError(null));
 			return true;
 		} catch (error) {
-			// @ts-expect-error: Redux
-			dispatch(setAuthError(error.message));
+			dispatch(setAuthError(parseApiError(error)));
 			return false;
 		}
 	};

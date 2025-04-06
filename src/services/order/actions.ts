@@ -1,4 +1,4 @@
-import { createOrderRequest } from '../../utils/api';
+import { createOrderRequest, parseApiError } from '../../utils/api';
 import { TIngredient } from '../../utils/types';
 import { Dispatch } from 'redux';
 
@@ -42,7 +42,6 @@ export const createOrder =
 			const orderNumber: number = await createOrderRequest(bun, ingredients);
 			dispatch(orderSuccess(orderNumber));
 		} catch (error) {
-			// @ts-expect-error: Redux
-			dispatch(orderError(error.message));
+			dispatch(orderError(parseApiError(error)));
 		}
 	};

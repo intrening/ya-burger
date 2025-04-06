@@ -50,6 +50,13 @@ const clearTokens = () => {
 	localStorage.removeItem('refreshToken');
 };
 
+export const parseApiError = (error: unknown): string => {
+	if (error instanceof Object && 'message' in error) {
+		return (error as { message: string }).message;
+	}
+	return 'Неизвестная ошибка';
+};
+
 export const checkResponse = (res: Response): Promise<TAPIResponseData> => {
 	return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };

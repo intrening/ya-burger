@@ -1,4 +1,4 @@
-import { fetchIngredientsRequest } from '../../utils/api';
+import { fetchIngredientsRequest, parseApiError } from '../../utils/api';
 import { TIngredient } from '../../utils/types';
 import { Dispatch } from 'redux';
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
@@ -32,8 +32,7 @@ export const fetchIngredients =
 			const ingredients: Array<TIngredient> = await fetchIngredientsRequest();
 			dispatch(getIngredientsSuccess(ingredients));
 		} catch (error) {
-			// @ts-expect-error: Redux
-			dispatch(getIngredientsError(error.message));
+			dispatch(getIngredientsError(parseApiError(error)));
 			setTimeout(() => {
 				dispatch(resetIngredientsState());
 			}, 5000);
