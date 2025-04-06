@@ -78,8 +78,7 @@ export const refreshTokens = async (): Promise<TTokens> => {
 		}
 		return setTokens(refreshData);
 	} catch (err) {
-		// @ts-expect-error: Redux
-		if (err.message === 'Token is invalid') {
+		if (parseApiError(err) === 'Token is invalid') {
 			clearTokens();
 		}
 		return Promise.reject(err);
@@ -94,8 +93,7 @@ export const fetchWithRefresh = async (
 		const res = await fetch(url, options);
 		return await checkResponse(res);
 	} catch (err) {
-		// @ts-expect-error: Redux
-		if (err.message === 'jwt expired') {
+		if (parseApiError(err) === 'jwt expired') {
 			const tokens: TTokens = await refreshTokens();
 			options.headers.authorization = tokens.accessToken;
 			const res = await fetch(url, options);
