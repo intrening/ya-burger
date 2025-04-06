@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 const domNode = document.getElementById('root') as HTMLElement;
 const root = createRoot(domNode);
+// @ts-expect-error: Redux
 const store = configureStore();
 
 root.render(

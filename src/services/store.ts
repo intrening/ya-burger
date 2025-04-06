@@ -5,7 +5,7 @@ import { ingredientsReducer } from './burger-ingredients/reducer';
 import { burgerConstructorReducer } from './burger-constructor/reducer';
 import { orderReducer } from './order/reducer';
 import { authReducer } from './auth/reducer';
-
+import { TStore } from '../utils/types';
 const rootReducer = combineReducers({
 	burgerIngredients: ingredientsReducer,
 	burgerConstructor: burgerConstructorReducer,
@@ -13,9 +13,10 @@ const rootReducer = combineReducers({
 	auth: authReducer,
 });
 
-export const configureStore = (initialState) => {
+export const configureStore = (initialState: TStore) => {
 	return createStore(
 		rootReducer,
+		// @ts-expect-error: Redux
 		initialState,
 		composeWithDevTools(applyMiddleware(thunk))
 	);
