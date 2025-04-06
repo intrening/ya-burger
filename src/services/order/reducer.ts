@@ -5,7 +5,8 @@ import {
 	ORDER_RESET,
 } from './actions';
 import { TOrderState } from '../types';
-const initialState = {
+
+const initialState: TOrderState = {
 	orderNumber: null,
 	loading: false,
 	error: null,

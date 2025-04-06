@@ -24,23 +24,18 @@ export const resetIngredientsState = () => ({
 	type: GET_INGREDIENTS_RESET,
 });
 
-export const fetchIngredients = () => {
-	return async (dispatch: Dispatch) => {
+export const fetchIngredients =
+	() =>
+	async (dispatch: Dispatch): Promise<void> => {
 		dispatch(getIngredientsRequest());
 		try {
 			const ingredients: Array<TIngredient> = await fetchIngredientsRequest();
 			dispatch(getIngredientsSuccess(ingredients));
 		} catch (error) {
-			dispatch(
-				getIngredientsError(
-					error instanceof Error
-						? error.message
-						: 'Неизвестная ошибка загрузки ингредиентов'
-				)
-			);
+			// @ts-expect-error: Redux
+			dispatch(getIngredientsError(error.message));
 			setTimeout(() => {
 				dispatch(resetIngredientsState());
 			}, 5000);
 		}
 	};
-};
