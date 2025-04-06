@@ -25,8 +25,10 @@ const Modal: React.FC<{
 		};
 	}, [onClose]);
 
-	const handleOverlayClick = (evt: React.MouseEvent<HTMLDivElement>) => {
-		if (evt.target === evt.currentTarget) {
+	const handleOverlayClick = (
+		evt: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
+	) => {
+		if ('button' in evt && evt.target === evt.currentTarget) {
 			onClose();
 		}
 	};

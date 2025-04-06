@@ -14,8 +14,9 @@ import {
 } from '../../services/burger-ingredients/selectors';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { TStore } from '@services/types';
+import { AppDispatch } from '@services/store';
 
-const BurgerIngredients = () => {
+const BurgerIngredients: React.FC = () => {
 	const bunIngredients = useSelector(getBunIngredients);
 	const sauceIngredients = useSelector(getSauceIngredients);
 	const mainIngredients = useSelector(getMainIngredients);
@@ -29,10 +30,9 @@ const BurgerIngredients = () => {
 	const sauceRef = useRef<HTMLDivElement>(null);
 	const mainRef = useRef<HTMLDivElement>(null);
 
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 
 	useEffect(() => {
-		// @ts-expect-error: Redux
 		dispatch(fetchIngredients());
 	}, [dispatch]);
 

@@ -3,7 +3,9 @@ import styles from './modal.module.css';
 const ModalOverlay = ({
 	onClick,
 }: {
-	onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+	onClick: (
+		e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
+	) => void;
 }) => {
 	const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
 		e.stopPropagation();
@@ -13,7 +15,6 @@ const ModalOverlay = ({
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
 		if (e.key === 'Enter' || e.key === ' ') {
 			e.preventDefault();
-			// @ts-expect-error: Redux
 			onClick(e);
 		}
 	};
@@ -27,5 +28,4 @@ const ModalOverlay = ({
 			tabIndex={0}></div>
 	);
 };
-
 export default ModalOverlay;
