@@ -1,7 +1,13 @@
 export const API_URL_DOMAIN = 'https://norma.nomoreparties.space';
 export const INGREDIENTS_URL = `${API_URL_DOMAIN}/api/ingredients`;
 export const ORDERS_URL = `${API_URL_DOMAIN}/api/orders`;
-import { TIngredient, TUserForm, TUser } from './types';
+import {
+	TIngredient,
+	TUserForm,
+	TUser,
+	TOrder,
+	TUserRegisterForm,
+} from './types';
 
 const AUTH_URL = `${API_URL_DOMAIN}/api/auth`;
 const PASSWORD_RESET_URL = `${API_URL_DOMAIN}/api/password-reset`;
@@ -12,15 +18,24 @@ type TTokens = {
 };
 
 type TAPIResponseData = {
-	data: Array<TIngredient>;
 	success: boolean;
-	tokens?: TTokens;
+	data: Array<TIngredient>;
 	user?: TUser;
+	accessToken?: string;
+	refreshToken?: string;
+	order?: {
+		number: number;
+	};
+	message?: string;
 };
 
-const setTokens = ({ accessToken, refreshToken }: TTokens) => {
-	localStorage.setItem('accessToken', accessToken);
-	localStorage.setItem('refreshToken', refreshToken);
+const setTokens = (responseData: TAPIResponseData): TTokens => {
+	localStorage.setItem('accessToken', responseData.accessToken || '');
+	localStorage.setItem('refreshToken', responseData.refreshToken || '');
+	return {
+		accessToken: responseData.accessToken || '',
+		refreshToken: responseData.refreshToken || '',
+	};
 };
 
 const getTokens = (): TTokens => {
@@ -35,7 +50,7 @@ const clearTokens = () => {
 	localStorage.removeItem('refreshToken');
 };
 
-export const checkResponse = <T>(res: Response): Promise<T> => {
+export const checkResponse = (res: Response): Promise<TAPIResponseData> => {
 	return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
@@ -50,36 +65,34 @@ export const refreshTokens = async (): Promise<TTokens> => {
 				token: getTokens().refreshToken,
 			}),
 		});
-		const refreshData: TAPIResponseData = await checkResponse<TAPIResponseData>(
-			res
-		);
-		if (!refreshData.success || !refreshData.tokens) {
+		const refreshData = await checkResponse(res);
+		if (!refreshData.success) {
 			return Promise.reject(refreshData);
 		}
-		setTokens(refreshData.tokens);
-		return refreshData.tokens;
+		return setTokens(refreshData);
 	} catch (err) {
-		if (err instanceof Error && err.message === 'Token is invalid') {
+		// @ts-expect-error: Redux
+		if (err.message === 'Token is invalid') {
 			clearTokens();
 		}
 		return Promise.reject(err);
 	}
 };
 
-export const fetchWithRefresh = async <T>(
+export const fetchWithRefresh = async (
 	url: string,
 	options: RequestInit & { headers: Record<string, string> }
-): Promise<T> => {
+): Promise<TAPIResponseData> => {
 	try {
 		const res = await fetch(url, options);
-		console.log(res);
-		return await checkResponse<T>(res);
+		return await checkResponse(res);
 	} catch (err) {
-		if (err instanceof Error && err.message === 'jwt expired') {
+		// @ts-expect-error: Redux
+		if (err.message === 'jwt expired') {
 			const tokens: TTokens = await refreshTokens();
 			options.headers.authorization = tokens.accessToken;
 			const res = await fetch(url, options);
-			return await checkResponse<T>(res);
+			return await checkResponse(res);
 		} else {
 			return Promise.reject(err);
 		}
@@ -91,9 +104,7 @@ export const fetchIngredientsRequest = async (): Promise<
 > => {
 	const res = await fetch(INGREDIENTS_URL);
 
-	const responseData: TAPIResponseData = await checkResponse<TAPIResponseData>(
-		res
-	);
+	const responseData = await checkResponse(res);
 	if (!responseData.data || !Array.isArray(responseData.data)) {
 		throw new Error('Некорректный формат данных с сервера');
 	}
@@ -104,13 +115,13 @@ export const registerUserRequest = async ({
 	email,
 	password,
 	name,
-}: TUserForm): Promise<TAPIResponseData> => {
+}: TUserRegisterForm): Promise<TAPIResponseData> => {
 	const res = await fetch(`${AUTH_URL}/register`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ email, password, name }),
 	});
-	return checkResponse<TAPIResponseData>(res);
+	return await checkResponse(res);
 };
 
 export const loginUserRequest = async ({
@@ -122,12 +133,9 @@ export const loginUserRequest = async ({
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ email, password }),
 	});
-	const responseData: TAPIResponseData = await checkResponse<TAPIResponseData>(
-		res
-	);
-	console.log(responseData);
-	if (responseData.success && responseData.tokens) {
-		setTokens(responseData.tokens);
+	const responseData = await checkResponse(res);
+	if (responseData.success) {
+		setTokens(responseData);
 	}
 	if (!responseData.user) {
 		throw new Error('User not found');
@@ -136,16 +144,13 @@ export const loginUserRequest = async ({
 };
 
 export const getUserRequest = async (): Promise<TUser> => {
-	const res: TAPIResponseData = await fetchWithRefresh<TAPIResponseData>(
-		`${AUTH_URL}/user`,
-		{
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: getTokens().accessToken,
-			},
-		}
-	);
+	const res = await fetchWithRefresh(`${AUTH_URL}/user`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: getTokens().accessToken,
+		},
+	});
 	if (!res.success || !res.user) {
 		throw new Error('User not found');
 	}
@@ -218,8 +223,8 @@ export const logoutUserRequest = async (): Promise<any> => {
 export const createOrderRequest = async (
 	bun: TIngredient,
 	ingredients: Array<TIngredient>
-): Promise<any> => {
-	const res = await fetchWithRefresh(ORDERS_URL, {
+): Promise<TOrder> => {
+	const responseData = await fetchWithRefresh(ORDERS_URL, {
 		method: 'POST',
 		mode: 'cors',
 		cache: 'no-cache',
@@ -233,5 +238,12 @@ export const createOrderRequest = async (
 		}),
 	});
 
-	return res;
+	if (
+		!responseData.success ||
+		!responseData.order ||
+		!responseData.order.number
+	) {
+		throw new Error('Некорректный формат данных с сервера');
+	}
+	return responseData.order;
 };

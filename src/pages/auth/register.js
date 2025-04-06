@@ -18,8 +18,10 @@ const Register = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		dispatch(registerUser(form));
-		navigate('/login');
+		const success = await dispatch(registerUser(form));
+		if (success) {
+			navigate('/login');
+		}
 	};
 
 	const extraContent = (

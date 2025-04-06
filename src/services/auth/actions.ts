@@ -7,9 +7,8 @@ import {
 	updateUserRequest,
 	logoutUserRequest,
 } from '../../utils/api';
-import { TUser, TUserForm } from '../../utils/types';
+import { TUser, TUserForm, TUserRegisterForm } from '../../utils/types';
 import { Dispatch } from 'redux';
-
 export const SET_AUTH_ERROR = 'SET_AUTH_ERROR';
 export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
 export const SET_USER = 'SET_USER';
@@ -30,15 +29,16 @@ export const setAuthError = (errorMessage: string | null) => ({
 });
 
 export const registerUser =
-	({ email, password, name }: TUserForm) =>
-	async (dispatch: Dispatch) => {
+	({ email, password, name }: TUserRegisterForm) =>
+	async (dispatch: Dispatch): Promise<boolean> => {
 		try {
 			await registerUserRequest({ email, password, name });
 			dispatch(setAuthError(null));
+			return true;
 		} catch (error) {
-			dispatch(
-				setAuthError(error instanceof Error ? error.message : 'Unknown error')
-			);
+			// @ts-expect-error: Redux
+			dispatch(setAuthError(error.message));
+			return false;
 		}
 	};
 
