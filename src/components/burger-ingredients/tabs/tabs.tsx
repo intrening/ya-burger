@@ -2,11 +2,17 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './tabs.module.css';
 import { TIngredientCategory } from '../../../utils/types';
 
-const Tabs: React.FC<{
+type TTabsProps = {
 	activeTab: string;
 	onTabClick: (ref: React.RefObject<HTMLDivElement>) => void;
 	ingredientCategories: Array<TIngredientCategory>;
-}> = ({ activeTab, onTabClick, ingredientCategories }) => {
+};
+
+const Tabs: React.FC<TTabsProps> = ({
+	activeTab,
+	onTabClick,
+	ingredientCategories,
+}) => {
 	return (
 		<div className={styles.tabs}>
 			{ingredientCategories.map((category) => (
