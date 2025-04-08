@@ -7,9 +7,7 @@ import {
 import styles from './profile-form.module.css';
 import { useState, useEffect, useCallback } from 'react';
 import { updateUser } from '../../services/auth/actions';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../services/store';
-import { TStore } from '@services/types';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 
 const ProfileForm: React.FC = () => {
 	const [form, setForm] = useState({
@@ -18,9 +16,9 @@ const ProfileForm: React.FC = () => {
 		password: '',
 	});
 	const [isEdited, setIsEdited] = useState(false);
-	const dispatch = useDispatch<AppDispatch>();
-	const user = useSelector((state: TStore) => state.auth.user);
-	const authError = useSelector((state: TStore) => state.auth.authError);
+	const dispatch = useAppDispatch();
+	const user = useAppSelector((state) => state.auth.user);
+	const authError = useAppSelector((state) => state.auth.authError);
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement>,
 		field: string

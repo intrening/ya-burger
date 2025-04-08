@@ -1,11 +1,10 @@
-import { TStore } from '@services/types';
 import styles from '../modal/modal.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../services/hooks';
 
 const OrderDetails: React.FC = () => {
-	const { orderNumber, loading, error } = useSelector(
-		(state: TStore) => state.order
+	const { orderNumber, loading, error } = useAppSelector(
+		(state) => state.order
 	);
 
 	if (loading) {

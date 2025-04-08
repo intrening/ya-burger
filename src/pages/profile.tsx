@@ -1,12 +1,10 @@
 import styles from './profile.module.css';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../services/hooks';
 import { logoutUser } from '../services/auth/actions';
-import { AppDispatch } from '../services/store';
 
 const Profile = () => {
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const getNavLinkClass = ({ isActive }: { isActive: boolean }) =>
 		`text text_type_main-medium ${

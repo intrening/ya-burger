@@ -3,12 +3,11 @@ import {
 	Counter,
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
 import { TIngredient } from '../../../utils/types';
-import { TStore } from '../../../services/types';
+import { useAppSelector } from '../../../services/hooks';
 
 const IngredientCard: React.FC<{ ingredient: TIngredient }> = ({
 	ingredient,
@@ -22,9 +21,7 @@ const IngredientCard: React.FC<{ ingredient: TIngredient }> = ({
 		}),
 	});
 
-	const burgerConstructor = useSelector(
-		(state: TStore) => state.burgerConstructor
-	);
+	const burgerConstructor = useAppSelector((state) => state.burgerConstructor);
 
 	const calculateCount = useMemo(() => {
 		const { bun, ingredients } = burgerConstructor;

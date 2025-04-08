@@ -1,13 +1,21 @@
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './auth-form.module.css';
+import { PropsWithChildren } from 'react';
 
-const AuthForm: React.FC<{
+type AuthFormProps = {
 	title: string;
-	children: React.ReactNode;
 	buttonText: string;
 	onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 	extraContent?: React.ReactNode;
-}> = ({ title, children, buttonText, onSubmit, extraContent }) => {
+};
+
+const AuthForm: React.FC<PropsWithChildren<AuthFormProps>> = ({
+	title,
+	children,
+	buttonText,
+	onSubmit,
+	extraContent,
+}) => {
 	return (
 		<div className={styles.container}>
 			<form className={styles.form} onSubmit={onSubmit}>

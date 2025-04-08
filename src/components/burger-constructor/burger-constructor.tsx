@@ -1,31 +1,30 @@
-import styles from './burger-constructor.module.css';
+import React from 'react';
 import {
 	ConstructorElement,
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import styles from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import BurgerConstructorItem from './burger-constructor-item';
 import OrderSummary from './order-summary';
-import { useSelector, useDispatch } from 'react-redux';
-import { useDrop } from 'react-dnd';
+import { useModal } from '../hooks/useModal';
+import { useNavigate } from 'react-router-dom';
+import { TIngredient } from '../../utils/types';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
+import { useDrop, DropTargetMonitor } from 'react-dnd';
 import {
 	addIngredient,
 	setIngredients,
 	resetConstructor,
 } from '../../services/burger-constructor/actions';
 import { resetOrderState, createOrder } from '../../services/order/actions';
-import { useModal } from '../hooks/useModal';
-import { useNavigate } from 'react-router-dom';
-import { TStore } from '../../services/types';
-import { TIngredient } from '../../utils/types';
-import { AppDispatch } from '../../services/store';
 
 const BurgerConstructor: React.FC = () => {
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useAppDispatch();
 	const { isModalOpen, openModal, closeModal } = useModal();
-	const { orderNumber } = useSelector((state: TStore) => state.order);
-	const user = useSelector((state: TStore) => state.auth.user);
+	const { orderNumber } = useAppSelector((state) => state.order);
+	const user = useAppSelector((state) => state.auth.user);
 	const navigate = useNavigate();
 
 	const handlePlaceOrder = async () => {
@@ -49,13 +48,13 @@ const BurgerConstructor: React.FC = () => {
 		drop: (ingredient: TIngredient) => {
 			dispatch(addIngredient(ingredient));
 		},
-		collect: (monitor) => ({
+		collect: (monitor: DropTargetMonitor) => ({
 			isOver: monitor.isOver(),
 		}),
 	});
 
-	const { ingredients, bun } = useSelector(
-		(state: TStore) => state.burgerConstructor
+	const { ingredients, bun } = useAppSelector(
+		(state) => state.burgerConstructor
 	);
 
 	const moveIngredientCard = (dragIndex: number, hoverIndex: number) => {

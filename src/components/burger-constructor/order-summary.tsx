@@ -4,17 +4,16 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../services/hooks';
 import { calculateTotalPrice } from '../../services/order/selectors';
-import { TStore } from '../../services/types';
 
 const OrderSummary: React.FC<{ onPlaceOrder: () => void }> = ({
 	onPlaceOrder,
 }) => {
-	const { bun, ingredients } = useSelector(
-		(state: TStore) => state.burgerConstructor
+	const { bun, ingredients } = useAppSelector(
+		(state) => state.burgerConstructor
 	);
-	const totalPrice = useSelector(calculateTotalPrice);
+	const totalPrice = useAppSelector(calculateTotalPrice);
 
 	const isOrderPossible = useMemo(() => {
 		return bun && ingredients.length > 0;

@@ -1,19 +1,17 @@
 import styles from './ingredient-details.module.css';
 import { useParams, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchIngredients } from '../services/burger-ingredients/actions';
-import { TStore } from '@services/types';
-import { AppDispatch } from '../services/store';
+import { useAppDispatch, useAppSelector } from '../services/hooks';
 
 const IngredientsDetails: React.FC = () => {
 	const { ingredientId } = useParams();
 	const location = useLocation();
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useAppDispatch();
 	const background = location.state?.background;
 
-	const { ingredients, isLoading, error } = useSelector(
-		(state: TStore) => state.burgerIngredients
+	const { ingredients, isLoading, error } = useAppSelector(
+		(state) => state.burgerIngredients
 	);
 
 	useEffect(() => {

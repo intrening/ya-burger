@@ -3,17 +3,15 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import AuthForm from '../../components/auth/auth-form';
 import styles from '../../components/auth/auth-form.module.css';
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
 import { forgotPassword } from '../../services/auth/actions';
-import { TStore } from '@services/types';
-import { AppDispatch } from '../../services/store';
 
 const ForgotPassword: React.FC = () => {
 	const [email, setEmail] = useState('');
 	const navigate = useNavigate();
 	const location = useLocation();
-	const authError = useSelector((state: TStore) => state.auth.authError);
-	const dispatch = useDispatch<AppDispatch>();
+	const authError = useAppSelector((state) => state.auth.authError);
+	const dispatch = useAppDispatch();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();

@@ -13,16 +13,15 @@ import IngredientsDetails from '../../pages/ingredients-details';
 import NotFound from '../../pages/not-found';
 import Modal from '../modal/modal';
 import { checkUserAuth } from '../../services/auth/actions';
-import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { OnlyAuth, OnlyUnAuth } from '../protected-route';
 import Feed from '../../pages/feed';
-import { AppDispatch } from '../../services/store';
+import { useAppDispatch } from '../../services/hooks';
 
 const App: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useAppDispatch();
 	const background = location.state && location.state.background;
 
 	const handleModalClose = () => {

@@ -1,15 +1,12 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../services/hooks';
 import { Navigate, useLocation } from 'react-router-dom';
-import { TStore } from '@services/types';
 
 const Protected: React.FC<{
 	onlyUnAuth: boolean;
 	component: React.ReactNode;
 }> = ({ onlyUnAuth, component }) => {
-	const isAuthChecked = useSelector(
-		(store: TStore) => store.auth.isAuthChecked
-	);
-	const user = useSelector((store: TStore) => store.auth.user);
+	const isAuthChecked = useAppSelector((store) => store.auth.isAuthChecked);
+	const user = useAppSelector((store) => store.auth.user);
 	const location = useLocation();
 
 	if (!isAuthChecked) {

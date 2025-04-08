@@ -7,14 +7,12 @@ import AuthForm from '../../components/auth/auth-form';
 import styles from '../../components/auth/auth-form.module.css';
 import { useState } from 'react';
 import { loginUser } from '../../services/auth/actions';
-import { useDispatch, useSelector } from 'react-redux';
-import { TStore } from '../../services/types';
-import { AppDispatch } from '../../services/store';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 
 const Login: React.FC = () => {
 	const [form, setForm] = useState({ email: '', password: '' });
-	const authError = useSelector((state: TStore) => state.auth.authError);
-	const dispatch = useDispatch<AppDispatch>();
+	const authError = useAppSelector((state) => state.auth.authError);
+	const dispatch = useAppDispatch();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();

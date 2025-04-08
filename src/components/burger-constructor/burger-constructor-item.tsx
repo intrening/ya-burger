@@ -5,16 +5,16 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import { removeIngredient } from '../../services/burger-constructor/actions';
 import { TIngredient } from '../../utils/types';
+import { useAppDispatch } from '../../services/hooks';
 
 const BurgerConstructorItem: React.FC<{
 	item: TIngredient;
 	index: number;
 	moveIngredientCard: (dragIndex: number, hoverIndex: number) => void;
 }> = ({ item, index, moveIngredientCard }) => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const ref = useRef<HTMLDivElement>(null);
 	const [{ isDragging }, dragRef] = useDrag({
 		type: 'constructor-ingredient',

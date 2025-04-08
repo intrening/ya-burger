@@ -6,15 +6,13 @@ import { Link, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import AuthForm from '../../components/auth/auth-form';
 import styles from '../../components/auth/auth-form.module.css';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { resetPassword } from '../../services/auth/actions';
-import { TStore } from '@services/types';
-import { AppDispatch } from '../../services/store';
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
 
 const ResetPassword: React.FC = () => {
 	const [form, setForm] = useState({ password: '', token: '' });
-	const dispatch = useDispatch<AppDispatch>();
-	const authError = useSelector((state: TStore) => state.auth.authError);
+	const dispatch = useAppDispatch();
+	const authError = useAppSelector((state) => state.auth.authError);
 	const navigate = useNavigate();
 	const location = useLocation();
 

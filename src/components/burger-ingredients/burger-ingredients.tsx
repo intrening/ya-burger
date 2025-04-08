@@ -2,7 +2,7 @@ import styles from './burger-ingredients.module.css';
 import Tabs from './tabs/tabs';
 import IngredientCategory from './ingredient-categories/ingredient-categories';
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../services/hooks';
 import {
 	fetchIngredients,
 	resetIngredientsState,
@@ -13,16 +13,14 @@ import {
 	getMainIngredients,
 } from '../../services/burger-ingredients/selectors';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { TStore } from '@services/types';
-import { AppDispatch } from '@services/store';
 
 const BurgerIngredients: React.FC = () => {
-	const bunIngredients = useSelector(getBunIngredients);
-	const sauceIngredients = useSelector(getSauceIngredients);
-	const mainIngredients = useSelector(getMainIngredients);
+	const bunIngredients = useAppSelector(getBunIngredients);
+	const sauceIngredients = useAppSelector(getSauceIngredients);
+	const mainIngredients = useAppSelector(getMainIngredients);
 
-	const { isLoading, error } = useSelector(
-		(state: TStore) => state.burgerIngredients
+	const { isLoading, error } = useAppSelector(
+		(state) => state.burgerIngredients
 	);
 	const [activeTab, setActiveTab] = useState('bun');
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -30,7 +28,7 @@ const BurgerIngredients: React.FC = () => {
 	const sauceRef = useRef<HTMLDivElement>(null);
 	const mainRef = useRef<HTMLDivElement>(null);
 
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		dispatch(fetchIngredients());
