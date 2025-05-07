@@ -6,14 +6,22 @@ import {
 	AnyAction,
 } from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
-import { ingredientsReducer } from './burger-ingredients/reducer';
+import { TBurgerConstructorState } from './burger-constructor/types';
+import { TOrderState } from './order/reducer';
+import { TAuthState } from './auth/reducer';
+import { burgerIngredientsReducer } from './burger-ingredients/reducer';
+import { TBurgerIngredientsState } from './burger-ingredients/types';
 import { burgerConstructorReducer } from './burger-constructor/reducer';
-import { orderReducer } from './order/reducer';
-import { authReducer } from './auth/reducer';
-import { TStore } from './types';
+
+export type TStore = {
+	burgerIngredients: TBurgerIngredientsState;
+	burgerConstructor: TBurgerConstructorState;
+	order: TOrderState;
+	auth: TAuthState;
+};
 
 const rootReducer = combineReducers({
-	burgerIngredients: ingredientsReducer,
+	burgerIngredients: burgerIngredientsReducer,
 	burgerConstructor: burgerConstructorReducer,
 	order: orderReducer,
 	auth: authReducer,

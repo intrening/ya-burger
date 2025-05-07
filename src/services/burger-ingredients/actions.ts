@@ -1,26 +1,36 @@
 import { fetchIngredientsRequest, parseApiError } from '../../utils/api';
 import { TIngredient } from '../../utils/types';
 import { Dispatch } from 'redux';
-export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
-export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
-export const GET_INGREDIENTS_ERROR = 'GET_INGREDIENTS_ERROR';
-export const GET_INGREDIENTS_RESET = 'GET_INGREDIENTS_RESET';
+import {
+	GET_INGREDIENTS_REQUEST,
+	GET_INGREDIENTS_SUCCESS,
+	GET_INGREDIENTS_ERROR,
+	GET_INGREDIENTS_RESET,
+} from './constants';
+import {
+	TGetIngredientsRequest,
+	TGetIngredientsSuccess,
+	TGetIngredientsError,
+	TResetIngredientsState,
+} from './types';
 
-export const getIngredientsRequest = () => ({
+export const getIngredientsRequest = (): TGetIngredientsRequest => ({
 	type: GET_INGREDIENTS_REQUEST,
 });
 
-export const getIngredientsSuccess = (ingredients: Array<TIngredient>) => ({
+export const getIngredientsSuccess = (
+	ingredients: Array<TIngredient>
+): TGetIngredientsSuccess => ({
 	type: GET_INGREDIENTS_SUCCESS,
 	payload: ingredients,
 });
 
-export const getIngredientsError = (error: string) => ({
+export const getIngredientsError = (error: string): TGetIngredientsError => ({
 	type: GET_INGREDIENTS_ERROR,
 	payload: error,
 });
 
-export const resetIngredientsState = () => ({
+export const resetIngredientsState = (): TResetIngredientsState => ({
 	type: GET_INGREDIENTS_RESET,
 });
 
