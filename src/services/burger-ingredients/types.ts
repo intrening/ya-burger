@@ -24,7 +24,7 @@ export type TResetIngredientsState = {
 	readonly type: typeof GET_INGREDIENTS_RESET;
 };
 
-export type TIngredientsActions =
+export type TBurgerIngredientsActions =
 	| TGetIngredientsRequest
 	| TGetIngredientsSuccess
 	| TGetIngredientsError

@@ -1,6 +1,5 @@
 import { fetchIngredientsRequest, parseApiError } from '../../utils/api';
 import { TIngredient } from '../../utils/types';
-import { Dispatch } from 'redux';
 import {
 	GET_INGREDIENTS_REQUEST,
 	GET_INGREDIENTS_SUCCESS,
@@ -13,7 +12,7 @@ import {
 	TGetIngredientsError,
 	TResetIngredientsState,
 } from './types';
-
+import { AppThunk, AppDispatch } from '../../types';
 export const getIngredientsRequest = (): TGetIngredientsRequest => ({
 	type: GET_INGREDIENTS_REQUEST,
 });
@@ -34,9 +33,9 @@ export const resetIngredientsState = (): TResetIngredientsState => ({
 	type: GET_INGREDIENTS_RESET,
 });
 
-export const fetchIngredients =
+export const fetchIngredients: AppThunk =
 	() =>
-	async (dispatch: Dispatch): Promise<void> => {
+	async (dispatch: AppDispatch): Promise<void> => {
 		dispatch(getIngredientsRequest());
 		try {
 			const ingredients: Array<TIngredient> = await fetchIngredientsRequest();

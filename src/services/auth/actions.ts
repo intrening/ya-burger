@@ -15,9 +15,9 @@ import {
 	TUserResetPasswordForm,
 	TUserRegisterUpdateForm,
 } from '../../utils/types';
-import { Dispatch } from 'redux';
 import { SET_AUTH_CHECKED, SET_USER, SET_AUTH_ERROR } from './constants';
 import { TSetAuthChecked, TSetUser, TSetAuthError } from './types';
+import { AppThunk, AppDispatch } from '../../types';
 
 export const setAuthChecked = (value: boolean): TSetAuthChecked => ({
 	type: SET_AUTH_CHECKED,
@@ -34,9 +34,9 @@ export const setAuthError = (errorMessage: string | null): TSetAuthError => ({
 	payload: errorMessage,
 });
 
-export const registerUser =
+export const registerUser: AppThunk =
 	({ email, password, name }: TUserRegisterUpdateForm) =>
-	async (dispatch: Dispatch): Promise<boolean> => {
+	async (dispatch: AppDispatch): Promise<boolean> => {
 		try {
 			await registerUserRequest({ email, password, name });
 			return true;
@@ -48,7 +48,7 @@ export const registerUser =
 
 export const loginUser =
 	({ email, password }: TUserLoginForm) =>
-	async (dispatch: Dispatch): Promise<TUser | null> => {
+	async (dispatch: AppDispatch): Promise<TUser | null> => {
 		try {
 			const user: TUser = await loginUserRequest({ email, password });
 			dispatch(setUser(user));
@@ -63,7 +63,7 @@ export const loginUser =
 
 export const checkUserAuth =
 	() =>
-	async (dispatch: Dispatch): Promise<void> => {
+	async (dispatch: AppDispatch): Promise<void> => {
 		try {
 			if (getTokens().accessToken) {
 				const user: TUser = await getUserRequest();
@@ -78,7 +78,7 @@ export const checkUserAuth =
 
 export const updateUser =
 	({ email, password, name }: TUserRegisterUpdateForm) =>
-	async (dispatch: Dispatch): Promise<void> => {
+	async (dispatch: AppDispatch): Promise<void> => {
 		try {
 			const user: TUser = await updateUserRequest({ email, password, name });
 			dispatch(setUser(user));

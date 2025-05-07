@@ -4,7 +4,7 @@ import {
 	GET_INGREDIENTS_ERROR,
 	GET_INGREDIENTS_RESET,
 } from './constants';
-import { TIngredientsActions, TBurgerIngredientsState } from './types';
+import { TBurgerIngredientsActions, TBurgerIngredientsState } from './types';
 
 const initialState: TBurgerIngredientsState = {
 	ingredients: [],
@@ -14,7 +14,7 @@ const initialState: TBurgerIngredientsState = {
 
 export const burgerIngredientsReducer = (
 	state: TBurgerIngredientsState = initialState,
-	action: TIngredientsActions
+	action: TBurgerIngredientsActions
 ): TBurgerIngredientsState => {
 	switch (action.type) {
 		case GET_INGREDIENTS_REQUEST:

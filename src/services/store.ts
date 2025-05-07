@@ -1,26 +1,11 @@
-import { thunk, ThunkDispatch } from 'redux-thunk';
-import {
-	combineReducers,
-	createStore,
-	applyMiddleware,
-	AnyAction,
-} from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { thunk } from 'redux-thunk';
 import { composeWithDevTools } from '@redux-devtools/extension';
-import { TBurgerConstructorState } from './burger-constructor/types';
-import { TOrderState } from './order/types';
-import { authReducer } from './auth/reducer';
-import { TAuthState } from './auth/types';
+
 import { burgerIngredientsReducer } from './burger-ingredients/reducer';
-import { TBurgerIngredientsState } from './burger-ingredients/types';
 import { burgerConstructorReducer } from './burger-constructor/reducer';
 import { orderReducer } from './order/reducer';
-
-export type TStore = {
-	burgerIngredients: TBurgerIngredientsState;
-	burgerConstructor: TBurgerConstructorState;
-	order: TOrderState;
-	auth: TAuthState;
-};
+import { authReducer } from './auth/reducer';
 
 const rootReducer = combineReducers({
 	burgerIngredients: burgerIngredientsReducer,
@@ -29,13 +14,14 @@ const rootReducer = combineReducers({
 	auth: authReducer,
 });
 
-export type AppDispatch = ThunkDispatch<TStore, any, AnyAction>;
+const initialState = {};
 
-export const configureStore = (initialState: TStore) => {
-	return createStore(
-		rootReducer,
-		// @ts-expect-error: Redux
-		initialState,
-		composeWithDevTools(applyMiddleware(thunk))
-	);
-};
+const store = createStore(
+	rootReducer,
+	initialState,
+	composeWithDevTools(applyMiddleware(thunk))
+);
+
+export default store;
+
+export type RootState = ReturnType<typeof store.getState>;

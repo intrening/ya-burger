@@ -1,6 +1,6 @@
 import { createOrderRequest, parseApiError } from '../../utils/api';
 import { TIngredient } from '../../utils/types';
-import { Dispatch } from 'redux';
+import { AppThunk, AppDispatch } from '../../types';
 import {
 	ORDER_REQUEST,
 	ORDER_SUCCESS,
@@ -38,9 +38,9 @@ export const resetOrderState = (): TResetOrderState => ({
 	type: ORDER_RESET,
 });
 
-export const createOrder =
+export const createOrder: AppThunk =
 	(bun: TIngredient | null, ingredients: Array<TIngredient>) =>
-	async (dispatch: Dispatch): Promise<void> => {
+	async (dispatch: AppDispatch): Promise<void> => {
 		if (!bun || !bun._id) {
 			dispatch(orderError('Необходимо добавить булку для оформления заказа'));
 			return;
