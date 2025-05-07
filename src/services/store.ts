@@ -7,11 +7,12 @@ import {
 } from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
 import { TBurgerConstructorState } from './burger-constructor/types';
-import { TOrderState } from './order/reducer';
+import { TOrderState } from './order/types';
 import { TAuthState } from './auth/reducer';
 import { burgerIngredientsReducer } from './burger-ingredients/reducer';
 import { TBurgerIngredientsState } from './burger-ingredients/types';
 import { burgerConstructorReducer } from './burger-constructor/reducer';
+import { orderReducer } from './order/reducer';
 
 export type TStore = {
 	burgerIngredients: TBurgerIngredientsState;

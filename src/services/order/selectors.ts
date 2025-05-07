@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { TStore } from '@services/types';
+import { TStore } from '@services/store';
 import { TIngredient } from '@utils/types';
 export const getBun = (state: TStore) => state.burgerConstructor.bun;
 export const getIngredients = (state: TStore) =>

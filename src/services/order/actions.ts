@@ -1,32 +1,40 @@
 import { createOrderRequest, parseApiError } from '../../utils/api';
 import { TIngredient } from '../../utils/types';
 import { Dispatch } from 'redux';
+import {
+	ORDER_REQUEST,
+	ORDER_SUCCESS,
+	ORDER_ERROR,
+	ORDER_RESET,
+} from './constants';
+import {
+	TOrderRequest,
+	TOrderSuccess,
+	TOrderError,
+	TResetOrderError,
+	TResetOrderState,
+} from './types';
 
-export const ORDER_REQUEST = 'ORDER_REQUEST';
-export const ORDER_SUCCESS = 'ORDER_SUCCESS';
-export const ORDER_ERROR = 'ORDER_ERROR';
-export const ORDER_RESET = 'ORDER_RESET';
-
-export const orderRequest = () => ({
+export const orderRequest = (): TOrderRequest => ({
 	type: ORDER_REQUEST,
 });
 
-export const orderSuccess = (orderNumber: number) => ({
+export const orderSuccess = (orderNumber: number): TOrderSuccess => ({
 	type: ORDER_SUCCESS,
 	payload: orderNumber,
 });
 
-export const orderError = (error: string) => ({
+export const orderError = (error: string): TOrderError => ({
 	type: ORDER_ERROR,
 	payload: error,
 });
 
-export const resetOrderError = () => ({
+export const resetOrderError = (): TResetOrderError => ({
 	type: ORDER_ERROR,
 	payload: null,
 });
 
-export const resetOrderState = () => ({
+export const resetOrderState = (): TResetOrderState => ({
 	type: ORDER_RESET,
 });
 

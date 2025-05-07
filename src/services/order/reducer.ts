@@ -3,8 +3,8 @@ import {
 	ORDER_SUCCESS,
 	ORDER_ERROR,
 	ORDER_RESET,
-} from './actions';
-import { TOrderState } from '../types';
+} from './constants';
+import { TOrderState, TOrderActions } from './types';
 
 const initialState: TOrderState = {
 	orderNumber: null,
@@ -12,15 +12,10 @@ const initialState: TOrderState = {
 	error: null,
 };
 
-type TOrderAction = {
-	type: string;
-	payload: number | string | null;
-};
-
 export const orderReducer = (
 	state: TOrderState = initialState,
-	action: TOrderAction
-) => {
+	action: TOrderActions
+): TOrderState => {
 	switch (action.type) {
 		case ORDER_REQUEST:
 			return { ...state, loading: true, error: null };
