@@ -1,11 +1,5 @@
-import { SET_AUTH_ERROR, SET_AUTH_CHECKED, SET_USER } from './actions';
-import { TUser } from '../../utils/types';
-import { TAuthState } from '../types';
-
-type TAuthAction = {
-	type: string;
-	payload: TUser | null | string | boolean;
-};
+import { SET_AUTH_ERROR, SET_AUTH_CHECKED, SET_USER } from './constants';
+import { TAuthActions, TAuthState } from './types';
 
 const initialState: TAuthState = {
 	user: null,
@@ -15,8 +9,8 @@ const initialState: TAuthState = {
 
 export const authReducer = (
 	state: TAuthState = initialState,
-	action: TAuthAction
-) => {
+	action: TAuthActions
+): TAuthState => {
 	switch (action.type) {
 		case SET_USER:
 			return {
