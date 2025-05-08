@@ -3,7 +3,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { fetchIngredients } from '../services/burger-ingredients/actions';
 import { useAppDispatch, useAppSelector } from '../services/hooks';
-
+import { RootState } from '../types';
 const IngredientsDetails: React.FC = () => {
 	const { ingredientId } = useParams();
 	const location = useLocation();
@@ -11,7 +11,7 @@ const IngredientsDetails: React.FC = () => {
 	const background = location.state?.background;
 
 	const { ingredients, isLoading, error } = useAppSelector(
-		(state) => state.burgerIngredients
+		(state: RootState) => state.burgerIngredients
 	);
 
 	useEffect(() => {
