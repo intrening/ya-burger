@@ -34,7 +34,7 @@ export const setAuthError = (errorMessage: string | null): TSetAuthError => ({
 	payload: errorMessage,
 });
 
-export const registerUser: AppThunk =
+export const registerUser =
 	({ email, password, name }: TUserRegisterUpdateForm) =>
 	async (dispatch: AppDispatch): Promise<boolean> => {
 		try {
@@ -90,7 +90,7 @@ export const updateUser =
 
 export const logoutUser =
 	() =>
-	async (dispatch: Dispatch): Promise<void> => {
+	async (dispatch: AppDispatch): Promise<void> => {
 		try {
 			await logoutUserRequest();
 			dispatch(setUser(null));
@@ -102,7 +102,7 @@ export const logoutUser =
 
 export const forgotPassword =
 	(email: string) =>
-	async (dispatch: Dispatch): Promise<void> => {
+	async (dispatch: AppDispatch): Promise<void> => {
 		try {
 			await forgotPasswordRequest(email);
 			dispatch(setAuthError(null));
@@ -113,7 +113,7 @@ export const forgotPassword =
 
 export const resetPassword =
 	({ password, token }: TUserResetPasswordForm) =>
-	async (dispatch: Dispatch): Promise<boolean> => {
+	async (dispatch: AppDispatch): Promise<boolean> => {
 		try {
 			await resetPasswordRequest({ password, token });
 			dispatch(setAuthError(null));

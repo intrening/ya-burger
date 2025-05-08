@@ -12,7 +12,8 @@ import {
 	TGetIngredientsError,
 	TResetIngredientsState,
 } from './types';
-import { AppThunk, AppDispatch } from '../../types';
+import { AppDispatch } from '../../types';
+
 export const getIngredientsRequest = (): TGetIngredientsRequest => ({
 	type: GET_INGREDIENTS_REQUEST,
 });
@@ -33,17 +34,9 @@ export const resetIngredientsState = (): TResetIngredientsState => ({
 	type: GET_INGREDIENTS_RESET,
 });
 
-export const fetchIngredients: AppThunk =
-	() =>
-	async (dispatch: AppDispatch): Promise<void> => {
-		dispatch(getIngredientsRequest());
-		try {
-			const ingredients: Array<TIngredient> = await fetchIngredientsRequest();
-			dispatch(getIngredientsSuccess(ingredients));
-		} catch (error) {
-			dispatch(getIngredientsError(parseApiError(error)));
-			setTimeout(() => {
-				dispatch(resetIngredientsState());
-			}, 5000);
-		}
-	};
+export const fetchIngredients = () => (dispatch: AppDispatch) => {
+	dispatch(getIngredientsRequest());
+	return fetchIngredientsRequest()
+		.then((ingredients) => dispatch(getIngredientsSuccess(ingredients)))
+		.catch((error) => dispatch(getIngredientsError(parseApiError(error))));
+};

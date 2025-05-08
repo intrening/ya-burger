@@ -98,7 +98,7 @@ const BurgerIngredients: React.FC = () => {
 
 	const handleRetry = () => {
 		dispatch(resetIngredientsState());
-		fetchIngredients();
+		dispatch(fetchIngredients());
 	};
 
 	if (isLoading) {

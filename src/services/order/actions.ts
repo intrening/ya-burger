@@ -1,6 +1,6 @@
 import { createOrderRequest, parseApiError } from '../../utils/api';
 import { TIngredient } from '../../utils/types';
-import { AppThunk, AppDispatch } from '../../types';
+import { AppDispatch } from '../../types';
 import {
 	ORDER_REQUEST,
 	ORDER_SUCCESS,
@@ -38,7 +38,7 @@ export const resetOrderState = (): TResetOrderState => ({
 	type: ORDER_RESET,
 });
 
-export const createOrder: AppThunk =
+export const createOrder =
 	(bun: TIngredient | null, ingredients: Array<TIngredient>) =>
 	async (dispatch: AppDispatch): Promise<void> => {
 		if (!bun || !bun._id) {
