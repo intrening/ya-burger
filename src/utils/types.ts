@@ -1,5 +1,7 @@
+export type TIngredientId = string;
+
 export type TIngredient = {
-	_id: string;
+	_id: TIngredientId;
 	name: string;
 	price: number;
 	image: string;
@@ -37,4 +39,13 @@ export type TUserLoginForm = {
 export type TUserResetPasswordForm = {
 	password: string;
 	token: string;
+};
+
+export type TOrder = {
+	_id: string;
+	status: string;
+	number: number;
+	createdAt: string;
+	updatedAt: string;
+	ingredients: Array<TIngredientId>;
 };
