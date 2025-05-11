@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { TOrder, TIngredient } from '../../utils/types';
 import { useAppSelector } from '../../services/hooks';
 import { getAllIngredients } from '../../services/burger-ingredients/selectors';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { OrderCardIngredients } from './';
 
 const OrderCard: React.FC<{ order: TOrder }> = ({ order }) => {
@@ -17,9 +17,14 @@ const OrderCard: React.FC<{ order: TOrder }> = ({ order }) => {
 	}, [allIngredients, orderIngredientsIds]);
 
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	const handleClick = () => {
-		navigate(`/feed/${order.number}`);
+		const isProfile = location.pathname.startsWith('/profile/orders');
+		const path = isProfile
+			? `/profile/orders/${order.number}`
+			: `/feed/${order.number}`;
+		navigate(path, { state: { background: location } });
 	};
 
 	const orderPrice = orderIngredients.reduce(

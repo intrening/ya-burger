@@ -55,8 +55,11 @@ const App: React.FC = () => {
 					<Route path='/profile' element={<OnlyAuth component={<Profile />} />}>
 						<Route index element={<ProfileForm />} />
 						<Route path='orders' element={<OrderHistory />} />
-						<Route path='orders/:number' element={<div>Order Details</div>} />
 					</Route>
+					<Route
+						path='/profile/orders/:number'
+						element={<OnlyAuth component={<OrderDetailsPage />} />}
+					/>
 					<Route path='/feed' element={<Feed />} />
 					<Route path='/feed/:number' element={<OrderDetailsPage />} />
 					<Route
@@ -73,6 +76,22 @@ const App: React.FC = () => {
 							element={
 								<Modal onClose={handleModalClose}>
 									<IngredientsDetails />
+								</Modal>
+							}
+						/>
+						<Route
+							path='/feed/:number'
+							element={
+								<Modal onClose={handleModalClose}>
+									<OrderDetailsPage />
+								</Modal>
+							}
+						/>
+						<Route
+							path='/profile/orders/:number'
+							element={
+								<Modal onClose={handleModalClose}>
+									<OrderDetailsPage />
 								</Modal>
 							}
 						/>
