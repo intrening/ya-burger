@@ -5,9 +5,6 @@ import { RootState } from '../../types';
 export const getAllIngredients = (state: RootState) =>
 	state.burgerIngredients.ingredients;
 
-export const getIngredientsById = (state: RootState) =>
-	state.burgerIngredients.ingredientsById;
-
 export const getBunIngredients = createSelector(
 	[getAllIngredients],
 	(ingredients: Array<TIngredient>) =>
@@ -26,7 +23,13 @@ export const getMainIngredients = createSelector(
 		ingredients.filter((ingredient) => ingredient.type === 'main')
 );
 
-export const getIngredientById = createSelector(
-	[getIngredientsById],
-	(ingredientsById) => (id: TIngredientId) => ingredientsById[id]
+export const getIngredientsByIds = createSelector(
+	[
+		(state: RootState) => state.burgerIngredients.ingredients,
+		(_: RootState, ids: TIngredientId[]) => ids,
+	],
+	(ingredients, ids) => {
+		const byId = Object.fromEntries(ingredients.map((i) => [i._id, i]));
+		return ids.map((id) => byId[id]).filter(Boolean);
+	}
 );

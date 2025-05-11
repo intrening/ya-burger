@@ -1,47 +1,44 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react';
-import { TOrder } from '../../utils/types';
-import { getIngredientsById } from '../../services/burger-ingredients/selectors';
+import { TOrder, TIngredient } from '../../utils/types';
 import { useAppSelector } from '../../services/hooks';
+import { getIngredientsByIds } from '../../services/burger-ingredients/selectors';
 
-const OrderCardIngredients: React.FC<{ ingredients: string[] }> = ({
+const OrderCardIngredients: React.FC<{ ingredients: TIngredient[] }> = ({
 	ingredients,
-}) => {
-	return (
-		<div style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
-			{ingredients.slice(0, 5).map((img, idx) => (
-				<img
-					key={idx}
-					src={img}
-					alt='ingredient'
-					style={{
-						width: 40,
-						height: 40,
-						borderRadius: '50%',
-						border: '2px solid #4C4CFF',
-						marginLeft: idx === 0 ? 0 : -12,
-						background: '#191922',
-					}}
-				/>
-			))}
-			{ingredients.length > 5 && (
-				<span style={{ marginLeft: 4, color: '#8585ad', fontSize: 16 }}>
-					+{ingredients.length - 5}
-				</span>
-			)}
-		</div>
-	);
-};
+}) => (
+	<div style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
+		{ingredients.slice(0, 5).map((ingredient, idx) => (
+			<img
+				key={ingredient._id}
+				src={ingredient.image}
+				alt={ingredient.name}
+				style={{
+					width: 40,
+					height: 40,
+					borderRadius: '50%',
+					border: '2px solid #4C4CFF',
+					marginLeft: idx === 0 ? 0 : -12,
+					background: '#191922',
+				}}
+			/>
+		))}
+		{ingredients.length > 5 && (
+			<span style={{ marginLeft: 4, color: '#8585ad', fontSize: 16 }}>
+				+{ingredients.length - 5}
+			</span>
+		)}
+	</div>
+);
 
 const OrderCard: React.FC<{ order: TOrder }> = ({ order }) => {
-	const ingredientsById = useAppSelector(getIngredientsById);
-
-	const ingredientsInOrder = order.ingredients.map(
-		(ingredient) => ingredientsById[ingredient]
+	const orderIngredientsIds = order.ingredients;
+	const orderIngredients = useAppSelector((state) =>
+		getIngredientsByIds(state, orderIngredientsIds)
 	);
 
-	const price = ingredientsInOrder.reduce(
-		(acc, ingredient) => acc + ingredient.price,
+	const orderPrice = orderIngredients.reduce(
+		(acc, ingredient) => acc + (ingredient?.price ?? 0),
 		0
 	);
 
@@ -69,7 +66,7 @@ const OrderCard: React.FC<{ order: TOrder }> = ({ order }) => {
 			</div>
 			<div className='text text_type_main-medium mb-2'>{order.name}</div>
 			<div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
-				<OrderCardIngredients ingredients={order.ingredients} />
+				<OrderCardIngredients ingredients={orderIngredients} />
 				<div
 					style={{
 						marginLeft: 'auto',
@@ -77,7 +74,7 @@ const OrderCard: React.FC<{ order: TOrder }> = ({ order }) => {
 						alignItems: 'center',
 						gap: 4,
 					}}>
-					<span className='text text_type_digits-default'>{price}</span>
+					<span className='text text_type_digits-default'>{orderPrice}</span>
 					<CurrencyIcon type='primary' />
 				</div>
 			</div>

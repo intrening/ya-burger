@@ -1,7 +1,10 @@
+import OrderFeed from '../components/feed/OrderFeed';
+import styles from './home.module.css';
+
 export default function Feed(): React.ReactElement {
 	return (
-		<div>
-			<h1>Feed</h1>
-		</div>
+		<main className={styles.home}>
+			<OrderFeed />
+		</main>
 	);
 }

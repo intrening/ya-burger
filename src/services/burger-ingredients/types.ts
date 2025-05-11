@@ -34,5 +34,4 @@ export type TBurgerIngredientsState = {
 	ingredients: Array<TIngredient>;
 	isLoading: boolean;
 	error: string | null;
-	ingredientsById: Record<TIngredientId, TIngredient>;
 };
