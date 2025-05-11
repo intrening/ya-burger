@@ -1,42 +1,21 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { TOrder, TIngredient } from '../../utils/types';
 import { useAppSelector } from '../../services/hooks';
-import { getIngredientsByIds } from '../../services/burger-ingredients/selectors';
+import { getAllIngredients } from '../../services/burger-ingredients/selectors';
 import { useNavigate } from 'react-router-dom';
-
-const OrderCardIngredients: React.FC<{ ingredients: TIngredient[] }> = ({
-	ingredients,
-}) => (
-	<div style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
-		{ingredients.slice(0, 5).map((ingredient, idx) => (
-			<img
-				key={ingredient._id}
-				src={ingredient.image}
-				alt={ingredient.name}
-				style={{
-					width: 40,
-					height: 40,
-					borderRadius: '50%',
-					border: '2px solid #4C4CFF',
-					marginLeft: idx === 0 ? 0 : -12,
-					background: '#191922',
-				}}
-			/>
-		))}
-		{ingredients.length > 5 && (
-			<span style={{ marginLeft: 4, color: '#8585ad', fontSize: 16 }}>
-				+{ingredients.length - 5}
-			</span>
-		)}
-	</div>
-);
+import { OrderCardIngredients } from './';
 
 const OrderCard: React.FC<{ order: TOrder }> = ({ order }) => {
+	const allIngredients = useAppSelector(getAllIngredients);
 	const orderIngredientsIds = order.ingredients;
-	const orderIngredients = useAppSelector((state) =>
-		getIngredientsByIds(state, orderIngredientsIds)
-	);
+
+	const orderIngredients: Array<TIngredient> = useMemo(() => {
+		return orderIngredientsIds
+			.map((id) => allIngredients.find((i) => i._id === id))
+			.filter(Boolean) as TIngredient[];
+	}, [allIngredients, orderIngredientsIds]);
+
 	const navigate = useNavigate();
 
 	const handleClick = () => {

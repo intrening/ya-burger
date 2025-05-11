@@ -1,18 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { TIngredient } from '../utils/types';
-import { useAppSelector } from '../services/hooks';
+import { useAppDispatch, useAppSelector } from '../services/hooks';
 import styles from './ingredient-details.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import feedStyles from '../components/feed/OrderFeed.module.css';
 import { orders } from '../config';
+import { getAllIngredients } from '../services/burger-ingredients/selectors';
+import { fetchIngredients } from '../services/burger-ingredients/actions';
 
 const OrderDetailsPage: React.FC = () => {
 	const { number } = useParams<{ number: string }>();
 	const order = orders.find((o) => o.number.toString() === number);
-	const allIngredients = useAppSelector(
-		(state) => state.burgerIngredients.ingredients
+
+	const { isLoading, error } = useAppSelector(
+		(state) => state.burgerIngredients
 	);
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		dispatch(fetchIngredients());
+	}, [dispatch]);
+	const allIngredients = useAppSelector(getAllIngredients);
+
+	if (isLoading) return <div>Загрузка...</div>;
+	if (error) return <div>Ошибка: {error}</div>;
 
 	if (!order) {
 		return (
