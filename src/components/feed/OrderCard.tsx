@@ -3,6 +3,7 @@ import React from 'react';
 import { TOrder, TIngredient } from '../../utils/types';
 import { useAppSelector } from '../../services/hooks';
 import { getIngredientsByIds } from '../../services/burger-ingredients/selectors';
+import { useNavigate } from 'react-router-dom';
 
 const OrderCardIngredients: React.FC<{ ingredients: TIngredient[] }> = ({
 	ingredients,
@@ -36,6 +37,11 @@ const OrderCard: React.FC<{ order: TOrder }> = ({ order }) => {
 	const orderIngredients = useAppSelector((state) =>
 		getIngredientsByIds(state, orderIngredientsIds)
 	);
+	const navigate = useNavigate();
+
+	const handleClick = () => {
+		navigate(`/feed/${order.number}`);
+	};
 
 	const orderPrice = orderIngredients.reduce(
 		(acc, ingredient) => acc + (ingredient?.price ?? 0),
@@ -44,12 +50,19 @@ const OrderCard: React.FC<{ order: TOrder }> = ({ order }) => {
 
 	return (
 		<div
+			onClick={handleClick}
+			tabIndex={0}
+			role='button'
+			onKeyDown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') handleClick();
+			}}
 			style={{
 				background: '#222',
 				borderRadius: 24,
 				padding: 20,
 				marginBottom: 20,
 				minWidth: 400,
+				cursor: 'pointer',
 			}}>
 			<div
 				style={{

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { fetchIngredients } from '../services/burger-ingredients/actions';
 import { useAppDispatch, useAppSelector } from '../services/hooks';
 import { RootState } from '../types';
+
 const IngredientsDetails: React.FC = () => {
 	const { ingredientId } = useParams();
 	const location = useLocation();

@@ -17,6 +17,7 @@ import { useEffect } from 'react';
 import { OnlyAuth, OnlyUnAuth } from '../protected-route';
 import Feed from '../../pages/feed';
 import { useAppDispatch } from '../../services/hooks';
+import OrderDetailsPage from '../../pages/order-details';
 
 const App: React.FC = () => {
 	const location = useLocation();
@@ -57,6 +58,7 @@ const App: React.FC = () => {
 						<Route path='orders/:number' element={<div>Order Details</div>} />
 					</Route>
 					<Route path='/feed' element={<Feed />} />
+					<Route path='/feed/:number' element={<OrderDetailsPage />} />
 					<Route
 						path='/ingredients/:ingredientId'
 						element={<IngredientsDetails />}
