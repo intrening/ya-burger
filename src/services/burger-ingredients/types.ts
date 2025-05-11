@@ -1,4 +1,4 @@
-import { TIngredient } from '@utils/types';
+import { TIngredient, TIngredientId } from '@utils/types';
 import {
 	GET_INGREDIENTS_REQUEST,
 	GET_INGREDIENTS_SUCCESS,
@@ -34,4 +34,5 @@ export type TBurgerIngredientsState = {
 	ingredients: Array<TIngredient>;
 	isLoading: boolean;
 	error: string | null;
+	ingredientsById: Record<TIngredientId, TIngredient>;
 };

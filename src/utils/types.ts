@@ -44,8 +44,9 @@ export type TUserResetPasswordForm = {
 export type TOrder = {
 	_id: string;
 	status: string;
+	name: string;
 	number: number;
 	createdAt: string;
-	updatedAt: string;
+	updatedAt?: string;
 	ingredients: Array<TIngredientId>;
 };
