@@ -2,8 +2,8 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import React, { useMemo } from 'react';
 import { TOrder, TIngredient } from '../../types';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { OrderCardIngredients } from './';
-import styles from './OrderFeed.module.css';
+import { OrderCardIngredients } from '.';
+import styles from './feed.module.css';
 
 type TOrderCardProps = {
 	order: TOrder;

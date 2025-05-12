@@ -1,12 +1,12 @@
-import styles from './OrderFeed.module.css';
+import styles from './feed.module.css';
 import { useAppSelector } from '../../services/hooks';
 import { TOrder } from '../../types';
-import Loader from '../loader/Loader';
+
 const OrderFeedStat: React.FC = () => {
 	const { orders, total, totalToday } = useAppSelector((state) => state.feed);
 
 	if (!orders || !total || !totalToday) {
-		return <Loader />;
+		return null;
 	}
 
 	const readyOrders = orders

@@ -1,0 +1,13 @@
+.orderTotalPriceContainer {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: auto;
+}
+
+.orderTotalPriceValue {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { TIngredient } from '../../types';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import styles from './order-details.module.css';
 
 type Props = {
 	ingredients: Array<TIngredient>;
@@ -19,20 +20,12 @@ const OrderTotalPrice: React.FC<Props> = ({
 	);
 
 	return (
-		<div
-			style={{
-				width: '100%',
-				display: 'flex',
-				justifyContent: 'space-between',
-				alignItems: 'center',
-				marginTop: 'auto',
-			}}>
+		<div className={styles.orderTotalPriceContainer}>
 			<span className='text text_type_main-default text_color_inactive'>
 				{createdAt}
 			</span>
 			<span
-				className='text text_type_digits-default'
-				style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+				className={`text text_type_digits-default ${styles.orderTotalPriceValue}`}>
 				{totalPrice} <CurrencyIcon type='primary' />
 			</span>
 		</div>

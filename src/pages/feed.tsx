@@ -1,5 +1,5 @@
 import { OrderFeed, OrderFeedStat } from '../components/feed';
-import styles from '../components/feed/OrderFeed.module.css';
+import styles from '../components/feed/feed.module.css';
 
 const Feed: React.FC = () => {
 	return (

@@ -5,9 +5,10 @@ import { fetchOrderDetailsByNumber } from '../services/order/actions';
 import { fetchIngredients } from '../services/burger-ingredients/actions';
 import { getAllIngredients } from '../services/burger-ingredients/selectors';
 import styles from './ingredient-details.module.css';
-import OrderIngredientsList from '../components/order-details/OrderIngredientsList';
-import OrderTotalPrice from '../components/order-details/OrderTotalPrice';
+import OrderIngredientsList from '../components/order-details/order-ingredients-list';
+import OrderTotalPrice from '../components/order-details/order-total-price';
 import { TIngredient } from '../types';
+import Loader from '../components/loader/loader';
 
 const OrderDetailsPage: React.FC = () => {
 	const { number } = useParams<{ number: string }>();
@@ -39,7 +40,7 @@ const OrderDetailsPage: React.FC = () => {
 		}
 	}, [dispatch, number, order, allIngredients.length]);
 
-	if (orderLoading || ingredientsLoading) return <div>Загрузка...</div>;
+	if (orderLoading || ingredientsLoading) return <Loader text='Загрузка...' />;
 	if (orderError) return <div>Ошибка заказа: {orderError}</div>;
 	if (ingredientsError)
 		return <div>Ошибка ингредиентов: {ingredientsError}</div>;

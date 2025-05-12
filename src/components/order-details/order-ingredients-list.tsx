@@ -1,6 +1,6 @@
 import React from 'react';
 import { TIngredient } from '../../types';
-import feedStyles from '../feed/OrderFeed.module.css';
+import feedStyles from '../feed/feed.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 type Props = {

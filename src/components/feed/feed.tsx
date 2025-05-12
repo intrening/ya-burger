@@ -1,5 +1,5 @@
-import OrderCard from './OrderCard';
-import styles from './OrderFeed.module.css';
+import OrderCard from './order-card';
+import styles from './feed.module.css';
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
 import { fetchIngredients } from '../../services/burger-ingredients/actions';
 import { useEffect } from 'react';
@@ -9,7 +9,7 @@ import {
 	wsConnectionClosed,
 } from '../../services/feed/actions';
 import { getAllIngredients } from '../../services/burger-ingredients/selectors';
-import Loader from '../loader/Loader';
+import Loader from '../loader/loader';
 
 const OrderFeed: React.FC<{ isAuth: boolean }> = ({ isAuth }) => {
 	const { orders } = useAppSelector((state) => state.feed);

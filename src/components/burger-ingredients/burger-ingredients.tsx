@@ -12,7 +12,8 @@ import {
 	getSauceIngredients,
 	getMainIngredients,
 } from '../../services/burger-ingredients/selectors';
-import Loader from '../loader/Loader';
+import Loader from '../loader/loader';
+
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const BurgerIngredients: React.FC = () => {

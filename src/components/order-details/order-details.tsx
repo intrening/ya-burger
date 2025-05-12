@@ -1,6 +1,7 @@
 import styles from '../modal/modal.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useAppSelector } from '../../services/hooks';
+import Loader from '../loader/loader';
 
 const OrderDetails: React.FC = () => {
 	const { orderNumber, loading, error } = useAppSelector(
@@ -8,14 +9,7 @@ const OrderDetails: React.FC = () => {
 	);
 
 	if (loading) {
-		return (
-			<div className={styles.content}>
-				<p className={'text text_type_main-medium mt-8 mb-8'}>
-					Оформляем ваш заказ...
-				</p>
-				<div className={styles.spinner}></div>
-			</div>
-		);
+		return <Loader text='Оформляем ваш заказ...' />;
 	}
 
 	if (error) {
