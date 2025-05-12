@@ -27,6 +27,7 @@ type TAPIResponseData = {
 	order?: {
 		number: number;
 	};
+	orders?: Array<TOrder>;
 	message?: string;
 };
 
@@ -264,9 +265,8 @@ export const fetchOrderDetails = async (orderId: string): Promise<TOrder> => {
 			'Content-Type': 'application/json',
 		},
 	});
-	if (!responseData.success || !responseData.order) {
+	if (!responseData.success || !responseData.orders) {
 		throw new Error('Некорректный формат данных с сервера');
 	}
-	console.log(responseData);
-	return responseData.order as TOrder;
+	return responseData.orders[0] as TOrder;
 };
