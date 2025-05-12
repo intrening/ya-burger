@@ -1,13 +1,16 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useMemo } from 'react';
 import { TOrder, TIngredient } from '../../types';
-import { useAppSelector } from '../../services/hooks';
-import { getAllIngredients } from '../../services/burger-ingredients/selectors';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { OrderCardIngredients } from './';
+import styles from './OrderFeed.module.css';
 
-const OrderCard: React.FC<{ order: TOrder }> = ({ order }) => {
-	const allIngredients = useAppSelector(getAllIngredients);
+type TOrderCardProps = {
+	order: TOrder;
+	allIngredients: Array<TIngredient>;
+};
+
+const OrderCard: React.FC<TOrderCardProps> = ({ order, allIngredients }) => {
 	const orderIngredientsIds = order.ingredients;
 
 	const orderIngredients: Array<TIngredient> = useMemo(() => {
@@ -43,26 +46,14 @@ const OrderCard: React.FC<{ order: TOrder }> = ({ order }) => {
 
 	return (
 		<div
+			className={styles.orderCard}
 			onClick={handleClick}
 			tabIndex={0}
 			role='button'
 			onKeyDown={(e) => {
 				if (e.key === 'Enter' || e.key === ' ') handleClick();
-			}}
-			style={{
-				background: '#222',
-				borderRadius: 24,
-				padding: 20,
-				marginBottom: 20,
-				minWidth: 400,
-				cursor: 'pointer',
 			}}>
-			<div
-				style={{
-					display: 'flex',
-					justifyContent: 'space-between',
-					marginBottom: 8,
-				}}>
+			<div className={styles.orderCardHeader}>
 				<span className='text text_type_digits-default'>
 					#{order.number.toString().padStart(6, '0')}
 				</span>
@@ -70,16 +61,13 @@ const OrderCard: React.FC<{ order: TOrder }> = ({ order }) => {
 					{order.createdAt}
 				</span>
 			</div>
-			<div className='text text_type_main-medium mb-2'>{order.name}</div>
-			<div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
+			<div
+				className={'text text_type_main-medium mb-2 ' + styles.orderCardName}>
+				{order.name}
+			</div>
+			<div className={styles.orderCardRow}>
 				<OrderCardIngredients ingredients={orderIngredients} />
-				<div
-					style={{
-						marginLeft: 'auto',
-						display: 'flex',
-						alignItems: 'center',
-						gap: 4,
-					}}>
+				<div className={styles.orderCardPrice}>
 					<span className='text text_type_digits-default'>{orderPrice}</span>
 					<CurrencyIcon type='primary' />
 				</div>

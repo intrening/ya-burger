@@ -51,3 +51,31 @@
 	color: #e0e6ff;
 	text-shadow: 0 0 8px #4c4cff;
 }
+
+.orderCard {
+	background: #222;
+	border-radius: 24px;
+	padding: 20px;
+	margin-bottom: 20px;
+	min-width: 400px;
+	cursor: pointer;
+}
+
+.orderCardHeader {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 8px;
+}
+
+.orderCardRow {
+	display: flex;
+	align-items: center;
+	margin-bottom: 8px;
+}
+
+.orderCardPrice {
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
