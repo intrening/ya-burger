@@ -14,7 +14,6 @@ import {
 	TUserLoginForm,
 	TUserResetPasswordForm,
 	TUserRegisterUpdateForm,
-	AppThunk,
 	AppDispatch,
 } from '../../types';
 import { SET_AUTH_CHECKED, SET_USER, SET_AUTH_ERROR } from './constants';
