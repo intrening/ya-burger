@@ -270,3 +270,8 @@ export const fetchOrderDetails = async (orderId: string): Promise<TOrder> => {
 	}
 	return responseData.orders[0] as TOrder;
 };
+
+export const getTrimmedAccessToken = () => {
+	const accessToken = getTokens().accessToken;
+	return accessToken.split('Bearer ')[1];
+};

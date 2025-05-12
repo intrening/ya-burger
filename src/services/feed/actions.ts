@@ -1,3 +1,4 @@
+import { getTrimmedAccessToken } from '@utils/api';
 import {
 	WS_CONNECTION_START,
 	WS_CONNECTION_SUCCESS,
@@ -14,10 +15,21 @@ import {
 	TFeedWsConnectionClosed,
 } from './types';
 
+const WS_URL = 'wss://norma.nomoreparties.space/orders';
+
 export const wsConnectionStart = (): TFeedWsConnectionStart => ({
 	type: WS_CONNECTION_START,
-	payload: 'wss://norma.nomoreparties.space/orders/all',
+	payload: `${WS_URL}/all`,
 });
+
+export const wsConnectionWithAuthStart = (): TFeedWsConnectionStart => {
+	const accessToken = getTrimmedAccessToken();
+
+	return {
+		type: WS_CONNECTION_START,
+		payload: `${WS_URL}?token=${accessToken}`,
+	};
+};
 
 export const wsConnectionSuccess = (
 	event: Event
