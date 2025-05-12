@@ -55,11 +55,7 @@ const OrderFeed: React.FC<{ isAuth: boolean }> = ({ isAuth }) => {
 			<h1 className='text text_type_main-large mb-5'>Лента заказов</h1>
 			<div className={styles.ordersList + ' custom-scroll'}>
 				{sortedOrders.map((order) => (
-					<OrderCard
-						key={order._id}
-						order={order}
-						allIngredients={allIngredients}
-					/>
+					<OrderCard key={order._id} order={order} />
 				))}
 			</div>
 		</div>

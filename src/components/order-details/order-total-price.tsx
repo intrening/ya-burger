@@ -22,7 +22,7 @@ const OrderTotalPrice: React.FC<Props> = ({
 	return (
 		<div className={styles.orderTotalPriceContainer}>
 			<span className='text text_type_main-default text_color_inactive'>
-				{createdAt}
+				{new Date(createdAt).toLocaleString('ru-RU')}
 			</span>
 			<span
 				className={`text text_type_digits-default ${styles.orderTotalPriceValue}`}>

@@ -4,14 +4,16 @@ import { TOrder, TIngredient } from '../../types';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { OrderCardIngredients } from '.';
 import styles from './feed.module.css';
+import { getAllIngredients } from '../../services/burger-ingredients/selectors';
+import { useAppSelector } from '../../services/hooks';
 
 type TOrderCardProps = {
 	order: TOrder;
-	allIngredients: Array<TIngredient>;
 };
 
-const OrderCard: React.FC<TOrderCardProps> = ({ order, allIngredients }) => {
+const OrderCard: React.FC<TOrderCardProps> = ({ order }) => {
 	const orderIngredientsIds = order.ingredients;
+	const allIngredients = useAppSelector(getAllIngredients);
 
 	const orderIngredients: Array<TIngredient> = useMemo(() => {
 		return orderIngredientsIds
@@ -58,7 +60,7 @@ const OrderCard: React.FC<TOrderCardProps> = ({ order, allIngredients }) => {
 					#{order.number.toString().padStart(6, '0')}
 				</span>
 				<span className='text text_type_main-default text_color_inactive'>
-					{order.createdAt}
+					{new Date(order.createdAt).toLocaleString('ru-RU')}
 				</span>
 			</div>
 			<div
