@@ -14,10 +14,11 @@ import {
 	TUserLoginForm,
 	TUserResetPasswordForm,
 	TUserRegisterUpdateForm,
-} from '../../utils/types';
+	AppThunk,
+	AppDispatch,
+} from '../../types';
 import { SET_AUTH_CHECKED, SET_USER, SET_AUTH_ERROR } from './constants';
 import { TSetAuthChecked, TSetUser, TSetAuthError } from './types';
-import { AppThunk, AppDispatch } from '../../types';
 
 export const setAuthChecked = (value: boolean): TSetAuthChecked => ({
 	type: SET_AUTH_CHECKED,

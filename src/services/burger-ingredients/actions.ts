@@ -1,5 +1,5 @@
 import { fetchIngredientsRequest, parseApiError } from '../../utils/api';
-import { TIngredient } from '../../utils/types';
+import { TIngredient, AppDispatch } from '../../types';
 import {
 	GET_INGREDIENTS_REQUEST,
 	GET_INGREDIENTS_SUCCESS,
@@ -12,7 +12,6 @@ import {
 	TGetIngredientsError,
 	TResetIngredientsState,
 } from './types';
-import { AppDispatch } from '../../types';
 
 export const getIngredientsRequest = (): TGetIngredientsRequest => ({
 	type: GET_INGREDIENTS_REQUEST,

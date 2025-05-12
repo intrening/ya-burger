@@ -7,7 +7,7 @@ import {
 	TUserLoginForm,
 	TUserRegisterUpdateForm,
 	TUserResetPasswordForm,
-} from './types';
+} from '../types';
 
 const AUTH_URL = `${API_URL_DOMAIN}/api/auth`;
 const PASSWORD_RESET_URL = `${API_URL_DOMAIN}/api/password-reset`;

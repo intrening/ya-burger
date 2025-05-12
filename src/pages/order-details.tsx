@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { TIngredient } from '../utils/types';
+import { TIngredient } from '../types';
 import { useAppDispatch, useAppSelector } from '../services/hooks';
 import styles from './ingredient-details.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';

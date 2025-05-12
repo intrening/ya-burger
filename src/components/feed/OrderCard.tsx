@@ -1,6 +1,6 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useMemo } from 'react';
-import { TOrder, TIngredient } from '../../utils/types';
+import { TOrder, TIngredient } from '../../types';
 import { useAppSelector } from '../../services/hooks';
 import { getAllIngredients } from '../../services/burger-ingredients/selectors';
 import { useNavigate, useLocation } from 'react-router-dom';

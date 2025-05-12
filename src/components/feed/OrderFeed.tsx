@@ -1,6 +1,6 @@
 import OrderCard from './OrderCard';
 import styles from './OrderFeed.module.css';
-import { TOrder } from '../../utils/types';
+import { TOrder } from '../../types';
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
 import { fetchIngredients } from '../../services/burger-ingredients/actions';
 import { useEffect } from 'react';

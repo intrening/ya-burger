@@ -10,7 +10,7 @@ import BurgerConstructorItem from './burger-constructor-item';
 import OrderSummary from './order-summary';
 import { useModal } from '../hooks/useModal';
 import { useNavigate } from 'react-router-dom';
-import { TIngredient } from '../../utils/types';
+import { TIngredient } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../services/hooks';
 import { useDrop, DropTargetMonitor } from 'react-dnd';
 import {

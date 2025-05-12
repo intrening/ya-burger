@@ -1,5 +1,5 @@
 import { SET_AUTH_CHECKED, SET_USER, SET_AUTH_ERROR } from './constants';
-import { TUser } from '@utils/types';
+import { TUser } from '../../types';
 
 export type TSetAuthChecked = {
 	readonly type: typeof SET_AUTH_CHECKED;

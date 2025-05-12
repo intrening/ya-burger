@@ -1,6 +1,5 @@
 import { createOrderRequest, parseApiError } from '../../utils/api';
-import { TIngredient } from '../../utils/types';
-import { AppDispatch } from '../../types';
+import { TIngredient, AppDispatch } from '../../types';
 import {
 	ORDER_REQUEST,
 	ORDER_SUCCESS,

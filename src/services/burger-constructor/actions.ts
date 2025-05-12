@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { TIngredient } from '@utils/types';
+import { TIngredient } from '../../types';
 import {
 	ADD_INGREDIENT,
 	SET_BUN,

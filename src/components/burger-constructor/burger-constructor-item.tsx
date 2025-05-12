@@ -6,7 +6,7 @@ import {
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { useRef } from 'react';
 import { removeIngredient } from '../../services/burger-constructor/actions';
-import { TIngredient } from '../../utils/types';
+import { TIngredient } from '../../types';
 import { useAppDispatch } from '../../services/hooks';
 
 const BurgerConstructorItem: React.FC<{

@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
-import { RootState } from '../../types';
-import { TIngredient } from '../../utils/types';
+import { RootState, TIngredient } from '../../types';
 
 export const getBun = (state: RootState) => state.burgerConstructor.bun;
 export const getIngredients = (state: RootState) =>

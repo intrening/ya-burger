@@ -1,4 +1,4 @@
-import { TIngredient } from '../../utils/types';
+import { TIngredient } from '../../types';
 
 const OrderCardIngredients: React.FC<{ ingredients: Array<TIngredient> }> = ({
 	ingredients,

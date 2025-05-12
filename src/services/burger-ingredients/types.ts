@@ -1,4 +1,4 @@
-import { TIngredient, TIngredientId } from '@utils/types';
+import { TIngredient } from '../../types';
 import {
 	GET_INGREDIENTS_REQUEST,
 	GET_INGREDIENTS_SUCCESS,

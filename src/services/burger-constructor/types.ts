@@ -5,7 +5,7 @@ import {
 	RESET_CONSTRUCTOR,
 	SET_BUN,
 } from './constants';
-import { TIngredient } from '@utils/types';
+import { TIngredient } from '../../types';
 
 export type TAddIngredient = {
 	readonly type: typeof ADD_INGREDIENT | typeof SET_BUN;
