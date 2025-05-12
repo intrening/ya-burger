@@ -1,3 +1,5 @@
+import { TOrder } from '../../types';
+
 import {
 	ORDER_REQUEST,
 	ORDER_SUCCESS,
@@ -28,15 +30,33 @@ export type TResetOrderState = {
 	readonly type: typeof ORDER_RESET;
 };
 
+export type TGetOrderRequest = {
+	readonly type: 'GET_ORDER_REQUEST';
+};
+
+export type TGetOrderSuccess = {
+	readonly type: 'GET_ORDER_SUCCESS';
+	readonly payload: import('../../types').TOrder;
+};
+
+export type TGetOrderError = {
+	readonly type: 'GET_ORDER_ERROR';
+	readonly payload: string;
+};
+
 export type TOrderActions =
 	| TOrderRequest
 	| TOrderSuccess
 	| TOrderError
 	| TResetOrderError
-	| TResetOrderState;
+	| TResetOrderState
+	| TGetOrderRequest
+	| TGetOrderSuccess
+	| TGetOrderError;
 
 export type TOrderState = {
 	orderNumber: number | null;
 	loading: boolean;
 	error: string | null;
+	orderDetails?: TOrder | null;
 };

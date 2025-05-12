@@ -7,6 +7,7 @@ import {
 	TUserLoginForm,
 	TUserRegisterUpdateForm,
 	TUserResetPasswordForm,
+	TOrder,
 } from '../types';
 
 const AUTH_URL = `${API_URL_DOMAIN}/api/auth`;
@@ -254,4 +255,18 @@ export const createOrderRequest = async (
 		throw new Error('Некорректный формат данных с сервера');
 	}
 	return responseData.order.number;
+};
+
+export const fetchOrderDetails = async (orderId: string): Promise<TOrder> => {
+	const responseData = await fetchWithRefresh(`${ORDERS_URL}/${orderId}`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	if (!responseData.success || !responseData.order) {
+		throw new Error('Некорректный формат данных с сервера');
+	}
+	console.log(responseData);
+	return responseData.order as TOrder;
 };

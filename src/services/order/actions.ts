@@ -1,10 +1,17 @@
-import { createOrderRequest, parseApiError } from '../../utils/api';
-import { TIngredient, AppDispatch } from '../../types';
+import {
+	createOrderRequest,
+	parseApiError,
+	fetchOrderDetails,
+} from '../../utils/api';
+import { TOrder, TIngredient, AppDispatch } from '../../types';
 import {
 	ORDER_REQUEST,
 	ORDER_SUCCESS,
 	ORDER_ERROR,
 	ORDER_RESET,
+	GET_ORDER_REQUEST,
+	GET_ORDER_SUCCESS,
+	GET_ORDER_ERROR,
 } from './constants';
 import {
 	TOrderRequest,
@@ -12,6 +19,9 @@ import {
 	TOrderError,
 	TResetOrderError,
 	TResetOrderState,
+	TGetOrderRequest,
+	TGetOrderSuccess,
+	TGetOrderError,
 } from './types';
 
 export const orderRequest = (): TOrderRequest => ({
@@ -50,5 +60,34 @@ export const createOrder =
 			dispatch(orderSuccess(orderNumber));
 		} catch (error) {
 			dispatch(orderError(parseApiError(error)));
+		}
+	};
+
+export const getOrderRequest = (): TGetOrderRequest => ({
+	type: GET_ORDER_REQUEST,
+});
+
+export const getOrderSuccess = (order: TOrder): TGetOrderSuccess => ({
+	type: GET_ORDER_SUCCESS,
+	payload: order,
+});
+
+export const getOrderError = (error: string): TGetOrderError => ({
+	type: GET_ORDER_ERROR,
+	payload: error,
+});
+
+export const fetchOrderDetailsByNumber =
+	(number: string) => async (dispatch: AppDispatch) => {
+		dispatch(getOrderRequest());
+		try {
+			const order = await fetchOrderDetails(number);
+			if (order) {
+				dispatch(getOrderSuccess(order));
+			} else {
+				dispatch(getOrderError('Заказ не найден'));
+			}
+		} catch (error) {
+			dispatch(getOrderError(parseApiError(error)));
 		}
 	};
