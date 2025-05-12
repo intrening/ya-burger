@@ -15,6 +15,7 @@ export type TFeedWsGetMessagePayload = {
 
 export type TFeedWsConnectionStart = {
 	readonly type: typeof WS_CONNECTION_START;
+	readonly payload: string;
 };
 
 export type TFeedWsConnectionSuccess = {

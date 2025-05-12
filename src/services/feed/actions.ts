@@ -16,6 +16,7 @@ import {
 
 export const wsConnectionStart = (): TFeedWsConnectionStart => ({
 	type: WS_CONNECTION_START,
+	payload: 'wss://norma.nomoreparties.space/orders/all',
 });
 
 export const wsConnectionSuccess = (

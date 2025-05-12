@@ -18,12 +18,10 @@ const rootReducer = combineReducers({
 
 const initialState = {};
 
-const WS_URL = 'wss://norma.nomoreparties.space/orders/all';
-
 const store = createStore(
 	rootReducer,
 	initialState,
-	composeWithDevTools(applyMiddleware(thunk, socketMiddleware(WS_URL)))
+	composeWithDevTools(applyMiddleware(thunk, socketMiddleware()))
 );
 
 export default store;
