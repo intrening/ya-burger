@@ -16,6 +16,20 @@ const OrderCard: React.FC<{ order: TOrder }> = ({ order }) => {
 			.filter(Boolean) as TIngredient[];
 	}, [allIngredients, orderIngredientsIds]);
 
+	const ingredientCount: Record<string, number> = useMemo(() => {
+		const count: Record<string, number> = {};
+		orderIngredientsIds.forEach((id) => {
+			count[id] = (count[id] || 0) + 1;
+		});
+		return count;
+	}, [orderIngredientsIds]);
+
+	const orderPrice = orderIngredients.reduce(
+		(acc, ingredient) =>
+			acc + (ingredient?.price ?? 0) * (ingredientCount[ingredient._id] || 0),
+		0
+	);
+
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -26,11 +40,6 @@ const OrderCard: React.FC<{ order: TOrder }> = ({ order }) => {
 			: `/feed/${order.number}`;
 		navigate(path, { state: { background: location } });
 	};
-
-	const orderPrice = orderIngredients.reduce(
-		(acc, ingredient) => acc + (ingredient?.price ?? 0),
-		0
-	);
 
 	return (
 		<div
