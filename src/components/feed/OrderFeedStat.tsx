@@ -1,17 +1,12 @@
 import styles from './OrderFeed.module.css';
 import { useAppSelector } from '../../services/hooks';
 import { TOrder } from '../../types';
-
+import Loader from '../loader/Loader';
 const OrderFeedStat: React.FC = () => {
 	const { orders, total, totalToday } = useAppSelector((state) => state.feed);
 
 	if (!orders || !total || !totalToday) {
-		return (
-			<div className={styles.loaderContainer}>
-				<p className='text text_type_main-large'>Загрузка...</p>
-				<div className={styles.loader}></div>
-			</div>
-		);
+		return <Loader />;
 	}
 
 	const readyOrders = orders
