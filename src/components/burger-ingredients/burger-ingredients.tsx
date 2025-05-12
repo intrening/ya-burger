@@ -12,6 +12,7 @@ import {
 	getSauceIngredients,
 	getMainIngredients,
 } from '../../services/burger-ingredients/selectors';
+import Loader from '../loader/Loader';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const BurgerIngredients: React.FC = () => {
@@ -102,14 +103,7 @@ const BurgerIngredients: React.FC = () => {
 	};
 
 	if (isLoading) {
-		return (
-			<section className={styles.burgerIngredients}>
-				<p className='text text_type_main-large'>Загрузка ингредиентов...</p>
-				<div className={styles.loaderContainer}>
-					<div className={styles.loader}></div>
-				</div>
-			</section>
-		);
+		return <Loader />;
 	}
 
 	if (error) {
