@@ -5,12 +5,12 @@ import { useAppDispatch, useAppSelector } from '../services/hooks';
 import styles from './ingredient-details.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import feedStyles from '../components/feed/OrderFeed.module.css';
-import { orders } from '../config';
 import { getAllIngredients } from '../services/burger-ingredients/selectors';
 import { fetchIngredients } from '../services/burger-ingredients/actions';
 
 const OrderDetailsPage: React.FC = () => {
 	const { number } = useParams<{ number: string }>();
+	const orders = useAppSelector((state) => state.feed.orders);
 	const order = orders.find((o) => o.number.toString() === number);
 
 	const { isLoading, error } = useAppSelector(
