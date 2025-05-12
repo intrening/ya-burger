@@ -25,7 +25,6 @@ export type TFeedWsConnectionSuccess = {
 
 export type TFeedWsConnectionError = {
 	readonly type: typeof WS_CONNECTION_ERROR;
-	readonly payload: Event;
 };
 
 export type TFeedWsGetMessage = {

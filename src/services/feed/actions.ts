@@ -38,9 +38,8 @@ export const wsConnectionSuccess = (
 	payload: event,
 });
 
-export const wsConnectionError = (event: Event): TFeedWsConnectionError => ({
+export const wsConnectionError = (): TFeedWsConnectionError => ({
 	type: WS_CONNECTION_ERROR,
-	payload: event,
 });
 
 export const wsGetMessage = (
