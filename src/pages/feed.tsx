@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../services/hooks';
-import { OrderFeed, OrderStat } from '../components/feed';
+import { OrderFeed, OrderFeedStat } from '../components/feed';
 import styles from '../components/feed/OrderFeed.module.css';
 import {
 	wsConnectionClosed,
@@ -33,7 +33,7 @@ const Feed: React.FC = () => {
 		<main className={styles.home}>
 			<section className={styles.feedWrapper}>
 				<OrderFeed orders={orders} />
-				<OrderStat total={total} totalToday={totalToday} />
+				<OrderFeedStat />
 			</section>
 		</main>
 	);

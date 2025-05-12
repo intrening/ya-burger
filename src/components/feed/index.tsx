@@ -1,6 +1,6 @@
 import OrderCard from './OrderCard';
 import OrderFeed from './OrderFeed';
-import OrderStat from './OrderStat';
+import OrderFeedStat from './OrderFeedStat';
 import OrderCardIngredients from './OrderCardIngredients';
 
-export { OrderCard, OrderFeed, OrderStat, OrderCardIngredients };
+export { OrderCard, OrderCardIngredients, OrderFeed, OrderFeedStat };
