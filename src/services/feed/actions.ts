@@ -3,6 +3,7 @@ import {
 	WS_CONNECTION_SUCCESS,
 	WS_CONNECTION_ERROR,
 	WS_GET_MESSAGE,
+	WS_CONNECTION_CLOSED,
 } from './constants';
 import {
 	TFeedWsConnectionStart,
@@ -10,6 +11,7 @@ import {
 	TFeedWsConnectionError,
 	TFeedWsGetMessage,
 	TFeedWsGetMessagePayload,
+	TFeedWsConnectionClosed,
 } from './types';
 
 export const wsConnectionStart = (): TFeedWsConnectionStart => ({
@@ -33,4 +35,8 @@ export const wsGetMessage = (
 ): TFeedWsGetMessage => ({
 	type: WS_GET_MESSAGE,
 	payload: data,
+});
+
+export const wsConnectionClosed = (): TFeedWsConnectionClosed => ({
+	type: WS_CONNECTION_CLOSED,
 });

@@ -2,10 +2,11 @@ import styles from './OrderFeed.module.css';
 
 const readyOrders = [34533, 34532, 34530, 34527, 34525];
 const inProgressOrders = [34538, 34541, 34542];
-const total = 28752;
-const totalToday = 138;
 
-const OrderStat: React.FC = () => {
+const OrderStat: React.FC<{ total: number; totalToday: number }> = ({
+	total,
+	totalToday,
+}) => {
 	return (
 		<div className={styles.statsSection}>
 			<div className={styles.statusesRow}>

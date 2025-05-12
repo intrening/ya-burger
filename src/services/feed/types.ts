@@ -35,7 +35,6 @@ export type TFeedWsGetMessage = {
 
 export type TFeedWsConnectionClosed = {
 	readonly type: typeof WS_CONNECTION_CLOSED;
-	readonly payload: Event;
 };
 
 export type TFeedWsSendMessage = {
