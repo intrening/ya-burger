@@ -8,16 +8,21 @@ import {
 	wsConnectionWithAuthStart,
 	wsConnectionClosed,
 } from '../../services/feed/actions';
+import { getAllIngredients } from '../../services/burger-ingredients/selectors';
+import Loader from '../loader/Loader';
 
 const OrderFeed: React.FC<{ isAuth: boolean }> = ({ isAuth }) => {
 	const { orders } = useAppSelector((state) => state.feed);
 	const { isLoading, error } = useAppSelector(
 		(state) => state.burgerIngredients
 	);
+	const allIngredients = useAppSelector(getAllIngredients);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(fetchIngredients());
+		if (!allIngredients.length) {
+			dispatch(fetchIngredients());
+		}
 		if (isAuth) {
 			dispatch(wsConnectionWithAuthStart());
 		} else {
@@ -26,27 +31,35 @@ const OrderFeed: React.FC<{ isAuth: boolean }> = ({ isAuth }) => {
 		return () => {
 			dispatch(wsConnectionClosed());
 		};
-	}, [dispatch, isAuth]);
-
-	if (!orders || isLoading) {
-		return (
-			<div className={styles.loaderContainer}>
-				<p className='text text_type_main-large'>Загрузка...</p>
-				<div className={styles.loader}></div>
-			</div>
-		);
-	}
-
-	if (error) return <div>Ошибка: {error}</div>;
+	}, [dispatch, isAuth, allIngredients]);
 
 	const sortedOrders = orders.sort((a, b) => b.number - a.number);
+
+	if (isLoading || allIngredients.length === 0 || orders.length === 0) {
+		return <Loader />;
+	}
+
+	if (error) {
+		return (
+			<section className={styles.burgerIngredients}>
+				<p className='text text_type_main-large mb-5'>
+					Не удалось загрузить заказы
+				</p>
+				<p className='text text_type_main-default mb-10'>{error}</p>
+			</section>
+		);
+	}
 
 	return (
 		<div className={styles.ordersSection}>
 			<h1 className='text text_type_main-large mb-5'>Лента заказов</h1>
 			<div className={styles.ordersList + ' custom-scroll'}>
 				{sortedOrders.map((order) => (
-					<OrderCard key={order._id} order={order} />
+					<OrderCard
+						key={order._id}
+						order={order}
+						allIngredients={allIngredients}
+					/>
 				))}
 			</div>
 		</div>
