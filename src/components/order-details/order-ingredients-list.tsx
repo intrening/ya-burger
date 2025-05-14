@@ -15,9 +15,9 @@ const OrderIngredientsList: React.FC<Props> = ({
 	<ul
 		className={feedStyles.ordersList}
 		style={{ maxHeight: 320, marginBottom: 32 }}>
-		{ingredients.map((ing) => (
+		{ingredients.map((ing, idx) => (
 			<li
-				key={ing._id}
+				key={idx}
 				style={{ display: 'flex', alignItems: 'center', marginBottom: 16 }}>
 				<img
 					src={ing.image}

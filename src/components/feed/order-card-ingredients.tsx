@@ -1,12 +1,12 @@
 import { TIngredient } from '../../types';
 
-const OrderCardIngredients: React.FC<{ ingredients: Array<TIngredient> }> = ({
-	ingredients,
-}) => (
+const OrderCardIngredients: React.FC<{
+	ingredients: Array<TIngredient>;
+}> = ({ ingredients }) => (
 	<div style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
 		{ingredients.slice(0, 5).map((ingredient, idx) => (
 			<img
-				key={ingredient._id}
+				key={idx}
 				src={ingredient.image}
 				alt={ingredient.name}
 				style={{
