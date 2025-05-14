@@ -1,0 +1,43 @@
+.loaderContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 200px;
+	gap: 16px;
+}
+
+.loader {
+	display: inline-block;
+	width: 80px;
+	height: 80px;
+}
+
+.loader::after {
+	display: block;
+	width: 64px;
+	height: 64px;
+	margin: 8px;
+	border: 6px solid #4c4cff;
+	border-color: #4c4cff transparent;
+	border-radius: 50%;
+	animation: loader-animation 1.2s linear infinite;
+	content: ' ';
+}
+
+@keyframes loader-animation {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.loaderText {
+	color: #e0e6ff;
+	font-size: 1.25rem;
+	font-weight: 500;
+	text-align: center;
+	text-shadow: 0 0 8px #4c4cff;
+}

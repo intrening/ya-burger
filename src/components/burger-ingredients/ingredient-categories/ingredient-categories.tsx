@@ -1,7 +1,7 @@
 import styles from './ingredient-categories.module.css';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import { forwardRef } from 'react';
-import { TIngredient } from '../../../utils/types';
+import { TIngredient } from '../../../types';
 
 const IngredientCategory = forwardRef<
 	HTMLDivElement,

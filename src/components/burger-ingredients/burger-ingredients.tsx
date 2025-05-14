@@ -1,17 +1,16 @@
 import styles from './burger-ingredients.module.css';
 import Tabs from './tabs/tabs';
 import IngredientCategory from './ingredient-categories/ingredient-categories';
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
-import {
-	fetchIngredients,
-	resetIngredientsState,
-} from '../../services/burger-ingredients/actions';
+import { resetIngredientsState } from '../../services/burger-ingredients/actions';
 import {
 	getBunIngredients,
 	getSauceIngredients,
 	getMainIngredients,
 } from '../../services/burger-ingredients/selectors';
+import Loader from '../loader/loader';
+
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const BurgerIngredients: React.FC = () => {
@@ -29,10 +28,6 @@ const BurgerIngredients: React.FC = () => {
 	const mainRef = useRef<HTMLDivElement>(null);
 
 	const dispatch = useAppDispatch();
-
-	useEffect(() => {
-		dispatch(fetchIngredients());
-	}, [dispatch]);
 
 	const ingredientCategories = [
 		{
@@ -98,18 +93,10 @@ const BurgerIngredients: React.FC = () => {
 
 	const handleRetry = () => {
 		dispatch(resetIngredientsState());
-		fetchIngredients();
 	};
 
 	if (isLoading) {
-		return (
-			<section className={styles.burgerIngredients}>
-				<p className='text text_type_main-large'>Загрузка ингредиентов...</p>
-				<div className={styles.loaderContainer}>
-					<div className={styles.loader}></div>
-				</div>
-			</section>
-		);
+		return <Loader />;
 	}
 
 	if (error) {

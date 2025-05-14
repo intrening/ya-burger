@@ -17,6 +17,8 @@ import { useEffect } from 'react';
 import { OnlyAuth, OnlyUnAuth } from '../protected-route';
 import Feed from '../../pages/feed';
 import { useAppDispatch } from '../../services/hooks';
+import OrderDetailsPage from '../../pages/order-details';
+import { fetchIngredients } from '../../services/burger-ingredients/actions';
 
 const App: React.FC = () => {
 	const location = useLocation();
@@ -30,6 +32,7 @@ const App: React.FC = () => {
 
 	useEffect(() => {
 		dispatch(checkUserAuth());
+		dispatch(fetchIngredients());
 	}, [dispatch]);
 
 	return (
@@ -54,9 +57,13 @@ const App: React.FC = () => {
 					<Route path='/profile' element={<OnlyAuth component={<Profile />} />}>
 						<Route index element={<ProfileForm />} />
 						<Route path='orders' element={<OrderHistory />} />
-						<Route path='orders/:number' element={<div>Order Details</div>} />
 					</Route>
+					<Route
+						path='/profile/orders/:number'
+						element={<OnlyAuth component={<OrderDetailsPage />} />}
+					/>
 					<Route path='/feed' element={<Feed />} />
+					<Route path='/feed/:number' element={<OrderDetailsPage />} />
 					<Route
 						path='/ingredients/:ingredientId'
 						element={<IngredientsDetails />}
@@ -71,6 +78,22 @@ const App: React.FC = () => {
 							element={
 								<Modal onClose={handleModalClose}>
 									<IngredientsDetails />
+								</Modal>
+							}
+						/>
+						<Route
+							path='/feed/:number'
+							element={
+								<Modal onClose={handleModalClose}>
+									<OrderDetailsPage />
+								</Modal>
+							}
+						/>
+						<Route
+							path='/profile/orders/:number'
+							element={
+								<Modal onClose={handleModalClose}>
+									<OrderDetailsPage />
 								</Modal>
 							}
 						/>

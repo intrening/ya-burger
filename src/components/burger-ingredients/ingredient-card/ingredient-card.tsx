@@ -6,7 +6,7 @@ import {
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
-import { TIngredient } from '../../../utils/types';
+import { TIngredient } from '../../../types';
 import { useAppSelector } from '../../../services/hooks';
 
 const IngredientCard: React.FC<{ ingredient: TIngredient }> = ({

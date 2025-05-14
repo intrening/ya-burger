@@ -14,30 +14,29 @@ import {
 	TUserLoginForm,
 	TUserResetPasswordForm,
 	TUserRegisterUpdateForm,
-} from '../../utils/types';
-import { Dispatch } from 'redux';
-export const SET_AUTH_ERROR = 'SET_AUTH_ERROR';
-export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
-export const SET_USER = 'SET_USER';
+	AppDispatch,
+} from '../../types';
+import { SET_AUTH_CHECKED, SET_USER, SET_AUTH_ERROR } from './constants';
+import { TSetAuthChecked, TSetUser, TSetAuthError } from './types';
 
-export const setAuthChecked = (value: boolean) => ({
+export const setAuthChecked = (value: boolean): TSetAuthChecked => ({
 	type: SET_AUTH_CHECKED,
 	payload: value,
 });
 
-export const setUser = (user: TUser | null) => ({
+export const setUser = (user: TUser | null): TSetUser => ({
 	type: SET_USER,
 	payload: user,
 });
 
-export const setAuthError = (errorMessage: string | null) => ({
+export const setAuthError = (errorMessage: string | null): TSetAuthError => ({
 	type: SET_AUTH_ERROR,
 	payload: errorMessage,
 });
 
 export const registerUser =
 	({ email, password, name }: TUserRegisterUpdateForm) =>
-	async (dispatch: Dispatch): Promise<boolean> => {
+	async (dispatch: AppDispatch): Promise<boolean> => {
 		try {
 			await registerUserRequest({ email, password, name });
 			return true;
@@ -49,7 +48,7 @@ export const registerUser =
 
 export const loginUser =
 	({ email, password }: TUserLoginForm) =>
-	async (dispatch: Dispatch): Promise<TUser | null> => {
+	async (dispatch: AppDispatch): Promise<TUser | null> => {
 		try {
 			const user: TUser = await loginUserRequest({ email, password });
 			dispatch(setUser(user));
@@ -64,7 +63,7 @@ export const loginUser =
 
 export const checkUserAuth =
 	() =>
-	async (dispatch: Dispatch): Promise<void> => {
+	async (dispatch: AppDispatch): Promise<void> => {
 		try {
 			if (getTokens().accessToken) {
 				const user: TUser = await getUserRequest();
@@ -79,7 +78,7 @@ export const checkUserAuth =
 
 export const updateUser =
 	({ email, password, name }: TUserRegisterUpdateForm) =>
-	async (dispatch: Dispatch): Promise<void> => {
+	async (dispatch: AppDispatch): Promise<void> => {
 		try {
 			const user: TUser = await updateUserRequest({ email, password, name });
 			dispatch(setUser(user));
@@ -91,7 +90,7 @@ export const updateUser =
 
 export const logoutUser =
 	() =>
-	async (dispatch: Dispatch): Promise<void> => {
+	async (dispatch: AppDispatch): Promise<void> => {
 		try {
 			await logoutUserRequest();
 			dispatch(setUser(null));
@@ -103,7 +102,7 @@ export const logoutUser =
 
 export const forgotPassword =
 	(email: string) =>
-	async (dispatch: Dispatch): Promise<void> => {
+	async (dispatch: AppDispatch): Promise<void> => {
 		try {
 			await forgotPasswordRequest(email);
 			dispatch(setAuthError(null));
@@ -114,7 +113,7 @@ export const forgotPassword =
 
 export const resetPassword =
 	({ password, token }: TUserResetPasswordForm) =>
-	async (dispatch: Dispatch): Promise<boolean> => {
+	async (dispatch: AppDispatch): Promise<boolean> => {
 		try {
 			await resetPasswordRequest({ password, token });
 			dispatch(setAuthError(null));

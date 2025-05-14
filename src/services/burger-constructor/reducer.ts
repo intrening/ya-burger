@@ -4,26 +4,20 @@ import {
 	SET_INGREDIENTS,
 	REMOVE_INGREDIENT,
 	RESET_CONSTRUCTOR,
-} from './actions';
-import { TConstructorState } from '../types';
-import { TIngredient } from '@utils/types';
+} from './constants';
+import { TBurgerConstructorActions, TBurgerConstructorState } from './types';
 
-const initialState = {
+const initialState: TBurgerConstructorState = {
 	ingredients: [],
 	bun: null,
 	isLoading: false,
 	error: null,
 };
 
-type TConstructorAction = {
-	type: string;
-	payload: TIngredient | number;
-};
-
 export const burgerConstructorReducer = (
-	state: TConstructorState = initialState,
-	action: TConstructorAction
-) => {
+	state: TBurgerConstructorState = initialState,
+	action: TBurgerConstructorActions
+): TBurgerConstructorState => {
 	switch (action.type) {
 		case ADD_INGREDIENT:
 			return { ...state, ingredients: [...state.ingredients, action.payload] };
@@ -39,7 +33,7 @@ export const burgerConstructorReducer = (
 		case SET_BUN:
 			return { ...state, bun: action.payload };
 		case RESET_CONSTRUCTOR:
-			return initialState;
+			return { ...state, ingredients: [], bun: null };
 		default:
 			return state;
 	}

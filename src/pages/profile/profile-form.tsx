@@ -8,6 +8,7 @@ import styles from './profile-form.module.css';
 import { useState, useEffect, useCallback } from 'react';
 import { updateUser } from '../../services/auth/actions';
 import { useAppDispatch, useAppSelector } from '../../services/hooks';
+import { RootState } from '../../types';
 
 const ProfileForm: React.FC = () => {
 	const [form, setForm] = useState({
@@ -17,8 +18,8 @@ const ProfileForm: React.FC = () => {
 	});
 	const [isEdited, setIsEdited] = useState(false);
 	const dispatch = useAppDispatch();
-	const user = useAppSelector((state) => state.auth.user);
-	const authError = useAppSelector((state) => state.auth.authError);
+	const user = useAppSelector((state: RootState) => state.auth.user);
+	const authError = useAppSelector((state: RootState) => state.auth.authError);
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement>,
 		field: string

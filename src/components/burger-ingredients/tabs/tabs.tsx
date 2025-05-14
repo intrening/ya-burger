@@ -1,6 +1,6 @@
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './tabs.module.css';
-import { TIngredientCategory } from '../../../utils/types';
+import { TIngredientCategory } from '../../../types';
 
 type TTabsProps = {
 	activeTab: string;

@@ -7,7 +7,8 @@ import {
 	TUserLoginForm,
 	TUserRegisterUpdateForm,
 	TUserResetPasswordForm,
-} from './types';
+	TOrder,
+} from '../types';
 
 const AUTH_URL = `${API_URL_DOMAIN}/api/auth`;
 const PASSWORD_RESET_URL = `${API_URL_DOMAIN}/api/password-reset`;
@@ -26,6 +27,7 @@ type TAPIResponseData = {
 	order?: {
 		number: number;
 	};
+	orders?: Array<TOrder>;
 	message?: string;
 };
 
@@ -254,4 +256,22 @@ export const createOrderRequest = async (
 		throw new Error('Некорректный формат данных с сервера');
 	}
 	return responseData.order.number;
+};
+
+export const fetchOrderDetails = async (orderId: string): Promise<TOrder> => {
+	const responseData = await fetchWithRefresh(`${ORDERS_URL}/${orderId}`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	if (!responseData.success || !responseData.orders) {
+		throw new Error('Некорректный формат данных с сервера');
+	}
+	return responseData.orders[0] as TOrder;
+};
+
+export const getTrimmedAccessToken = () => {
+	const accessToken = getTokens().accessToken;
+	return accessToken.split('Bearer ')[1];
 };

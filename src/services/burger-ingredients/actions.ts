@@ -1,40 +1,41 @@
 import { fetchIngredientsRequest, parseApiError } from '../../utils/api';
-import { TIngredient } from '../../utils/types';
-import { Dispatch } from 'redux';
-export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
-export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
-export const GET_INGREDIENTS_ERROR = 'GET_INGREDIENTS_ERROR';
-export const GET_INGREDIENTS_RESET = 'GET_INGREDIENTS_RESET';
+import { TIngredient, AppDispatch } from '../../types';
+import {
+	GET_INGREDIENTS_REQUEST,
+	GET_INGREDIENTS_SUCCESS,
+	GET_INGREDIENTS_ERROR,
+	GET_INGREDIENTS_RESET,
+} from './constants';
+import {
+	TGetIngredientsRequest,
+	TGetIngredientsSuccess,
+	TGetIngredientsError,
+	TResetIngredientsState,
+} from './types';
 
-export const getIngredientsRequest = () => ({
+export const getIngredientsRequest = (): TGetIngredientsRequest => ({
 	type: GET_INGREDIENTS_REQUEST,
 });
 
-export const getIngredientsSuccess = (ingredients: Array<TIngredient>) => ({
+export const getIngredientsSuccess = (
+	ingredients: Array<TIngredient>
+): TGetIngredientsSuccess => ({
 	type: GET_INGREDIENTS_SUCCESS,
 	payload: ingredients,
 });
 
-export const getIngredientsError = (error: string) => ({
+export const getIngredientsError = (error: string): TGetIngredientsError => ({
 	type: GET_INGREDIENTS_ERROR,
 	payload: error,
 });
 
-export const resetIngredientsState = () => ({
+export const resetIngredientsState = (): TResetIngredientsState => ({
 	type: GET_INGREDIENTS_RESET,
 });
 
-export const fetchIngredients =
-	() =>
-	async (dispatch: Dispatch): Promise<void> => {
-		dispatch(getIngredientsRequest());
-		try {
-			const ingredients: Array<TIngredient> = await fetchIngredientsRequest();
-			dispatch(getIngredientsSuccess(ingredients));
-		} catch (error) {
-			dispatch(getIngredientsError(parseApiError(error)));
-			setTimeout(() => {
-				dispatch(resetIngredientsState());
-			}, 5000);
-		}
-	};
+export const fetchIngredients = () => (dispatch: AppDispatch) => {
+	dispatch(getIngredientsRequest());
+	return fetchIngredientsRequest()
+		.then((ingredients) => dispatch(getIngredientsSuccess(ingredients)))
+		.catch((error) => dispatch(getIngredientsError(parseApiError(error))));
+};

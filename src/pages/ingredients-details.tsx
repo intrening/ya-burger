@@ -1,24 +1,16 @@
 import styles from './ingredient-details.module.css';
 import { useParams, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
-import { fetchIngredients } from '../services/burger-ingredients/actions';
-import { useAppDispatch, useAppSelector } from '../services/hooks';
+import { useAppSelector } from '../services/hooks';
+import { RootState } from '../types';
 
 const IngredientsDetails: React.FC = () => {
 	const { ingredientId } = useParams();
 	const location = useLocation();
-	const dispatch = useAppDispatch();
 	const background = location.state?.background;
 
 	const { ingredients, isLoading, error } = useAppSelector(
-		(state) => state.burgerIngredients
+		(state: RootState) => state.burgerIngredients
 	);
-
-	useEffect(() => {
-		if (!background && (!ingredients || ingredients.length === 0)) {
-			dispatch(fetchIngredients());
-		}
-	}, [background, ingredients, dispatch]);
 
 	const ingredient = ingredients.find((item) => item._id === ingredientId);
 

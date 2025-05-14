@@ -1,0 +1,81 @@
+.feedWrapper {
+	display: flex;
+	flex-direction: row;
+	gap: 40px;
+	width: 100%;
+	justify-content: center;
+}
+
+.ordersSection {
+	flex: 1 1 600px;
+	max-width: 600px;
+}
+
+.ordersList {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	max-height: 700px;
+	overflow-y: auto;
+}
+
+.statsSection {
+	min-width: 400px;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	color: #fff;
+	margin-top: 60px;
+}
+
+.statusesRow {
+	display: flex;
+	gap: 40px;
+}
+
+.statusList {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.ready {
+	color: #00fff0;
+}
+
+.total {
+	font-size: 72px;
+	color: #e0e6ff;
+	text-shadow: 0 0 8px #4c4cff;
+}
+
+.orderCard {
+	background: #222;
+	border-radius: 24px;
+	padding: 20px;
+	margin-bottom: 20px;
+	min-width: 400px;
+	cursor: pointer;
+}
+
+.orderCardHeader {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 8px;
+}
+
+.orderCardRow {
+	display: flex;
+	align-items: center;
+	margin-bottom: 8px;
+}
+
+.orderCardPrice {
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}

@@ -1,12 +1,15 @@
 import { useAppSelector } from '../services/hooks';
 import { Navigate, useLocation } from 'react-router-dom';
+import { RootState } from '../types';
 
 const Protected: React.FC<{
 	onlyUnAuth: boolean;
 	component: React.ReactNode;
 }> = ({ onlyUnAuth, component }) => {
-	const isAuthChecked = useAppSelector((store) => store.auth.isAuthChecked);
-	const user = useAppSelector((store) => store.auth.user);
+	const isAuthChecked = useAppSelector(
+		(store: RootState) => store.auth.isAuthChecked
+	);
+	const user = useAppSelector((store: RootState) => store.auth.user);
 	const location = useLocation();
 
 	if (!isAuthChecked) {
