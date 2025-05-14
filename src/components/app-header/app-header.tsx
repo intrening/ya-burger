@@ -44,9 +44,9 @@ const AppHeader: React.FC = () => {
 					</li>
 				</ul>
 
-				<a className={styles.logo} href='/'>
+				<NavLink to='/' className={styles.logo}>
 					<Logo />
-				</a>
+				</NavLink>
 
 				<NavLink to='/profile' className={styles.link}>
 					{({ isActive }) => (
