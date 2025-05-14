@@ -1,14 +1,13 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Action, ActionCreator } from 'redux';
-
+import rootReducer from '../services/rootReducer';
 import { TAuthActions } from '../services/auth/types';
 import { TBurgerIngredientsActions } from '../services/burger-ingredients/types';
 import { TBurgerConstructorActions } from '../services/burger-constructor/types';
 import { TOrderActions } from '../services/order/types';
 import { TFeedActions } from '../services/feed/types';
-import store from '../services/store';
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof rootReducer>;
 
 export type AppActions =
 	| TAuthActions

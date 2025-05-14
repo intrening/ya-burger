@@ -1,65 +1,128 @@
-import type { Middleware, MiddlewareAPI } from 'redux';
-import { WS_CONNECTION_START } from '../feed/constants';
 import {
-	wsConnectionSuccess,
-	wsConnectionError,
-	wsGetMessage,
-	wsConnectionClosed,
-} from '../feed/actions';
-import { refreshTokens, getTokens } from '../../utils/api';
-import type { AppActions, AppDispatch, RootState } from '../../types';
+	ActionCreatorWithoutPayload,
+	ActionCreatorWithPayload,
+	Middleware,
+} from '@reduxjs/toolkit';
+import { RootState } from '../../types';
+import { refreshTokens } from '../../utils/api';
 
-export const socketMiddleware = (): Middleware => {
-	return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
+export type WsActions<R, S> = {
+	connect: ActionCreatorWithPayload<string>;
+	disconnect: ActionCreatorWithoutPayload;
+	onConnecting?: ActionCreatorWithoutPayload;
+	onOpen?: ActionCreatorWithoutPayload;
+	onClose?: ActionCreatorWithoutPayload;
+	onError: ActionCreatorWithPayload<string>;
+	onMessage: ActionCreatorWithPayload<R>;
+	onSendMessage?: ActionCreatorWithPayload<S>;
+};
+
+export const RECONNECT_PERIOD = 3000;
+
+export const socketMiddleware = <R, S>(
+	wsActions: WsActions<R, S>,
+	withTokenRefresh = false
+): Middleware<Record<string, never>, RootState> => {
+	return (store) => {
 		let socket: WebSocket | null = null;
-		let wsUrl: string | null = null;
+		const {
+			connect,
+			disconnect,
+			onConnecting,
+			onOpen,
+			onClose,
+			onError,
+			onMessage,
+			onSendMessage,
+		} = wsActions;
+		let isConnected = false;
+		let url = '';
+		let reconnectTimer = 0;
+		const { dispatch } = store;
+		return (next) => (action) => {
+			if (connect.match(action)) {
+				url = action.payload;
+				socket = new WebSocket(action.payload);
+				isConnected = true;
+				onConnecting && dispatch(onConnecting());
 
-		return (next) => async (action: AppActions) => {
-			const { dispatch } = store;
-			const { type } = action;
-
-			if (type === WS_CONNECTION_START && 'payload' in action) {
-				wsUrl = action.payload;
-				socket = new WebSocket(wsUrl);
-			}
-			if (socket) {
-				socket.onopen = (event) => {
-					dispatch(wsConnectionSuccess(event));
+				socket.onopen = () => {
+					onOpen && dispatch(onOpen());
 				};
+
 				socket.onerror = () => {
-					dispatch(wsConnectionError());
+					dispatch(onError('Error'));
 				};
-				socket.onmessage = async (event) => {
-					const { data } = event;
-					const parsed = JSON.parse(data);
 
-					if (parsed && parsed.message === 'Invalid or missing token') {
-						try {
-							await refreshTokens();
-							if (wsUrl) {
-								// Обновим accessToken в URL (если он есть в строке)
-								const token = getTokens().accessToken;
-								const newUrl = wsUrl.replace(
-									/access_token=([^&]+)/,
-									`access_token=${token.replace('Bearer ', '')}`
-								);
-								if (socket) socket.close();
-								socket = new WebSocket(newUrl);
-							}
-						} catch (e) {
-							if (socket) socket.close();
-							dispatch(wsConnectionError());
-						}
-						return;
-					}
-					dispatch(wsGetMessage(parsed));
-				};
 				socket.onclose = () => {
-					dispatch(wsConnectionClosed());
+					onClose && dispatch(onClose());
+
+					if (isConnected) {
+						reconnectTimer = window.setTimeout(() => {
+							dispatch(connect(url));
+						}, RECONNECT_PERIOD);
+					}
 				};
+
+				socket.onmessage = (e) => {
+					const { data } = e;
+
+					try {
+						const parsedData = JSON.parse(data);
+
+						if (
+							withTokenRefresh &&
+							parsedData.message === 'Invalid or missing token'
+						) {
+							refreshTokens()
+								.then((refreshedData) => {
+									const wssUrl = new URL(url);
+									wssUrl.searchParams.set(
+										'token',
+										refreshedData.accessToken.replace('Bearer ', '')
+									);
+									dispatch(connect(wssUrl.toString()));
+								})
+								.catch((error) => {
+									dispatch(onError((error as Error).message));
+								});
+
+							dispatch(disconnect());
+
+							return;
+						}
+
+						dispatch(onMessage(parsedData));
+					} catch (error) {
+						dispatch(onError((error as Error).message));
+					}
+				};
+
+				return;
+			}
+
+			if (socket && onSendMessage?.match(action)) {
+				try {
+					const data = JSON.stringify(action.payload);
+					socket.send(data);
+				} catch (error) {
+					dispatch(onError((error as Error).message));
+				}
+
+				return;
+			}
+
+			if (socket && disconnect.match(action)) {
+				clearTimeout(reconnectTimer);
+				isConnected = false;
+				reconnectTimer = 0;
+				socket.close();
+				socket = null;
+
+				return;
 			}
 
 			next(action);
 		};
-	}) as Middleware;
+	};
 };
