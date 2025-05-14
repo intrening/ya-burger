@@ -6,7 +6,7 @@ import { getAllIngredients } from '../services/burger-ingredients/selectors';
 import styles from './ingredient-details.module.css';
 import OrderIngredientsList from '../components/order-details/order-ingredients-list';
 import OrderTotalPrice from '../components/order-details/order-total-price';
-import { TIngredient } from '../types';
+import { TIngredient, TOrder } from '../types';
 import Loader from '../components/loader/loader';
 
 const OrderDetailsPage: React.FC = () => {
@@ -15,7 +15,7 @@ const OrderDetailsPage: React.FC = () => {
 
 	const order = useAppSelector((state) => {
 		return (
-			state.feed.orders.find((o) => o.number.toString() === number) ||
+			state.feed.orders.find((o: TOrder) => o.number.toString() === number) ||
 			state.order.orderDetails
 		);
 	});
@@ -43,12 +43,14 @@ const OrderDetailsPage: React.FC = () => {
 	if (!order) return <div>Заказ не найден</div>;
 
 	const ingredientCount: Record<string, number> = {};
-	order.ingredients.forEach((id) => {
+	order.ingredients.forEach((id: string) => {
 		ingredientCount[id] = (ingredientCount[id] || 0) + 1;
 	});
 
 	const orderIngredients = order.ingredients
-		.map((id) => allIngredients.find((ing) => ing._id === id))
+		.map((id: string) =>
+			allIngredients.find((ing: TIngredient) => ing._id === id)
+		)
 		.filter(Boolean) as TIngredient[];
 
 	return (

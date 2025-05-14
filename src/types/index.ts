@@ -5,7 +5,7 @@ import { TAuthActions } from '../services/auth/types';
 import { TBurgerIngredientsActions } from '../services/burger-ingredients/types';
 import { TBurgerConstructorActions } from '../services/burger-constructor/types';
 import { TOrderActions } from '../services/order/types';
-import { TFeedActions } from '../services/feed/types';
+import { TFeedActions } from '@services/feed/types';
 
 export type RootState = ReturnType<typeof rootReducer>;
 

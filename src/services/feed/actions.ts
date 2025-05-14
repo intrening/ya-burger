@@ -1,54 +1,27 @@
+import { createAction } from '@reduxjs/toolkit';
 import { getTrimmedAccessToken } from '@utils/api';
-import {
-	WS_CONNECTION_START,
-	WS_CONNECTION_SUCCESS,
-	WS_CONNECTION_ERROR,
-	WS_GET_MESSAGE,
-	WS_CONNECTION_CLOSED,
-} from './constants';
-import {
-	TFeedWsConnectionStart,
-	TFeedWsConnectionSuccess,
-	TFeedWsConnectionError,
-	TFeedWsGetMessage,
-	TFeedWsGetMessagePayload,
-	TFeedWsConnectionClosed,
-} from './types';
+import { TFeedWsGetMessagePayload } from './types';
+
+const WS_CONNECTION_START = 'feed/wsConnectionStart';
+const WS_CONNECTION_SUCCESS = 'feed/wsConnectionSuccess';
+const WS_CONNECTION_ERROR = 'feed/wsConnectionError';
+const WS_GET_MESSAGE = 'feed/wsGetMessage';
+const WS_CONNECTION_CLOSED = 'feed/wsConnectionClosed';
 
 const WS_URL = 'wss://norma.nomoreparties.space/orders';
 
-export const wsConnectionStart = (): TFeedWsConnectionStart => ({
-	type: WS_CONNECTION_START,
-	payload: `${WS_URL}/all`,
-});
+export const wsConnectionStart = createAction(
+	WS_CONNECTION_START,
+	(url?: string) => ({ payload: url ?? `${WS_URL}/all` })
+);
 
-export const wsConnectionWithAuthStart = (): TFeedWsConnectionStart => {
+export const wsConnectionWithAuthStart = () => {
 	const accessToken = getTrimmedAccessToken();
-
-	return {
-		type: WS_CONNECTION_START,
-		payload: `${WS_URL}?token=${accessToken}`,
-	};
+	return wsConnectionStart(`${WS_URL}?token=${accessToken}`);
 };
 
-export const wsConnectionSuccess = (
-	event: Event
-): TFeedWsConnectionSuccess => ({
-	type: WS_CONNECTION_SUCCESS,
-	payload: event,
-});
-
-export const wsConnectionError = (): TFeedWsConnectionError => ({
-	type: WS_CONNECTION_ERROR,
-});
-
-export const wsGetMessage = (
-	data: TFeedWsGetMessagePayload
-): TFeedWsGetMessage => ({
-	type: WS_GET_MESSAGE,
-	payload: data,
-});
-
-export const wsConnectionClosed = (): TFeedWsConnectionClosed => ({
-	type: WS_CONNECTION_CLOSED,
-});
+export const wsConnectionSuccess = createAction(WS_CONNECTION_SUCCESS);
+export const wsConnectionError = createAction<string>(WS_CONNECTION_ERROR);
+export const wsGetMessage =
+	createAction<TFeedWsGetMessagePayload>(WS_GET_MESSAGE);
+export const wsConnectionClosed = createAction(WS_CONNECTION_CLOSED);

@@ -1,11 +1,12 @@
-import { TFeedActions, TFeedState } from './types';
+import { createSlice } from '@reduxjs/toolkit';
+import { TFeedState } from './types';
 import {
-	WS_CONNECTION_START,
-	WS_CONNECTION_SUCCESS,
-	WS_CONNECTION_ERROR,
-	WS_CONNECTION_CLOSED,
-	WS_GET_MESSAGE,
-} from './constants';
+	wsConnectionStart,
+	wsConnectionSuccess,
+	wsConnectionError,
+	wsConnectionClosed,
+	wsGetMessage,
+} from './actions';
 
 const initialState: TFeedState = {
 	wsConnected: false,
@@ -14,41 +15,30 @@ const initialState: TFeedState = {
 	totalToday: 0,
 };
 
-export const feedReducer = (
-	state: TFeedState = initialState,
-	action: TFeedActions
-): TFeedState => {
-	switch (action.type) {
-		case WS_CONNECTION_START:
-			return {
-				...state,
-				wsConnected: true,
-			};
-		case WS_CONNECTION_SUCCESS:
-			return {
-				...state,
-				wsConnected: true,
-			};
-		case WS_CONNECTION_ERROR:
-			return {
-				...state,
-				wsConnected: false,
-			};
-		case WS_CONNECTION_CLOSED:
-			return {
-				...state,
-				wsConnected: false,
-			};
-		case WS_GET_MESSAGE:
-			return {
-				...state,
-				orders: action.payload.orders,
-				total: action.payload.total,
-				totalToday: action.payload.totalToday,
-			};
-		default:
-			return state;
-	}
-};
+const feedSlice = createSlice({
+	name: 'feed',
+	initialState,
+	reducers: {},
+	extraReducers: (builder) => {
+		builder
+			.addCase(wsConnectionStart, (state) => {
+				state.wsConnected = true;
+			})
+			.addCase(wsConnectionSuccess, (state) => {
+				state.wsConnected = true;
+			})
+			.addCase(wsConnectionError, (state) => {
+				state.wsConnected = false;
+			})
+			.addCase(wsConnectionClosed, (state) => {
+				state.wsConnected = false;
+			})
+			.addCase(wsGetMessage, (state, action) => {
+				state.orders = action.payload.orders;
+				state.total = action.payload.total;
+				state.totalToday = action.payload.totalToday;
+			});
+	},
+});
 
-export default feedReducer;
+export default feedSlice.reducer;

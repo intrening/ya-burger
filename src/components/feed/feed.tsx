@@ -9,6 +9,7 @@ import {
 } from '../../services/feed/actions';
 import { getAllIngredients } from '../../services/burger-ingredients/selectors';
 import Loader from '../loader/loader';
+import { TOrder } from '../../types';
 
 const OrderFeed: React.FC<{ isAuth: boolean }> = ({ isAuth }) => {
 	const { orders } = useAppSelector((state) => state.feed);
@@ -29,8 +30,6 @@ const OrderFeed: React.FC<{ isAuth: boolean }> = ({ isAuth }) => {
 		};
 	}, [dispatch, isAuth, allIngredients]);
 
-	const sortedOrders = orders.sort((a, b) => b.number - a.number);
-
 	if (isLoading || allIngredients.length === 0 || orders.length === 0) {
 		return <Loader />;
 	}
@@ -50,7 +49,7 @@ const OrderFeed: React.FC<{ isAuth: boolean }> = ({ isAuth }) => {
 		<div className={styles.ordersSection}>
 			<h1 className='text text_type_main-large mb-5'>Лента заказов</h1>
 			<div className={styles.ordersList + ' custom-scroll'}>
-				{sortedOrders.map((order) => (
+				{orders.map((order: TOrder) => (
 					<OrderCard key={order._id} order={order} />
 				))}
 			</div>
