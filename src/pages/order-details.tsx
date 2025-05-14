@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../services/hooks';
 import { fetchOrderDetailsByNumber } from '../services/order/actions';
-import { fetchIngredients } from '../services/burger-ingredients/actions';
 import { getAllIngredients } from '../services/burger-ingredients/selectors';
 import styles from './ingredient-details.module.css';
 import OrderIngredientsList from '../components/order-details/order-ingredients-list';
@@ -35,10 +34,7 @@ const OrderDetailsPage: React.FC = () => {
 		if (!order && number) {
 			dispatch(fetchOrderDetailsByNumber(number));
 		}
-		if (!allIngredients.length) {
-			dispatch(fetchIngredients());
-		}
-	}, [dispatch, number, order, allIngredients.length]);
+	}, [dispatch, number, order]);
 
 	if (orderLoading || ingredientsLoading) return <Loader text='Загрузка...' />;
 	if (orderError) return <div>Ошибка заказа: {orderError}</div>;

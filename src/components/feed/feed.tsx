@@ -1,7 +1,6 @@
 import OrderCard from './order-card';
 import styles from './feed.module.css';
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
-import { fetchIngredients } from '../../services/burger-ingredients/actions';
 import { useEffect } from 'react';
 import {
 	wsConnectionStart,
@@ -20,9 +19,6 @@ const OrderFeed: React.FC<{ isAuth: boolean }> = ({ isAuth }) => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		if (!allIngredients.length) {
-			dispatch(fetchIngredients());
-		}
 		if (isAuth) {
 			dispatch(wsConnectionWithAuthStart());
 		} else {

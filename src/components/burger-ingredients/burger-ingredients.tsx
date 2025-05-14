@@ -1,12 +1,9 @@
 import styles from './burger-ingredients.module.css';
 import Tabs from './tabs/tabs';
 import IngredientCategory from './ingredient-categories/ingredient-categories';
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
-import {
-	fetchIngredients,
-	resetIngredientsState,
-} from '../../services/burger-ingredients/actions';
+import { resetIngredientsState } from '../../services/burger-ingredients/actions';
 import {
 	getBunIngredients,
 	getSauceIngredients,
@@ -31,10 +28,6 @@ const BurgerIngredients: React.FC = () => {
 	const mainRef = useRef<HTMLDivElement>(null);
 
 	const dispatch = useAppDispatch();
-
-	useEffect(() => {
-		dispatch(fetchIngredients());
-	}, [dispatch]);
 
 	const ingredientCategories = [
 		{
@@ -100,7 +93,6 @@ const BurgerIngredients: React.FC = () => {
 
 	const handleRetry = () => {
 		dispatch(resetIngredientsState());
-		dispatch(fetchIngredients());
 	};
 
 	if (isLoading) {

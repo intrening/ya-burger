@@ -18,6 +18,7 @@ import { OnlyAuth, OnlyUnAuth } from '../protected-route';
 import Feed from '../../pages/feed';
 import { useAppDispatch } from '../../services/hooks';
 import OrderDetailsPage from '../../pages/order-details';
+import { fetchIngredients } from '../../services/burger-ingredients/actions';
 
 const App: React.FC = () => {
 	const location = useLocation();
@@ -31,6 +32,7 @@ const App: React.FC = () => {
 
 	useEffect(() => {
 		dispatch(checkUserAuth());
+		dispatch(fetchIngredients());
 	}, [dispatch]);
 
 	return (
