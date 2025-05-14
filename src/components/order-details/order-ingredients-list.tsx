@@ -5,13 +5,9 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 
 type Props = {
 	ingredients: Array<TIngredient>;
-	ingredientCount: Record<string, number>;
 };
 
-const OrderIngredientsList: React.FC<Props> = ({
-	ingredients,
-	ingredientCount,
-}) => (
+const OrderIngredientsList: React.FC<Props> = ({ ingredients }) => (
 	<ul
 		className={feedStyles.ordersList}
 		style={{ maxHeight: 320, marginBottom: 32 }}>
@@ -36,7 +32,7 @@ const OrderIngredientsList: React.FC<Props> = ({
 				<span
 					className='text text_type_digits-default'
 					style={{ marginLeft: 16 }}>
-					{ingredientCount[ing._id]} x {ing.price}
+					{ing.price}
 				</span>
 				<CurrencyIcon type='primary' />
 			</li>

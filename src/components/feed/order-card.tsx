@@ -21,17 +21,8 @@ const OrderCard: React.FC<TOrderCardProps> = ({ order }) => {
 			.filter(Boolean) as TIngredient[];
 	}, [allIngredients, orderIngredientsIds]);
 
-	const ingredientCount: Record<string, number> = useMemo(() => {
-		const count: Record<string, number> = {};
-		orderIngredientsIds.forEach((id) => {
-			count[id] = (count[id] || 0) + 1;
-		});
-		return count;
-	}, [orderIngredientsIds]);
-
 	const orderPrice = orderIngredients.reduce(
-		(acc, ingredient) =>
-			acc + (ingredient?.price ?? 0) * (ingredientCount[ingredient._id] || 0),
+		(acc, ingredient) => acc + (ingredient?.price ?? 0),
 		0
 	);
 

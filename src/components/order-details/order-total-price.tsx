@@ -5,19 +5,11 @@ import styles from './order-details.module.css';
 
 type Props = {
 	ingredients: Array<TIngredient>;
-	ingredientCount: Record<string, number>;
 	createdAt: string;
 };
 
-const OrderTotalPrice: React.FC<Props> = ({
-	ingredients,
-	ingredientCount,
-	createdAt,
-}) => {
-	const totalPrice = ingredients.reduce(
-		(sum, ing) => sum + ing.price * ingredientCount[ing._id],
-		0
-	);
+const OrderTotalPrice: React.FC<Props> = ({ ingredients, createdAt }) => {
+	const totalPrice = ingredients.reduce((sum, ing) => sum + ing.price, 0);
 
 	return (
 		<div className={styles.orderTotalPriceContainer}>

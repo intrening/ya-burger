@@ -42,11 +42,6 @@ const OrderDetailsPage: React.FC = () => {
 		return <div>Ошибка ингредиентов: {ingredientsError}</div>;
 	if (!order) return <div>Заказ не найден</div>;
 
-	const ingredientCount: Record<string, number> = {};
-	order.ingredients.forEach((id: string) => {
-		ingredientCount[id] = (ingredientCount[id] || 0) + 1;
-	});
-
 	const orderIngredients = order.ingredients
 		.map((id: string) =>
 			allIngredients.find((ing: TIngredient) => ing._id === id)
@@ -71,13 +66,9 @@ const OrderDetailsPage: React.FC = () => {
 				{order.status === 'done' ? 'Выполнен' : 'Готовится'}
 			</p>
 			<h3 className='text text_type_main-medium mb-4'>Состав:</h3>
-			<OrderIngredientsList
-				ingredients={orderIngredients}
-				ingredientCount={ingredientCount}
-			/>
+			<OrderIngredientsList ingredients={orderIngredients} />
 			<OrderTotalPrice
 				ingredients={orderIngredients}
-				ingredientCount={ingredientCount}
 				createdAt={order.createdAt}
 			/>
 		</div>
