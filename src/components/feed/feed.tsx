@@ -44,12 +44,15 @@ const OrderFeed: React.FC<{ isAuth: boolean }> = ({ isAuth }) => {
 			</section>
 		);
 	}
+	const sortedOrders = [...orders].sort((a, b) => {
+		return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+	});
 
 	return (
 		<div className={styles.ordersSection}>
 			<h1 className='text text_type_main-large mb-5'>Лента заказов</h1>
 			<div className={styles.ordersList + ' custom-scroll'}>
-				{orders.map((order: TOrder) => (
+				{sortedOrders.map((order: TOrder) => (
 					<OrderCard key={order._id} order={order} />
 				))}
 			</div>
